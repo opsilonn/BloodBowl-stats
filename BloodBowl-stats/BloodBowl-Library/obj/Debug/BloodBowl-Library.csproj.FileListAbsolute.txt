@@ -1,0 +1,9 @@
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\bin\Debug\BloodBowl-Library.dll.config
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\bin\Debug\BloodBowl-Library.dll
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\bin\Debug\BloodBowl-Library.pdb
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csprojAssemblyReference.cache
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csproj.CopyComplete
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.dll
+C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.pdb

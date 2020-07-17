@@ -1,0 +1,9 @@
+{
+  "id": "09344cdd-50a0-40cc-876d-3bb13090e670",
+  "dateCreation": "2020-07-16T23:53:55.2060834+02:00",
+  "name": "pokemon",
+  "description": "mon equipe de pokemons",
+  "race": 11,
+  "money": 1000,
+  "players": []
+}

@@ -1,9 +1,0 @@
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\bin\Debug\BloodBawl-Library.dll.config
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\bin\Debug\BloodBawl-Library.dll
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\bin\Debug\BloodBawl-Library.pdb
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\obj\Debug\BloodBawl-Library.csprojAssemblyReference.cache
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\obj\Debug\BloodBawl-Library.dll
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\obj\Debug\BloodBawl-Library.pdb
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Hugues\Desktop\BloodBawl-stats\BloodBawl-stats\BloodBawl-Library\obj\Debug\BloodBawl-Library.csproj.CopyComplete
