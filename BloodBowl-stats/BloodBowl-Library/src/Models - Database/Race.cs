@@ -47,184 +47,133 @@ namespace BloodBowl_Library
 
     public static class RaceStuff
     {
-        public static String name(this Race race)
+        public class PlayerRoleData
         {
-            switch (race)
+            public string name { get; }
+            public List<Role> roles { get; }
+
+
+            public PlayerRoleData(string name, List<Role> roles)
             {
-                // Humans and cie
-                case Race.Humans:
-                    return "Humans";
-
-                case Race.Bretonnia:
-                    return "Bretonnia";
-
-                case Race.Dwarfs:
-                    return "Dwarfs";
-
-                case Race.Halfling:
-                    return "Halfling";
-
-
-                // Evil - meh
-                case Race.Orcs:
-                    return "Orcs";
-
-                case Race.Goblins:
-                    return "Goblins";
-
-                case Race.Ogre:
-                    return "Ogre";
-
-
-                // Elves
-                case Race.Elves:
-                    return "Elves";
-
-                case Race.ElvesHigh:
-                    return "High Elves";
-
-                case Race.ElvesDark:
-                    return "Dark Elves";
-
-                case Race.ElvesWood:
-                    return "Wood Elves";
-
-                // Weirdos
-                case Race.LizardMen:
-                    return "Lizardmen";
-
-                case Race.Norse:
-                    return "Norse";
-
-                case Race.Amazon:
-                    return "Amazon";
-
-                case Race.Khemri:
-                    return "Khemri";
-
-                case Race.Necromentic:
-                    return "Necromentic";
-
-                case Race.Vampire:
-                    return "Vampire";
-
-                case Race.Undead:
-                    return "Undead";
-
-
-                // Evil - really evil
-                case Race.Skaven:
-                    return "Skaven";
-
-                case Race.Chaos:
-                    return "Chaos";
-
-                case Race.Nurgle:
-                    return "Nurgle";
-
-                case Race.KhorneDeamons:
-                    return "Khorne Deamons";
-
-                case Race.ChaosDwarfs:
-                    return "Chaos Dwarfs";
-
-                case Race.Underworld:
-                    return "Underworld";
-
-                default:
-                    return "UNKNOWN";
+                this.name = name;
+                this.roles = roles;
             }
         }
-        public static List<Player> playerPrefabs(this Race race)
+
+
+        /// <summary>
+        /// Data of the instance
+        /// </summary>
+        /// <param name="race">Race we are analysing</param>
+        /// <returns>Data of the instance</returns>
+        private static PlayerRoleData data(this Race race)
         {
             switch (race)
             {
                 // Humans and cie
                 case Race.Humans:
-                    return new List<Player> {
-                        new Player()
-                    };
-                /*
+                    return new PlayerRoleData("Humans", new List<Role> { Role.HumanBlitzer, Role.HumanCatcher, Role.HumanLineMan, Role.HumanOgre, Role.HumanThrower });
+
                 case Race.Bretonnia:
-                    return "Bretonnia";
+                    return new PlayerRoleData("Bretonnia", new List<Role> { });
 
                 case Race.Dwarfs:
-                    return "Dwarfs";
+                    return new PlayerRoleData("Dwarfs", new List<Role> { });
 
                 case Race.Halfling:
-                    return "Halfling";
+                    return new PlayerRoleData("Halfling", new List<Role> { });
 
 
                 // Evil - meh
                 case Race.Orcs:
-                    return "Orcs";
+                    return new PlayerRoleData("Orcs", new List<Role> { });
 
                 case Race.Goblins:
-                    return "Goblins";
+                    return new PlayerRoleData("Goblins", new List<Role> { });
 
                 case Race.Ogre:
-                    return "Ogre";
+                    return new PlayerRoleData("Ogre", new List<Role> { });
 
 
                 // Elves
                 case Race.Elves:
-                    return "Elves";
+                    return new PlayerRoleData("Elves", new List<Role> { });
 
                 case Race.ElvesHigh:
-                    return "High Elves";
+                    return new PlayerRoleData("High Elves", new List<Role> { });
 
                 case Race.ElvesDark:
-                    return "Dark Elves";
+                    return new PlayerRoleData("Dark Elves", new List<Role> { });
 
                 case Race.ElvesWood:
-                    return "Wood Elves";
+                    return new PlayerRoleData("Wood Elves", new List<Role> { });
 
                 // Weirdos
                 case Race.LizardMen:
-                    return "Lizardmen";
+                    return new PlayerRoleData("Lizardmen", new List<Role> { });
 
                 case Race.Norse:
-                    return "Norse";
+                    return new PlayerRoleData("Norse", new List<Role> { });
 
                 case Race.Amazon:
-                    return "Amazon";
+                    return new PlayerRoleData("Amazon", new List<Role> { });
 
                 case Race.Khemri:
-                    return "Khemri";
+                    return new PlayerRoleData("Khemri", new List<Role> { });
 
                 case Race.Necromentic:
-                    return "Necromentic";
+                    return new PlayerRoleData("Necromentic", new List<Role> { });
 
                 case Race.Vampire:
-                    return "Vampire";
+                    return new PlayerRoleData("Vampire", new List<Role> { });
 
                 case Race.Undead:
-                    return "Undead";
+                    return new PlayerRoleData("Undead", new List<Role> { });
 
 
                 // Evil - really evil
                 case Race.Skaven:
-                    return "Skaven";
+                    return new PlayerRoleData("Skaven", new List<Role> { });
 
                 case Race.Chaos:
-                    return "Chaos";
+                    return new PlayerRoleData("Chaos", new List<Role> { });
 
                 case Race.Nurgle:
-                    return "Nurgle";
+                    return new PlayerRoleData("Nurgle", new List<Role> { });
 
                 case Race.KhorneDeamons:
-                    return "Khorne Deamons";
+                    return new PlayerRoleData("Khorne Deamons", new List<Role> { });
 
                 case Race.ChaosDwarfs:
-                    return "Chaos Dwarfs";
+                    return new PlayerRoleData("Chaos Dwarfs", new List<Role> { });
 
                 case Race.Underworld:
-                    return "Underworld";
-                    */
+                    return new PlayerRoleData("Underworld", new List<Role> { });
 
                 default:
-                    return new List<Player>();
+                    return new PlayerRoleData("UNKNOWN", new List<Role> { });
             }
+        }
+
+
+        /// <summary>
+        /// Returns the name of a given Race
+        /// </summary>
+        /// <param name="race">Race of which we want to know the name</param>
+        /// <returns>The name of a given Race</returns>
+        public static String name(this Race race)
+        {
+            return race.data().name;
+        }
+
+        /// <summary>
+        /// Returns the list of Roles of a given Race
+        /// </summary>
+        /// <param name="race">Race of which we want to know the Roles</param>
+        /// <returns>The Roles of a given Race</returns>
+        public static List<Role> playerRoles(this Race race)
+        {
+            return race.data().roles;
         }
     }
 }
