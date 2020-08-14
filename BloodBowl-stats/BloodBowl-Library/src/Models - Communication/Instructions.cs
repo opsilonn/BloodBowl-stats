@@ -21,22 +21,7 @@ namespace BloodBowl_Library
         Team_GetAllFromCoach,
         Team_GetById,
         Team_New,
-
-
-        /*
-        Topic_GetAll,
-        Topic_GetByIc,
-        Topic_New,
-
-        Chat_GetAll,
-        Chat_GetById,
-        Chat_New,
-
-        Member_Join,
-        Member_Leave,
-
-        Message_New,
-        Message_GetById
-        */
+        Team_AddPlayer,
+        Team_RemovePlayer
     }
 }

@@ -275,6 +275,9 @@ namespace Back_Server
                     // Ensuring we have completed fields
                     if (newTeam.id != Guid.Empty && newTeam.name != "")
                     {
+                        // We give the reference to the Team to each player
+                        newTeam.players.ForEach(player => player.team = newTeam);
+
                         // returning the new Team
                         return newTeam;
                     }

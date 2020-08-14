@@ -38,7 +38,19 @@ namespace Front_Console
            new List<string>()
            {
                "See Team's Data",
+               "Manage Players",
+               "Buy Player",
                "Go Back"
+           }
+       );
+
+        public static Choice CHOICE_REMOVEPLAYER = new Choice
+       (
+           "Do you really want to remove this Player ?",
+           new List<string>()
+           {
+               "Yes, remove the Player",
+               "No, keep the Player"
            }
        );
 

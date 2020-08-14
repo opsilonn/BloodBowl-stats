@@ -19,16 +19,19 @@ namespace BloodBowl_Library
         public static string SIGNIN_PASSWORD_DONT_MATCH = "The password and its verification are different : please try again";
         public static string SIGNIN_FAILURE = "There already is a user with your name and / or email !";
 
-        public static string MESSAGE_EMPTY = "This conversation is empty ! Be the first to add a comment !";
-        public static string MESSAGE_SUCCESS = "You successfully added a message !";
+        public static string TEAM_CREATION_SUCCESS = "The new Team was successfully created !";
+        public static string TEAM_CREATION_FAILURE = "The Team hasn't been created...";
 
-        public static string TOPIC_CREATION_SUCCESS = "The new Topic was successfully created !";
-        public static string TOPIC_CREATION_FAILURE = "The Topic hasn't been created...";
+        public static string PLAYER_CREATION_SUCCESS = "The new Player was successfully created !";
+        public static string PLAYER_CREATION_FAILURE = "The Player hasn't been created...";
 
+        public static string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
+        /*
         public static string CHAT_CREATION_SUCCESS = "The new Chat was successfully created !";
         public static string CHAT_CREATION_FAILURE = "The Chat hasn't been created...";
         public static string CHAT_CREATION_2ND_MEMBER_IS_SELF = "You cannot add yourself as the 2nd member of this Chat !";
         public static string CHAT_CREATION_2ND_MEMBER_NOT_FOUND = "Your correspondent's name was not found !";
+        */
 
         public static string NEWCHATMEMBER_SUCCESS = "The new member was successfully added !";
         public static string NEWCHATMEMBER_FAILURE = "The profile hasn't been added...";

@@ -87,7 +87,7 @@ namespace BloodBowl_Library
                 s += "\t" + team.ToString();
             }
 
-            return s;
+            return s + "\n";
         }
 
 

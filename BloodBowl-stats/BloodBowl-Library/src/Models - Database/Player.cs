@@ -77,7 +77,7 @@ namespace BloodBowl_Library
         /// <returns> A textual representation of the instance</returns>
         public override string ToString()
         {
-            return String.Format("\t\t\tPlayer : {0} - {1} lvl {2}, xp = {3}\n", id, name, level, xp);
+            return String.Format("Player : {0} - {1} lvl {2}, xp = {3}\n", id, name, level, xp);
         }
 
 
@@ -141,6 +141,14 @@ namespace BloodBowl_Library
 
         // PARAM
         [JsonIgnore]
+        public bool IsComplete
+        {
+            get => (
+            id != Guid.Empty
+            && name != String.Empty
+            );
+        }
+        [JsonIgnore]
         public bool isDead { get => effects.Contains(Effect.Dead); }
         [JsonIgnore]
         public List<Effect> skills { get => effects.Where(effect => effect.isSkill()).ToList(); }
@@ -149,14 +157,15 @@ namespace BloodBowl_Library
         [JsonIgnore]
         public int numberOfSkills { get => skills.Count; }
         [JsonIgnore]
-        public int numberOfCasualties { get => casualties.Count; }
+        public int numberOfCasualty { get => casualties.Count; }
 
 
         private List<int> levelThresholds = new List<int> { 6, 12, 36 };
 
         [JsonIgnore]
         public int level { get => numberOfSkills; }
-        
+
+
         [JsonIgnore]
         public bool hasNewLevel
         {
@@ -190,7 +199,7 @@ namespace BloodBowl_Library
             get
             {
                 // We initialize a counter
-                int baseCpt = 0;
+                int baseCpt = role.price();
 
                 return baseCpt + effects.Where(effect => effect.isSkill()).ToList().Count * 20;
             }

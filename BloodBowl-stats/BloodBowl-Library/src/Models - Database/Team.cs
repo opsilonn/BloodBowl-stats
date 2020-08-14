@@ -87,13 +87,13 @@ namespace BloodBowl_Library
         /// <returns> A textual representation of the instance</returns>
         public override string ToString()
         {
-            string s = String.Format("\tTeam : {0} - {1} : {2} players\n", id, name, players.Count);
+            string s = String.Format("Team : {0} - {1} - {2} players\n", name, race.name(), players.Count);
 
             foreach (Player player in players)
             {
-                s += player.ToString();
+                s += "\t" + player.ToString();
             }
-            return s;
+            return s + "\n";
         }
 
 

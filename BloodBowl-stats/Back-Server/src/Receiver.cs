@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Linq;
 
 
 namespace Back_Server
@@ -23,6 +24,10 @@ namespace Back_Server
 
         public delegate void CreatingTeam(Team newTeam);
         public event CreatingTeam When_Team_Create;
+
+        public delegate void PlayerEvent(Player player);
+        public event PlayerEvent When_Player_Create;
+        public event PlayerEvent When_Player_Remove;
 
         public Coach userCoach;
 
@@ -103,33 +108,53 @@ namespace Back_Server
 
 
                     // COACH
-                    /*
-                    case Instructions.Profile_GetAll:
-                        SendAllProfiles();
-                        break;
-                        */
-
                     case Instructions.Coach_GetById:
                         GetCoachById((Guid)content);
                         break;
-                    /*
-                case Instructions.Profile_GetByName:
-                    GetProfileByName((string)content);
-                    break;
-                    */
+
+
 
                     // TEAM
                     case Instructions.Team_New:
-                        // We get the newly created Topic
+                        // We get the newly created Team
                         Team newTeam = NewTeam((Team)content);
 
-                        // If the Topic can be created (ID is not empty)
+                        // If the Team can be created (ID is not empty)
                         if (newTeam.IsComplete)
                         {
-                            // We raise the event : a Topic has been created
+                            // We raise the event : a Team has been created
                             When_Team_Create?.Invoke(newTeam);
                         }
                         break;
+
+                    case Instructions.Team_AddPlayer:
+                        // We get the newly created Player
+                        Player newPlayer = NewPlayer((Player)content);
+
+                        // If the Player can be created (ID is not empty)
+                        if (newPlayer.IsComplete)
+                        {
+                            // We raise the event : a Player has been created
+                            When_Player_Create?.Invoke(newPlayer);
+                        }
+                        break;
+
+                    case Instructions.Team_RemovePlayer:
+                        // We get the Player to remove
+                        Player playerToRemove = (Player)content;
+
+                        // We remove him from the database
+                        bool playerRemovalWorked = RemovePlayer(playerToRemove);
+
+                        // If the removal was successful)
+                        if (playerRemovalWorked)
+                        {
+                            // We raise the event : a Player has been removed
+                            When_Player_Remove?.Invoke(playerToRemove);
+                        }
+                        break;
+
+
 
                     // otherwise : Error (should not occur, but we're not taking any chance)
                     default:
@@ -308,21 +333,102 @@ namespace Back_Server
         /// <param name="teamReceived">Team's data send by the client</param>
         public Team NewTeam(Team teamReceived)
         {
-            // We return whether or not the Team was added to the database
+            // We initialize a new Team
+            Team newTeam = new Team();
 
             // ...Let's say we do some verification here...
 
-            // Since there are no verification needed, we return True
+            if (true)
+            {
+                // Success !
+                // We create a new Team instance from the data receiveds
+                newTeam = new Team(teamReceived.name, teamReceived.description, teamReceived.race, teamReceived.coach);
+
+                // we save it into the representation of the user's data
+                userCoach.teams.Add(newTeam);
+            }
+
+            // We return the id of the newly created team (error : default empty id; success : correct id)
+            Net.GUID.Send(comm.GetStream(), newTeam.id);
+
+
+            // We return the new Team
+            return newTeam;
+        }
+
+
+
+
+        // Player
+
+
+        /// <summary>
+        /// Creates a Player
+        /// </summary>
+        /// <param name="playerReceived">Player's data send by the client</param>
+        public Player NewPlayer(Player playerReceived)
+        {
+            // We initialize a new Player
+            Player newPlayer = new Player();
+            bool isValid = true;
+
+            // We get the Team to add the player in
+            Team teamToAddIn = GetTeamById(playerReceived.team.id);
+
+
+            // ...Let's say we do some verification here...
+            // We check that :
+            // - the Team to put the player in is valid
+            // - the Team has enough money
+            isValid = (teamToAddIn.IsComplete) && (teamToAddIn.money >= playerReceived.role.price());
+
+            if (isValid)
+            {
+                // Success !
+                // We create a new Player instance from the data receiveds
+                newPlayer = new Player(playerReceived.name, playerReceived.role, teamToAddIn);
+
+                // we save it into the representation of the user's data
+                teamToAddIn.players.Add(newPlayer);
+
+                teamToAddIn.money -= newPlayer.role.price();
+            }
+
+            // We return the id of the newly created team (error : default empty id; success : correct id)
+            Net.GUID.Send(comm.GetStream(), newPlayer.id);
+
+
+            // We return the new Player
+            return newPlayer;
+        }
+
+
+        public bool RemovePlayer(Player player)
+        {
+            // We remove the player from its team
+            GetTeamById(player.team.id).players.Remove(player);
+
+            // We return whether the operation worked
             Net.BOOL.Send(comm.GetStream(), true);
 
-            // We create a new Team instance from the data received
-            Team newTeam = new Team(teamReceived.name, teamReceived.description, teamReceived.race, teamReceived.coach);
 
-            // we save it into the representation of the user's data
-            userCoach.teams.Add(newTeam);
+            return true;
+        }
 
-            // We return the new Topic
-            return newTeam;
+
+
+        private Team GetTeamById(Guid id)
+        {
+            foreach (Team team in userCoach.teams)
+            {
+                if(team.id == id)
+                {
+                    return team;
+                }
+            }
+
+            return new Team();
+            // return userCoach.teams.Where(team => team.id == id).ToList()[0];
         }
     }
 }

@@ -58,7 +58,7 @@
     <Compile Include="src\Models - Database\CoachWithPassword.cs" />
     <Compile Include="src\Models - Database\Effect.cs" />
     <Compile Include="src\Models - Database\Player.cs" />
-    <Compile Include="src\Models - Database\PlayerRole.cs" />
+    <Compile Include="src\Models - Database\Role.cs" />
     <Compile Include="src\Models - Database\Race.cs" />
     <Compile Include="src\Models - Database\Team.cs" />
     <Compile Include="src\Utils\CONSOLE.cs" />

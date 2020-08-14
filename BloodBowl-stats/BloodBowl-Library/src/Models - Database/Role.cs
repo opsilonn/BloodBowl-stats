@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 
 namespace BloodBowl_Library
 {
@@ -23,6 +25,7 @@ namespace BloodBowl_Library
         public class RoleData
         {
             public string name { get; }
+            public int price { get; }
             public int movement { get; }
             public int strength { get; }
             public int agility { get; }
@@ -30,9 +33,10 @@ namespace BloodBowl_Library
             public List<Effect> effects { get; }
 
 
-            public RoleData(string name, int movement, int strength, int agility, int armor, List<Effect> effects)
+            public RoleData(string name, int price, int movement, int strength, int agility, int armor, List<Effect> effects)
             {
                 this.name = name;
+                this.price = price;
                 this.movement = movement;
                 this.strength = strength;
                 this.agility = agility;
@@ -53,18 +57,18 @@ namespace BloodBowl_Library
             {
                 // Humans
                 case Role.HumanBlitzer:
-                    return new RoleData("Blitzer", 3, 3, 3, 3, new List<Effect> { Effect.SkillBlock });
+                    return new RoleData("Blitzer", 40000, 7, 3, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
                 case Role.HumanCatcher:
-                    return new RoleData("Catcher", 3, 3, 3, 3, new List<Effect> { Effect.SkillBlock });
+                    return new RoleData("Catcher", 40000, 8, 2, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
                 case Role.HumanLineMan:
-                    return new RoleData("Line man", 3, 3, 3, 3, new List<Effect> { Effect.SkillBlock });
+                    return new RoleData("Line man", 40000, 6, 3, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
                 case Role.HumanOgre:
-                    return new RoleData("Ogre", 3, 3, 3, 3, new List<Effect> { Effect.SkillBlock });
+                    return new RoleData("Ogre", 40000, 5, 5, 2, 9, new List<Effect> { Effect.SkillGeneralBlock });
                 case Role.HumanThrower:
-                    return new RoleData("Thrower", 3, 3, 3, 3, new List<Effect> { Effect.SkillBlock });
+                    return new RoleData("Thrower", 40000, 6, 3, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
 
                 default:
-                    return new RoleData("Default", 10, 10, 10, 10, new List<Effect>());
+                    return new RoleData("Default", 200000, 10, 10, 10, 10, new List<Effect>());
             }
         }
 
@@ -77,6 +81,17 @@ namespace BloodBowl_Library
         public static String name(this Role playerRole)
         {
             return playerRole.data().name;
+        }
+
+
+        /// <summary>
+        /// Price of the instance
+        /// </summary>
+        /// <param name="playerRole">Role we are analysing</param>
+        /// <returns>Price of the instance</returns>
+        public static int price(this Role playerRole)
+        {
+            return playerRole.data().price;
         }
 
 
@@ -123,6 +138,21 @@ namespace BloodBowl_Library
             return playerRole.data().armor;
         }
 
+        /// <summary>
+        /// Textual representation of the instance
+        /// </summary>
+        /// <returns> A textual representation of the instance</returns>
+        public static string ToStringCustom(this Role playerRole)
+        {
+            return String.Format("{0} - {1}\nM: {2} S: {3} Ag: {4} Ar:{5}\n",
+                playerRole.name(),
+                playerRole.price(),
+                playerRole.movement(),
+                playerRole.strength(),
+                playerRole.agility(),
+                playerRole.armor());
+        }
+
 
 
 
@@ -134,6 +164,17 @@ namespace BloodBowl_Library
         public static List<Effect> effects(this Role playerRole)
         {
             return playerRole.data().effects;
+        }
+
+
+
+        /// <summary>
+        /// Returns an array of all the Roles
+        /// </summary>
+        /// <returns>An array of all the Roles</returns>
+        public static List<Role> GetAllRoles()
+        {
+            return Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
         }
     }
 }

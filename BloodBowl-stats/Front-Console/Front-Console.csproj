@@ -49,7 +49,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Choice\Choice.cs" />
     <Compile Include="src\Choice\Choice_Prefabs.cs" />
-    <Compile Include="src\Client.cs" />
+    <Compile Include="src\Client\Client-Coach.cs" />
+    <Compile Include="src\Client\Client-Credentials.cs" />
+    <Compile Include="src\Client\Client-League.cs" />
+    <Compile Include="src\Client\Client-Panels.cs" />
+    <Compile Include="src\Client\Client.cs" />
     <Compile Include="src\Program.cs" />
   </ItemGroup>
   <ItemGroup>
