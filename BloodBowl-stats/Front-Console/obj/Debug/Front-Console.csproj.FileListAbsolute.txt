@@ -22,3 +22,16 @@ C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.csproj.CopyComplete
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.exe
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\Front-Console.exe.config
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\Front-Console.exe
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\Front-Console.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\BloodBowl-Library.dll
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\BloodBowl-Library.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\BloodBowl-Library.dll.config
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.csprojAssemblyReference.cache
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.csproj.CoreCompileInputs.cache
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.csproj.CopyComplete
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.exe
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Front-Console\obj\Debug\Front-Console.pdb

@@ -16,3 +16,13 @@ C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\De
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csproj.CopyComplete
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.dll
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\bin\Debug\BloodBowl-Library.dll.config
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\bin\Debug\BloodBowl-Library.dll
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\bin\Debug\BloodBowl-Library.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csprojAssemblyReference.cache
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csproj.CoreCompileInputs.cache
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csproj.CopyComplete
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.dll
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.pdb

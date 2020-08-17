@@ -22,3 +22,16 @@ C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Ba
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.csproj.CopyComplete
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.exe
 C:\Users\Hugues\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\Back-Server.exe.config
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\Back-Server.exe
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\Back-Server.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\BloodBowl-Library.dll
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\BloodBowl-Library.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\BloodBowl-Library.dll.config
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.csprojAssemblyReference.cache
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.csproj.CoreCompileInputs.cache
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.csproj.CopyComplete
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.exe
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\Back-Server\obj\Debug\Back-Server.pdb

@@ -263,9 +263,6 @@ namespace Front_Console
 
         private void RemovePlayer(Player player)
         {
-            Console.WriteLine(player.team);
-            CONSOLE.WaitForInput();
-
             // Little verification : we ask the user to validate his action
             if (Choice_Prefabs.CHOICE_REMOVEPLAYER.GetChoice() == 0)
             {
@@ -276,18 +273,15 @@ namespace Front_Console
                 // We receive whether it work or not
                 if(Net.BOOL.Receive(comm.GetStream()))
                 {
-                    Console.WriteLine("BEFORE");
-                    player.team.players.ForEach(p => Console.WriteLine(p.name));
-
+                    // We remove the Player from its Team
                     player.team.players.Remove(player);
 
-                    Console.WriteLine("AFTER");
-                    player.team.players.ForEach(p => Console.WriteLine(p.name));
-
-                    CONSOLE.WriteLine(ConsoleColor.Green, "Player " + player.name + "removed !");
+                    // We display a message accordingly
+                    CONSOLE.WriteLine(ConsoleColor.Green, "Player " + player.name + " removed !");
                 }
                 else
                 {
+                    // We display a message accordingly
                     CONSOLE.WriteLine(ConsoleColor.Red, "Player " + player.name + "was not removed...");
                 }
                 CONSOLE.WaitForInput();

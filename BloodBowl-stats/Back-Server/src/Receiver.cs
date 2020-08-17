@@ -144,10 +144,10 @@ namespace Back_Server
                         Player playerToRemove = (Player)content;
 
                         // We remove him from the database
-                        bool playerRemovalWorked = RemovePlayer(playerToRemove);
+                        playerToRemove = RemovePlayer(playerToRemove);
 
                         // If the removal was successful)
-                        if (playerRemovalWorked)
+                        if (playerToRemove.IsComplete)
                         {
                             // We raise the event : a Player has been removed
                             When_Player_Remove?.Invoke(playerToRemove);
@@ -403,16 +403,43 @@ namespace Back_Server
         }
 
 
-        public bool RemovePlayer(Player player)
+        /// <summary>
+        /// Removes a Player
+        /// </summary>
+        /// <param name="playerReceived">Player we are removing</param>
+        /// <returns>The Player removed (if the process didn't work, we send a default instance)</returns>
+        public Player RemovePlayer(Player playerReceived)
         {
-            // We remove the player from its team
-            GetTeamById(player.team.id).players.Remove(player);
+            // We initialize the Player we are removing
+            Player playerToRemove = new Player();
 
-            // We return whether the operation worked
-            Net.BOOL.Send(comm.GetStream(), true);
+            // We get the Team he is in
+            Team team = GetTeamById(playerReceived.team.id);
 
+            // If the Team is valid
+            if(team.IsComplete)
+            {
+                // We get all the Players of the given Id
+                // OF COURSE THERE IS ONLY ONE !! but hey, that's how functional programming works ^^'
+                List<Player> ListPlayersWithGivenId = team.players.Where(p => p.id == playerReceived.id).ToList();
 
-            return true;
+                // If we found at least one Player (a.k.a. : if we found the ONLY Player)
+                if(ListPlayersWithGivenId.Count != 0)
+                {
+                    // We set the Player instance accordingly
+                    playerToRemove = ListPlayersWithGivenId[0];
+
+                    // We remove the Player from its Team
+                    team.players.Remove(playerToRemove);
+                }
+
+            }
+
+            // We return to the Client whether the operation worked
+            Net.BOOL.Send(comm.GetStream(), playerToRemove.IsComplete);
+
+            // We return to the Server whether the operation worked
+            return playerToRemove;
         }
 
 
