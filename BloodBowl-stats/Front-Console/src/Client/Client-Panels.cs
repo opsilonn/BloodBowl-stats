@@ -256,6 +256,9 @@ namespace Front_Console
                 else if (index == 1 && player.hasNewLevel)
                 {
                     Console.WriteLine("New level !");
+                    int dice1 = Dice.Roll6();
+                    int dice2 = Dice.Roll6();
+                    Console.WriteLine("you rolled {0} - {1} !", dice1, dice2);
                     CONSOLE.WaitForInput();
                 }
                 // If it is the last choice : GO BACK

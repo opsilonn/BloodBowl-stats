@@ -50,6 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResLangEN.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResLangEN.resx</DependentUpon>
+    </Compile>
     <Compile Include="src\Models - Communication\Communication.cs" />
     <Compile Include="src\Models - Communication\Credentials.cs" />
     <Compile Include="src\Models - Communication\Instructions.cs" />
@@ -62,12 +67,19 @@
     <Compile Include="src\Models - Database\Race.cs" />
     <Compile Include="src\Models - Database\Team.cs" />
     <Compile Include="src\Utils\CONSOLE.cs" />
+    <Compile Include="src\Utils\Dice.cs" />
     <Compile Include="src\Utils\PrefabMessages.cs" />
     <Compile Include="src\Utils\Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ResLangEN.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResLangEN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

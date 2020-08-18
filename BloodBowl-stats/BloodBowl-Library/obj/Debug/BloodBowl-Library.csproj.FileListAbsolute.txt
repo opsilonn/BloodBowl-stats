@@ -26,3 +26,5 @@ C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Deb
 C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csproj.CopyComplete
 C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.dll
 C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.pdb
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl_Library.ResLangEN.resources
+C:\Users\hugue\Desktop\BloodBowl-stats\BloodBowl-stats\BloodBowl-Library\obj\Debug\BloodBowl-Library.csproj.GenerateResource.cache

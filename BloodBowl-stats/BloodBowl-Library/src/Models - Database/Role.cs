@@ -57,15 +57,15 @@ namespace BloodBowl_Library
             {
                 // Humans
                 case Role.HumanBlitzer:
-                    return new RoleData("Blitzer", 40000, 7, 3, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
+                    return new RoleData("Blitzer", 40000, 7, 3, 3, 8, new List<Effect> { Effect.Block });
                 case Role.HumanCatcher:
-                    return new RoleData("Catcher", 40000, 8, 2, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
+                    return new RoleData("Catcher", 40000, 8, 2, 3, 8, new List<Effect> { Effect.Block });
                 case Role.HumanLineMan:
-                    return new RoleData("Line man", 40000, 6, 3, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
+                    return new RoleData("Line man", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block });
                 case Role.HumanOgre:
-                    return new RoleData("Ogre", 40000, 5, 5, 2, 9, new List<Effect> { Effect.SkillGeneralBlock });
+                    return new RoleData("Ogre", 40000, 5, 5, 2, 9, new List<Effect> { Effect.Block });
                 case Role.HumanThrower:
-                    return new RoleData("Thrower", 40000, 6, 3, 3, 8, new List<Effect> { Effect.SkillGeneralBlock });
+                    return new RoleData("Thrower", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block });
 
                 default:
                     return new RoleData("Default", 200000, 10, 10, 10, 10, new List<Effect>());
