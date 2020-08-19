@@ -255,11 +255,7 @@ namespace Front_Console
                 // If it is the second choice AND the player has a new level : NEW LEVEL
                 else if (index == 1 && player.hasNewLevel)
                 {
-                    Console.WriteLine("New level !");
-                    int dice1 = Dice.Roll6();
-                    int dice2 = Dice.Roll6();
-                    Console.WriteLine("you rolled {0} - {1} !", dice1, dice2);
-                    CONSOLE.WaitForInput();
+                    PlayerLevelsUp(player);
                 }
                 // If it is the last choice : GO BACK
                 else if(index == choiceString.Count-1)

@@ -261,6 +261,10 @@ namespace Front_Console
     
     
 
+        /// <summary>
+        /// Removes the current Player from its Team
+        /// </summary>
+        /// <param name="player">Player to remove</param>
         private void RemovePlayer(Player player)
         {
             // Little verification : we ask the user to validate his action
@@ -286,6 +290,32 @@ namespace Front_Console
                 }
                 CONSOLE.WaitForInput();
             }
+        }
+
+
+        /// <summary>
+        /// When a Player levels up
+        /// </summary>
+        /// <param name="player"></param>
+        private void PlayerLevelsUp(Player player)
+        {
+            Console.WriteLine("New level !");
+
+            int dice1 = Dice.Roll6();
+            int dice2 = Dice.Roll6();
+            Console.WriteLine("you rolled {0} - {1} !", dice1, dice2);
+
+            if(dice1 == dice2)
+            {
+                Console.WriteLine("Great, a double ! you can level up in any category !");
+            }
+            else
+            {
+                Console.WriteLine("no double... you can only level up in : ");
+                player.role.effectTypes().ForEach(type => Console.WriteLine(" - {0}", type));
+            }
+            CONSOLE.WaitForInput();
+
         }
     }
 }

@@ -31,9 +31,10 @@ namespace BloodBowl_Library
             public int agility { get; }
             public int armor { get; }
             public List<Effect> effects { get; }
+            public List<EffectType> effectTypes { get; }
 
 
-            public RoleData(string name, int price, int movement, int strength, int agility, int armor, List<Effect> effects)
+            public RoleData(string name, int price, int movement, int strength, int agility, int armor, List<Effect> effects, List<EffectType> effectTypes)
             {
                 this.name = name;
                 this.price = price;
@@ -42,6 +43,7 @@ namespace BloodBowl_Library
                 this.agility = agility;
                 this.armor = armor;
                 this.effects = effects;
+                this.effectTypes = effectTypes;
             }
         }
 
@@ -57,18 +59,18 @@ namespace BloodBowl_Library
             {
                 // Humans
                 case Role.HumanBlitzer:
-                    return new RoleData("Blitzer", 40000, 7, 3, 3, 8, new List<Effect> { Effect.Block });
+                    return new RoleData("Blitzer", 40000, 7, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
                 case Role.HumanCatcher:
-                    return new RoleData("Catcher", 40000, 8, 2, 3, 8, new List<Effect> { Effect.Block });
+                    return new RoleData("Catcher", 40000, 8, 2, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
                 case Role.HumanLineMan:
-                    return new RoleData("Line man", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block });
+                    return new RoleData("Line man", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
                 case Role.HumanOgre:
-                    return new RoleData("Ogre", 40000, 5, 5, 2, 9, new List<Effect> { Effect.Block });
+                    return new RoleData("Ogre", 40000, 5, 5, 2, 9, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
                 case Role.HumanThrower:
-                    return new RoleData("Thrower", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block });
+                    return new RoleData("Thrower", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
 
                 default:
-                    return new RoleData("Default", 200000, 10, 10, 10, 10, new List<Effect>());
+                    return new RoleData("Default", 200000, 10, 10, 10, 10, new List<Effect>(), new List<EffectType>());
             }
         }
 
@@ -138,6 +140,32 @@ namespace BloodBowl_Library
             return playerRole.data().armor;
         }
 
+
+        /// <summary>
+        /// Effects of the instance
+        /// </summary>
+        /// <param name="playerRole">Role we are analysing</param>
+        /// <returns>Effects of the instance</returns>
+        public static List<Effect> effects(this Role playerRole)
+        {
+            return playerRole.data().effects;
+        }
+
+
+        /// <summary>
+        /// Types of effects the instance can level up with
+        /// </summary>
+        /// <param name="playerRole">Role we are analysing</param>
+        /// <returns>Types of effects the instance can level up with</returns>
+        public static List<EffectType> effectTypes(this Role playerRole)
+        {
+            return playerRole.data().effectTypes;
+        }
+
+
+
+
+
         /// <summary>
         /// Textual representation of the instance
         /// </summary>
@@ -156,15 +184,7 @@ namespace BloodBowl_Library
 
 
 
-        /// <summary>
-        /// Name of the instance
-        /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
-        /// <returns>Name of the instance</returns>
-        public static List<Effect> effects(this Role playerRole)
-        {
-            return playerRole.data().effects;
-        }
+
 
 
 

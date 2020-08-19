@@ -9,21 +9,21 @@
     {
       "id": "03bece3e-8058-4711-9115-b6f2708a2820",
       "name": "Buldosaure",
-      "role": 0,
+      "role": 1,
       "xp": 20,
       "effects": []
     },
     {
       "id": "b7fbca8d-56cc-4479-a27a-92b82b518fac",
       "name": "Appelodon",
-      "role": 0,
+      "role": 2,
       "xp": 0,
       "effects": []
     },
     {
       "id": "ae0342ac-139d-4e68-86c3-7762bc292026",
       "name": "Escalataure",
-      "role": 0,
+      "role": 3,
       "xp": 0,
       "effects": []
     }
