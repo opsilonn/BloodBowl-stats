@@ -59,15 +59,15 @@ namespace BloodBowl_Library
             {
                 // Humans
                 case Role.HumanBlitzer:
-                    return new RoleData("Blitzer", 40000, 7, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
+                    return new RoleData("Blitzer", 90000, 7, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral, EffectType.SkillStrength });
                 case Role.HumanCatcher:
-                    return new RoleData("Catcher", 40000, 8, 2, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
+                    return new RoleData("Catcher", 70000, 8, 2, 3, 8, new List<Effect> { Effect.Dodge, Effect.Catch }, new List<EffectType> { EffectType.SkillGeneral, EffectType.SkillAgility });
                 case Role.HumanLineMan:
-                    return new RoleData("Line man", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
+                    return new RoleData("Line man", 50000, 6, 3, 3, 8, new List<Effect>(), new List<EffectType> { EffectType.SkillGeneral });
                 case Role.HumanOgre:
-                    return new RoleData("Ogre", 40000, 5, 5, 2, 9, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
+                    return new RoleData("Ogre", 130000, 5, 5, 2, 9, new List<Effect> { Effect.BoneHead, Effect.MightyBlow, Effect.ThickSkull, Effect.ThrowTeamMate, Effect.Loner }, new List<EffectType> { EffectType.SkillStrength });
                 case Role.HumanThrower:
-                    return new RoleData("Thrower", 40000, 6, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral });
+                    return new RoleData("Thrower", 70000, 6, 3, 3, 8, new List<Effect> { Effect.Pass, Effect.SureHands }, new List<EffectType> { EffectType.SkillGeneral, EffectType.SkillPass });
 
                 default:
                     return new RoleData("Default", 200000, 10, 10, 10, 10, new List<Effect>(), new List<EffectType>());

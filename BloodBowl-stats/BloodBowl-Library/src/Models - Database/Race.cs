@@ -169,10 +169,13 @@ namespace BloodBowl_Library
         /// </summary>
         /// <param name="race">Race of which we want to know the Roles</param>
         /// <returns>The Roles of a given Race</returns>
-        public static List<Role> playerRoles(this Race race)
+        public static List<Role> roles(this Race race)
         {
             return race.data().roles;
         }
+
+
+
 
 
 

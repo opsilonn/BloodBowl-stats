@@ -6,34 +6,6 @@ using System.Linq;
 namespace BloodBowl_Library
 {
     [Serializable]
-    public enum EffectType
-    {
-        // Skills
-        SkillGeneral,
-        SkillAgility,
-        SkillPass,
-        SkillStrength,
-        SkillMutation,
-        SkillExtraordinary,
-
-        // Bonus
-        BonusMovement,
-        BonusStrength,
-        BonusAgility,
-        BonusArmor,
-
-        // Casualty
-        CasualtyBenine,
-        CasualtyMovement,
-        CasualtyStrength,
-        CasualtyAgility,
-        CasualtyArmor,
-        CasualtyDeath
-    }
-
-
-
-    [Serializable]
     public enum Effect
     {
         // Skills
@@ -156,7 +128,9 @@ namespace BloodBowl_Library
     }
 
 
-    public static class EffectStuff
+
+
+    public static partial class EffectStuff
     {
         public class EffectData
         {
@@ -172,6 +146,46 @@ namespace BloodBowl_Library
                 this.description = description;
             }
         }
+
+
+
+        // Methods
+
+        /// <summary>
+        /// Returns the type of a given Effect
+        /// </summary>
+        /// <param name="effect">Effect of which we want to know the type</param>
+        /// <returns>The type of a given Effect</returns>
+        public static EffectType type(this Effect effect)
+        {
+            return effect.data().type;
+        }
+
+
+        /// <summary>
+        /// Returns the name of a given Effect
+        /// </summary>
+        /// <param name="effect">Effect of which we want to know the name</param>
+        /// <returns>The name of a given Effect</returns>
+        public static String name(this Effect effect)
+        {
+            return effect.data().name;
+        }
+
+
+        /// <summary>
+        /// Returns the description of a given Effect
+        /// </summary>
+        /// <param name="effect">Effect of which we want to know the description</param>
+        /// <returns>The description of a given Effect</returns>
+        public static String description(this Effect effect)
+        {
+            return effect.data().description;
+        }
+
+
+
+        // DATA
 
         /// <summary>
         /// Data of the instance
@@ -217,260 +231,6 @@ namespace BloodBowl_Library
                 default:
                     return new EffectData(EffectType.CasualtyAgility, "Default Effect", "Lorem ipsum dolor amet");
             }
-        }
-
-
-        // Methods
-
-        /// <summary>
-        /// Returns the type of a given Effect
-        /// </summary>
-        /// <param name="effect">Effect of which we want to know the type</param>
-        /// <returns>The type of a given Effect</returns>
-        public static EffectType type(this Effect effect)
-        {
-            return effect.data().type;
-        }
-
-
-        /// <summary>
-        /// Returns the name of a given Effect
-        /// </summary>
-        /// <param name="effect">Effect of which we want to know the name</param>
-        /// <returns>The name of a given Effect</returns>
-        public static String name(this Effect effect)
-        {
-            return effect.data().name;
-        }
-
-
-        /// <summary>
-        /// Returns the description of a given Effect
-        /// </summary>
-        /// <param name="effect">Effect of which we want to know the description</param>
-        /// <returns>The description of a given Effect</returns>
-        public static String description(this Effect effect)
-        {
-            return effect.data().description;
-        }
-
-
-
-
-        // Determination
-
-        /// <summary>
-        /// Returns whether an Effect is a Skill or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Skill or not</returns>
-        public static bool isSkill(this Effect effect)
-        {
-            return effect.type().ToString().StartsWith("Skill");
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a General Skill or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a General Skill or not</returns>
-        public static bool isSkillGeneral(this Effect effect)
-        {
-            return effect.type() == EffectType.SkillGeneral;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is an Agility Skill or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is an Agility Skill or not</returns>
-        public static bool isSkillAgility(this Effect effect)
-        {
-            return effect.type() == EffectType.SkillAgility;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Pass Skill or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Pass Skill or not</returns>
-        public static bool isSkillPass(this Effect effect)
-        {
-            return effect.type() == EffectType.SkillPass;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Strength Skill or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Strength Skill or not</returns>
-        public static bool isSkillStrength(this Effect effect)
-        {
-            return effect.type() == EffectType.SkillStrength;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Mutation Skill or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Mutation Skill or not</returns>
-        public static bool isSkillMutation(this Effect effect)
-        {
-            return effect.type() == EffectType.SkillMutation;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is an Extraordinary Skill or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is an Extraordinary Skill or not</returns>
-        public static bool isSkillExtraordinary(this Effect effect)
-        {
-            return effect.type() == EffectType.SkillExtraordinary;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Casualty or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Casualty or not</returns>
-        public static bool isCasualty(this Effect effect)
-        {
-            return effect.type().ToString().StartsWith("Casualty");
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Casualty decreasing movement or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Casualty decreasing movement or not</returns>
-        public static bool isCasualtyMovement(this Effect effect)
-        {
-            return effect.type() == EffectType.CasualtyMovement;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Casualty decreasing strength or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Casualty decreasing strength or not</returns>
-        public static bool isCasualtyStrength(this Effect effect)
-        {
-            return effect.type() == EffectType.CasualtyStrength;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Casualty decreasing agility or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Casualty decreasing agility or not</returns>
-        public static bool isCasualtyAgility(this Effect effect)
-        {
-            return effect.type() == EffectType.CasualtyAgility;
-        }
-
-
-        /// <summary>
-        /// Returns whether an Effect is a Casualty decreasing armor or not
-        /// </summary>
-        /// <param name="effect">Effect we are analysing</param>
-        /// <returns>Whether an Effect is a Casualty decreasing armor or not</returns>
-        public static bool isCasualtyArmor(this Effect effect)
-        {
-            return effect.type() == EffectType.CasualtyArmor;
-        }
-
-
-
-
-
-        /// <summary>
-        /// Returns an array of all the Effects
-        /// </summary>
-        /// <returns>An array of all the Effects</returns>
-        public static List<Effect> GetAllEffects()
-        {
-            return Enum.GetValues(typeof(Effect)).Cast<Effect>().ToList();
-        }
-
-
-        /// <summary>
-        /// Returns an array of all the Skill Effects
-        /// </summary>
-        /// <returns>An array of all the Skill Effects</returns>
-        public static List<Effect> GetAllEffectsSkills()
-        {
-            return GetAllEffects().Where(effect => effect.isSkill()).ToList();
-        }
-
-
-        /// <summary>
-        /// Returns an array of all the General Skill Effects
-        /// </summary>
-        /// <returns>An array of all the General Skill Effects</returns>
-        public static List<Effect> GetAllEffectsSkillsGeneral()
-        {
-            return GetAllEffects().Where(effect => effect.isSkillGeneral()).ToList();
-        }
-
-
-        /// <summary>
-        /// Returns an array of all the Agility Skill Effects
-        /// </summary>
-        /// <returns>An array of all the Agility Skill Effects</returns>
-        public static List<Effect> GetAllEffectsSkillsAgility()
-        {
-            return GetAllEffects().Where(effect => effect.isSkillAgility()).ToList();
-        }
-
-
-        /// <summary>
-        /// Returns an array of all the Pass Skill Effects
-        /// </summary>
-        /// <returns>An array of all the Pass Skill Effects</returns>
-        public static List<Effect> GetAllEffectsSkillsPass()
-        {
-            return GetAllEffects().Where(effect => effect.isSkillPass()).ToList();
-        }
-
-
-        /// <summary>
-        /// Returns an array of all the Strength Skill Effects
-        /// </summary>
-        /// <returns>An array of all the Strength Skill Effects</returns>
-        public static List<Effect> GetAllEffectsSkillsStrength()
-        {
-            return GetAllEffects().Where(effect => effect.isSkillStrength()).ToList();
-        }
-
-
-        /// <summary>
-        /// Returns an array of all the Mutation Skill Effects
-        /// </summary>
-        /// <returns>An array of all the Mutation Skill Effects</returns>
-        public static List<Effect> GetAllEffectsSkillsMutation()
-        {
-            return GetAllEffects().Where(effect => effect.isSkillMutation()).ToList();
-        }
-
-
-        /// <summary>
-        /// Returns an array of all the Extraordinary Skill Effects
-        /// </summary>
-        /// <returns>An array of all the Extraordinary Skill Effects</returns>
-        public static List<Effect> GetAllEffectsSkillsExtraordinary()
-        {
-            return GetAllEffects().Where(effect => effect.isSkillExtraordinary()).ToList();
         }
     }
 }

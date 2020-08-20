@@ -161,7 +161,7 @@ namespace Front_Console
                 // CHOICE
                 // We dynamically create a List containing all the roles names
                 List<string> choiceString = new List<string>();
-                team.race.playerRoles().ForEach(role => choiceString.Add(role.ToStringCustom()));
+                team.race.roles().ForEach(role => choiceString.Add(role.ToStringCustom()));
 
                 // We add as a last choice the option to "Cancel"
                 choiceString.Add("Cancel");
@@ -173,7 +173,7 @@ namespace Front_Console
                 if (index != choiceString.Count - 1)
                 {
                     // We save the Role
-                    Role role = team.race.playerRoles()[index];
+                    Role role = team.race.roles()[index];
 
                     // if the role chosen is too cost-expensive
                     if(role.price() > team.money)
@@ -303,19 +303,43 @@ namespace Front_Console
 
             int dice1 = Dice.Roll6();
             int dice2 = Dice.Roll6();
+            List<EffectType> types = new List<EffectType>();
+
+
             Console.WriteLine("you rolled {0} - {1} !", dice1, dice2);
 
             if(dice1 == dice2)
             {
+                // Display a cool message
                 Console.WriteLine("Great, a double ! you can level up in any category !");
+
+                // Select the Effect Types the player can level up in
+                bool containsMutation = player.role.effectTypes().Contains(EffectType.SkillMutation);
+                types = EffectStuff.GetAllEffectTypesForLevelUp(containsMutation);
             }
             else
             {
-                Console.WriteLine("no double... you can only level up in : ");
-                player.role.effectTypes().ForEach(type => Console.WriteLine(" - {0}", type));
-            }
-            CONSOLE.WaitForInput();
+                // Display a cool message
+                Console.WriteLine("no double... you can only level up in specific categories : ");
 
+                // Select the Effect Types the player can level up in
+                types = player.role.effectTypes();
+            }
+
+
+            // Display all the Types (and Effects they contain)
+            foreach (EffectType type in types)
+            {
+                Console.WriteLine(type);
+
+                foreach (Effect effect in EffectStuff.GetAllSkillsFromType(type))
+                {
+                    Console.WriteLine("\t" + effect.name());
+                }
+            }
+
+
+            CONSOLE.WaitForInput();
         }
     }
 }

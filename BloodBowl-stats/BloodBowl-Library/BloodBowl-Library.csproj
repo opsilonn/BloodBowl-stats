@@ -62,6 +62,7 @@
     <Compile Include="src\Models - Database\Coach.cs" />
     <Compile Include="src\Models - Database\CoachWithPassword.cs" />
     <Compile Include="src\Models - Database\Effect.cs" />
+    <Compile Include="src\Models - Database\EffectType.cs" />
     <Compile Include="src\Models - Database\Player.cs" />
     <Compile Include="src\Models - Database\Role.cs" />
     <Compile Include="src\Models - Database\Race.cs" />
