@@ -201,10 +201,10 @@ namespace BloodBowl_Library
 
 
         /// <summary>
-        /// Returns all the Effect type required for a Levelling up
+        /// Returns all the Effect type of a given EffectType
         /// </summary>
-        /// <param name="addMutation">Whether we add the mutation or not</param>
-        /// <returns>All the Effect type required for a Levelling up</returns>
+        /// <param name="type">EffectType of which we are searching the Effects</param>
+        /// <returns>All the Effect type of a given EffectType</returns>
         public static List<Effect> GetAllSkillsFromType(EffectType type)
         {
             return GetAllSkills().Where(skill => skill.type() == type).ToList();

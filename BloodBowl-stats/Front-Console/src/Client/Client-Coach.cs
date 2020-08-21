@@ -299,19 +299,25 @@ namespace Front_Console
         /// <param name="player"></param>
         private void PlayerLevelsUp(Player player)
         {
-            Console.WriteLine("New level !");
-
+            // We define some variables
             int dice1 = Dice.Roll6();
             int dice2 = Dice.Roll6();
             List<EffectType> types = new List<EffectType>();
 
 
-            Console.WriteLine("you rolled {0} - {1} !", dice1, dice2);
+            // There are 2 steps :
+            // PART 1 - display some useful info to the user
+            // PART 2 - Wait for the user to choose a new Effect for his Player
 
+            // PART 1 - display some useful info to the user
+            Console.Clear();
+            Console.WriteLine("New level !\n\n\n\nyou rolled {0} - {1} !", dice1, dice2);
+
+            // If the dices rolled a double :
             if(dice1 == dice2)
             {
                 // Display a cool message
-                Console.WriteLine("Great, a double ! you can level up in any category !");
+                Console.WriteLine("Great, a double ! you can level up in any category :");
 
                 // Select the Effect Types the player can level up in
                 bool containsMutation = player.role.effectTypes().Contains(EffectType.SkillMutation);
@@ -325,18 +331,103 @@ namespace Front_Console
                 // Select the Effect Types the player can level up in
                 types = player.role.effectTypes();
             }
+            types.ForEach(type => Console.WriteLine(" - " + type));
+            CONSOLE.WaitForInput();
 
 
-            // Display all the Types (and Effects they contain)
-            foreach (EffectType type in types)
+            // PART 2 - Wait for the user to choose a new Effect for his Player
+            // We initialize our variables
+            ConsoleKeyInfo input;
+            int currentIndex = 0;
+            int currentType = 0;
+
+
+
+
+            // While the user doesn't press Enter, the loop continues
+            do
             {
-                Console.WriteLine(type);
+                // We clear the console, and display a given message
+                Console.Clear();
 
-                foreach (Effect effect in EffectStuff.GetAllSkillsFromType(type))
+                Console.WriteLine("Current type : " + currentType);
+                Console.WriteLine("Current index : " + currentIndex);
+
+
+                // We display all our choices (and we highlight the current choice)
+                foreach (EffectType type in types)
                 {
-                    Console.WriteLine("\t" + effect.name());
+                    Console.WriteLine("\n" + type);
+
+                    List<Effect> effects = EffectStuff.GetAllSkillsFromType(type);
+                    foreach (Effect effect in effects)
+                    {
+                        string arrow = (type == types[currentType] && effect == effects[currentIndex]) ? "\t --> " : "\t     ";
+                        if (player.effectsAll.Contains(effect))
+                        {
+                            CONSOLE.WriteLine(ConsoleColor.Red, arrow + effect.name());
+                        }
+                        else
+                        {
+                            CONSOLE.WriteLine(ConsoleColor.Blue, arrow + effect.name());
+                        }
+                    }
+                }
+
+
+                // We read the input
+                input = Console.ReadKey();
+
+
+                // If it is an Array key (UP or DOWN), we modify our index accordingly
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    currentIndex--;
+
+                    // If the index goes too low, we change type
+                    if (currentIndex < 0)
+                    {
+                        currentType--;
+                        currentIndex = 0;
+                    }
+                }
+                if (input.Key == ConsoleKey.DownArrow)
+                {
+                    currentIndex++;
+
+                    // If the index goes too high, we change type
+                    if (currentIndex > EffectStuff.GetAllSkillsFromType(types[currentType]).Count - 1)
+                    {
+                        currentType++;
+                        currentIndex = 0;
+                    }
+                }
+                // If it is a LEFT Array key : go to the previous type
+                if (input.Key == ConsoleKey.LeftArrow)
+                {
+                    currentType--;
+                    currentIndex = 0;
+                }
+                // If it is a RIGHT Array key : go to the next type
+                if (input.Key == ConsoleKey.RightArrow)
+                {
+                    currentType++;
+                    currentIndex = 0;
+                }
+
+
+
+                // If the type is too high / too low, we change it accordingly
+                if (currentType < 0)
+                {
+                    currentType = types.Count - 1;
+                }
+                if (currentType > types.Count - 1)
+                {
+                    currentType = 0;
                 }
             }
+            while (input.Key != ConsoleKey.Enter);
 
 
             CONSOLE.WaitForInput();

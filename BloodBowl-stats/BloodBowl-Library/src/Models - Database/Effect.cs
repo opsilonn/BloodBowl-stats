@@ -228,6 +228,36 @@ namespace BloodBowl_Library
                 case Effect.Wrestle:
                     return new EffectData(EffectType.SkillGeneral, "Wrestle", "A player with Wrestle may choose to ignore a Both Down result during a block by placing both the players prone, but no Armor rolls are made. In addition, this does not cause a turnover.");
 
+
+                // Skills- Agility
+                case Effect.Catch:
+                    return new EffectData(EffectType.SkillAgility, "Catch", " A player with Catch can re-roll a failed catch, interception or dropped Hand Off.");
+                case Effect.DivingCatch:
+                    return new EffectData(EffectType.SkillAgility, "Diving Catch", "The player gets a +1 modifier to catch accurate passes and hand-offs targeted at their square, and may attempt a catch roll as normal to catch passes, kick-offs and crowd throw-ins (but not bouncing balls) landing in an adjacent square. If more than one player try to use Diving Catch at the same time neither succeeds.");
+                case Effect.DivingTackle:
+                    return new EffectData(EffectType.SkillAgility, "Diving Tackle", "The player may use this skill after an opposing player attempts to dodge out of any of his tackle zones. The player is placed prone in the vacated area, but does not to make an Armor or Injury roll. The opposing player must subtract 2 from their dodge roll.");
+                case Effect.Dodge:
+                    return new EffectData(EffectType.SkillAgility, "Dodge", "Allows a player to re-roll a failed dodge. In addition, the are only Pushed back on a \"Defender Stumbles\" result.");
+                case Effect.JumpUp:
+                    return new EffectData(EffectType.SkillAgility, "Jump Up", "The player may stand up without paying the usual 3 squares of movement. If they wish to make a Block action, they must successfully pass an agility roll with a +2 bonus or the Action is wasted and the player remains prone.");
+                case Effect.Leap:
+                    return new EffectData(EffectType.SkillAgility, "Leap", "During any form of movement the player can attempt to leap one or two squares. While leaping the player can move over other players and ignores tackle zones. The player must pass an unmodified Agility roll or be knocked down in the destination square.");
+                case Effect.SideStep:
+                    return new EffectData(EffectType.SkillAgility, "Side Step", "Instead of being pushed back during a block the player can choose to move into any empty adjacent square. This does not prevent the player from being kocked down.");
+                case Effect.SneakyGit:
+                    return new EffectData(EffectType.SkillAgility, "Sneaky Git", "During a Foul action, a player with this skill is not sent off by the referee for rolling doubles on the Armor roll if this didn't break the opponents armor.");
+                case Effect.Sprint:
+                    return new EffectData(EffectType.SkillAgility, "Sprint", "The player may attempt to move up to 3 extra squares rather than the normal 2 when Going For It. The coach must still roll to see if the player is Knocked Down.");
+                case Effect.SureFeet:
+                    return new EffectData(EffectType.SkillAgility, "Sure Feet", " A player may re-roll the result if they fail a Go For It action, once per turn.");
+
+                /*
+                case Effect.Catch:
+                    return new EffectData(EffectType.SkillAgility, "", "");
+                */
+
+
+
                 default:
                     return new EffectData(EffectType.CasualtyAgility, "Default Effect", "Lorem ipsum dolor amet");
             }

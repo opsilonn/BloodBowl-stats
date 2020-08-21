@@ -38,7 +38,7 @@ namespace Front_Console
         {
             // We initialize our variables
             ConsoleKeyInfo input;
-            int value = 0;
+            int currentChoice = 0;
             int MIN = 0;
             int MAX = choices.Count - 1;
 
@@ -57,7 +57,7 @@ namespace Front_Console
 
                 foreach (string s in choices)
                 {
-                    if (index == value)
+                    if (index == currentChoice)
                         Console.Write("     --> ");
                     else
                         Console.Write("         ");
@@ -78,28 +78,28 @@ namespace Front_Console
 
                 // If it is an Array key (UP or DOWN), we modify our choice accordingly
                 if (input.Key == ConsoleKey.UpArrow)
-                    value--;
+                    currentChoice--;
                 if (input.Key == ConsoleKey.DownArrow)
-                    value++;
+                    currentChoice++;
                 // If it is a LEFT Array key : go to the first choice (index = 0)
                 if (input.Key == ConsoleKey.LeftArrow)
-                    value = 0;
+                    currentChoice = 0;
                 // If it is a RIGHT Array key : go to the last choice (index = MAX)
                 if (input.Key == ConsoleKey.RightArrow)
-                    value = MAX;
+                    currentChoice = MAX;
 
 
                 // If the value goes too low / too high, it goes to the other extreme
-                if (value < MIN)
-                    value = MAX;
-                if (value > MAX)
-                    value = MIN;
+                if (currentChoice < MIN)
+                    currentChoice = MAX;
+                if (currentChoice > MAX)
+                    currentChoice = MIN;
             }
             while (input.Key != ConsoleKey.Enter);
 
 
             // We return the value
-            return value;
+            return currentChoice;
         }
     }
 }
