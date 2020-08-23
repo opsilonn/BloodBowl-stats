@@ -28,6 +28,7 @@ namespace Back_Server
         public delegate void PlayerEvent(Player player);
         public event PlayerEvent When_Player_Create;
         public event PlayerEvent When_Player_Remove;
+        public event PlayerEvent When_Player_LevelsUp;
 
         public Coach userCoach;
 
@@ -106,7 +107,6 @@ namespace Back_Server
 
 
 
-
                     // COACH
                     case Instructions.Coach_GetById:
                         GetCoachById((Guid)content);
@@ -154,6 +154,26 @@ namespace Back_Server
                         }
                         break;
 
+
+
+                    // PLAYER
+                    case Instructions.Player_LevelUp:
+                        // We get the Player to remove
+                        Player player = (Player)content;
+
+                        // We add a new Effect to the player
+                        Effect? newEffect = PlayerLevelsUp(player);
+
+                        // If a new effect was chosen
+                        if (newEffect != null)
+                        {
+                            // We add the effect to the Player
+                            player.effects.Add((Effect)newEffect);
+
+                            // We raise the event : an Effect has been added
+                            When_Player_LevelsUp?.Invoke(player);
+                        }
+                        break;
 
 
                     // otherwise : Error (should not occur, but we're not taking any chance)
@@ -440,6 +460,68 @@ namespace Back_Server
 
             // We return to the Server whether the operation worked
             return playerToRemove;
+        }
+
+
+        /// <summary>
+        /// Manage the selection of a new Effect for a Player that is leveling up
+        /// </summary>
+        /// <param name="player">Player that is leveling up</param>
+        /// <returns>Effect chosen for the Player leveling up (if invalid, returns null)</returns>
+        public Effect? PlayerLevelsUp(Player player)
+        {
+            // We define the dices
+            int dice1 = Dice.Roll6();
+            int dice2 = Dice.Roll6();
+
+            // We send their results
+            Net.INT.Send(comm.GetStream(), dice1);
+            Net.INT.Send(comm.GetStream(), dice2);
+
+            // We receive the Effect chosen
+            Effect? effectReceived = Net.EFFECT.Receive(comm.GetStream());
+
+            // Select the Effect Types the player can level up in
+            List<EffectType> types = new List<EffectType>();
+            if (dice1 == dice2)
+            {
+                // All types (and maybe Mutations ?)
+                bool containsMutation = player.role.effectTypes().Contains(EffectType.SkillMutation);
+                types = EffectStuff.GetAllEffectTypesForLevelUp(containsMutation);
+            }
+            else
+            {
+                // Only the default types
+                types = player.role.effectTypes();
+            }
+
+            // We check if the Effect received is valid
+            // By default, we think it is false, so we search to find the Effect in the valid one. If we find it, then it is valid !
+            bool isValid = false;
+            foreach(EffectType type in types)
+            {
+                foreach (Effect effect in EffectStuff.GetAllSkillsFromType(type))
+                {
+                    // if we find the Effect : good !
+                    if (effect == effectReceived)
+                    {
+                        isValid = true;
+                        break;
+                    }
+                }
+
+                // We stop itirating once it is found
+                if(isValid)
+                {
+                    break;
+                }
+            }
+
+            // We return to the user whether the Effect was accepted or not
+            Net.BOOL.Send(comm.GetStream(), isValid);
+
+            // If reached, return the effect received
+            return (isValid) ? effectReceived : null;
         }
 
 

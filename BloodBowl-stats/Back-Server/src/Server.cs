@@ -60,6 +60,7 @@ namespace Back_Server
                 receiver.When_Team_Create += TeamCreate;
                 receiver.When_Player_Create += PlayerCreate;
                 receiver.When_Player_Remove += PlayerRemove;
+                receiver.When_Player_LevelsUp += PlayerLevelsUp;
 
 
                 // ... et je lance une connexion avec le serveur
@@ -161,6 +162,11 @@ namespace Back_Server
         {
             // Updating the JSON file
             Database.TEAM.Write(playerRemoved.team);
+        }
+        private void PlayerLevelsUp(Player player)
+        {
+            // Updating the JSON file
+            Database.TEAM.Write(player.team);
         }
 
 

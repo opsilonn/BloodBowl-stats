@@ -273,6 +273,33 @@ namespace BloodBowl_Library
         }
 
 
+        public static class EFFECT
+        {
+            /// <summary>
+            /// Sends an Effect
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <param name="effect"> Effect to send </param>
+            public static void Send(Stream s, Effect effect)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(s, effect);
+            }
+
+
+            /// <summary>
+            /// Receives an Effect
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <returns> The serialized Communication </returns>
+            public static Effect Receive(Stream s)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                return (Effect)bf.Deserialize(s);
+            }
+        }
+
+
 
         //// UNIFORM MODEL
         /*

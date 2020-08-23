@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BloodBowl_Library
+﻿namespace BloodBowl_Library
 {
     public enum Instructions
     {
@@ -22,6 +16,8 @@ namespace BloodBowl_Library
         Team_GetById,
         Team_New,
         Team_AddPlayer,
-        Team_RemovePlayer
+        Team_RemovePlayer,
+
+        Player_LevelUp
     }
 }

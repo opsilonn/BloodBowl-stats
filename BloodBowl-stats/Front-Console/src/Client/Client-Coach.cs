@@ -299,9 +299,14 @@ namespace Front_Console
         /// <param name="player"></param>
         private void PlayerLevelsUp(Player player)
         {
-            // We define some variables
-            int dice1 = Dice.Roll6();
-            int dice2 = Dice.Roll6();
+            // Asking to level up a Player
+            Instructions instruction = Instructions.Player_LevelUp;
+            Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, player));
+
+
+            // We receive / define some variables
+            int dice1 = Net.INT.Receive(comm.GetStream());
+            int dice2 = Net.INT.Receive(comm.GetStream());
             List<EffectType> types = new List<EffectType>();
 
 
@@ -313,13 +318,13 @@ namespace Front_Console
             Console.Clear();
             Console.WriteLine("New level !\n\n\n\nyou rolled {0} - {1} !", dice1, dice2);
 
-            // If the dices rolled a double :
-            if(dice1 == dice2)
+            // Select the Effect Types the player can level up in
+            if (dice1 == dice2)
             {
                 // Display a cool message
                 Console.WriteLine("Great, a double ! you can level up in any category :");
 
-                // Select the Effect Types the player can level up in
+                // All types (and maybe Mutations ?)
                 bool containsMutation = player.role.effectTypes().Contains(EffectType.SkillMutation);
                 types = EffectStuff.GetAllEffectTypesForLevelUp(containsMutation);
             }
@@ -328,7 +333,7 @@ namespace Front_Console
                 // Display a cool message
                 Console.WriteLine("no double... you can only level up in specific categories : ");
 
-                // Select the Effect Types the player can level up in
+                // Only the default types
                 types = player.role.effectTypes();
             }
             types.ForEach(type => Console.WriteLine(" - " + type));
@@ -337,14 +342,13 @@ namespace Front_Console
 
             // PART 2 - Wait for the user to choose a new Effect for his Player
             // We initialize our variables
-            bool continuing = true;
-            Effect chosenEffect;
-            int currentType = 0;
-            int currentEffect = 0;
-
             List<List<Effect>> effects = new List<List<Effect>>();
             types.ForEach(type => effects.Add(EffectStuff.GetAllSkillsFromType(type)) );
 
+            bool continuing = true;
+            Effect chosenEffect = effects[0][0];
+            int currentType = 0;
+            int currentEffect = 0;
 
 
 
@@ -451,11 +455,26 @@ namespace Front_Console
                         CONSOLE.WriteLine(ConsoleColor.Green, "You have chosen the Effect " + chosenEffect.name() + " !!");
                         continuing = false;
                     }
-
-                    CONSOLE.WaitForInput();
                 }
             }
             while (continuing);
+
+
+            // Sending the chosen Effect
+            Net.EFFECT.Send(comm.GetStream(), chosenEffect);
+
+            // If the Effect was validated : add it to the Player
+            if(Net.BOOL.Receive(comm.GetStream()))
+            {
+                CONSOLE.WriteLine(ConsoleColor.Green, "\n\n\tEffect validated !!");
+                player.effects.Add(chosenEffect);
+            }
+            else
+            {
+                CONSOLE.WriteLine(ConsoleColor.Red, "\n\n\tEffect refused...");
+            }
+
+            CONSOLE.WaitForInput();
         }
     }
 }
