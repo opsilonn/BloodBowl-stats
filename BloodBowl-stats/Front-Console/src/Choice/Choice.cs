@@ -37,7 +37,7 @@ namespace Front_Console
         public int GetChoice()
         {
             // We initialize our variables
-            ConsoleKeyInfo input;
+            bool continuing = true;
             int currentChoice = 0;
             int MIN = 0;
             int MAX = choices.Count - 1;
@@ -53,7 +53,6 @@ namespace Front_Console
 
                 // We display all our choices (and we highlight the current choice)
                 int index = 0;
-                ConsoleColor color = ConsoleColor.White;
 
                 foreach (string s in choices)
                 {
@@ -62,40 +61,50 @@ namespace Front_Console
                     else
                         Console.Write("         ");
 
-                    // We change the color to Blue if we reach the final statement (usually one saying "Go back" or "Log out")
-                    if (index == MAX)
-                    {
-                        color = ConsoleColor.Blue;
-                    }
+                    // We set the color to Blue if we reach the final statement (usually one saying "Go back" or "Log out")
+                    ConsoleColor color = (index == MAX) ? ConsoleColor.Blue : ConsoleColor.White;
+
 
                     CONSOLE.WriteLine(color, choices[index++] + "\n");
                 }
 
 
                 // We read the input
-                input = Console.ReadKey();
+                switch(Console.ReadKey().Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        currentChoice--;
+                        // If the value goes too low, it goes to the other extreme
+                        if (currentChoice < MIN)
+                            currentChoice = MAX;
+                        break;
 
+                    case ConsoleKey.DownArrow:
+                        currentChoice++;
+                        // If the value goes too high, it goes to the other extreme
+                        if (MAX < currentChoice)
+                            currentChoice = MIN;
+                        break;
 
-                // If it is an Array key (UP or DOWN), we modify our choice accordingly
-                if (input.Key == ConsoleKey.UpArrow)
-                    currentChoice--;
-                if (input.Key == ConsoleKey.DownArrow)
-                    currentChoice++;
-                // If it is a LEFT Array key : go to the first choice (index = 0)
-                if (input.Key == ConsoleKey.LeftArrow)
-                    currentChoice = 0;
-                // If it is a RIGHT Array key : go to the last choice (index = MAX)
-                if (input.Key == ConsoleKey.RightArrow)
-                    currentChoice = MAX;
+                    case ConsoleKey.LeftArrow:
+                        currentChoice = MIN;
+                        break;
 
+                    case ConsoleKey.RightArrow:
+                        currentChoice = MAX;
+                        break;
 
-                // If the value goes too low / too high, it goes to the other extreme
-                if (currentChoice < MIN)
-                    currentChoice = MAX;
-                if (currentChoice > MAX)
-                    currentChoice = MIN;
+                    case ConsoleKey.Enter:
+                        continuing = false;
+                        break;
+
+                    case ConsoleKey.Escape:
+                        continuing = false;
+                        currentChoice = MAX;
+                        break;
+                }
             }
-            while (input.Key != ConsoleKey.Enter);
+            while (continuing);
 
 
             // We return the value

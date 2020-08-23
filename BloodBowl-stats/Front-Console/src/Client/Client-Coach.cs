@@ -337,9 +337,13 @@ namespace Front_Console
 
             // PART 2 - Wait for the user to choose a new Effect for his Player
             // We initialize our variables
-            ConsoleKeyInfo input;
-            int currentIndex = 0;
+            bool continuing = true;
+            Effect chosenEffect;
             int currentType = 0;
+            int currentEffect = 0;
+
+            List<List<Effect>> effects = new List<List<Effect>>();
+            types.ForEach(type => effects.Add(EffectStuff.GetAllSkillsFromType(type)) );
 
 
 
@@ -350,69 +354,65 @@ namespace Front_Console
                 // We clear the console, and display a given message
                 Console.Clear();
 
-                Console.WriteLine("Current type : " + currentType);
-                Console.WriteLine("Current index : " + currentIndex);
-
-
-                // We display all our choices (and we highlight the current choice)
-                foreach (EffectType type in types)
+                // We display all our Types
+                for(int t = 0; t < types.Count; t++)
                 {
-                    Console.WriteLine("\n" + type);
+                    // Display the current EffectType
+                    Console.WriteLine("\n" + types[t]);
 
-                    List<Effect> effects = EffectStuff.GetAllSkillsFromType(type);
-                    foreach (Effect effect in effects)
+                    // Display all its Effects (with an arrow if it is the current one)
+                    for (int e = 0; e < effects[t].Count; e++)
                     {
-                        string arrow = (type == types[currentType] && effect == effects[currentIndex]) ? "\t --> " : "\t     ";
-                        if (player.effectsAll.Contains(effect))
-                        {
-                            CONSOLE.WriteLine(ConsoleColor.Red, arrow + effect.name());
-                        }
-                        else
-                        {
-                            CONSOLE.WriteLine(ConsoleColor.Blue, arrow + effect.name());
-                        }
+                        // Initialize some variables
+                        Effect effect = effects[t][e];
+                        string arrow = (currentType == t && currentEffect == e) ? "\t --> " : "\t     ";
+                        ConsoleColor color = (player.effectsAll.Contains(effect)) ? ConsoleColor.Red : ConsoleColor.Blue;
+
+                        // Display the result
+                        CONSOLE.WriteLine(color, arrow + effect.name());
                     }
                 }
 
 
                 // We read the input
-                input = Console.ReadKey();
+                ConsoleKeyInfo input = Console.ReadKey();
+                bool goToLastEffect = false;
 
 
                 // If it is an Array key (UP or DOWN), we modify our index accordingly
                 if (input.Key == ConsoleKey.UpArrow)
                 {
-                    currentIndex--;
+                    currentEffect--;
 
                     // If the index goes too low, we change type
-                    if (currentIndex < 0)
+                    if (currentEffect < 0)
                     {
                         currentType--;
-                        currentIndex = 0;
+                        goToLastEffect = true;
                     }
                 }
                 if (input.Key == ConsoleKey.DownArrow)
                 {
-                    currentIndex++;
+                    currentEffect++;
 
                     // If the index goes too high, we change type
-                    if (currentIndex > EffectStuff.GetAllSkillsFromType(types[currentType]).Count - 1)
+                    if (currentEffect > effects[currentType].Count - 1)
                     {
                         currentType++;
-                        currentIndex = 0;
+                        currentEffect = 0;
                     }
                 }
                 // If it is a LEFT Array key : go to the previous type
                 if (input.Key == ConsoleKey.LeftArrow)
                 {
                     currentType--;
-                    currentIndex = 0;
+                    currentEffect = 0;
                 }
                 // If it is a RIGHT Array key : go to the next type
                 if (input.Key == ConsoleKey.RightArrow)
                 {
                     currentType++;
-                    currentIndex = 0;
+                    currentEffect = 0;
                 }
 
 
@@ -426,11 +426,36 @@ namespace Front_Console
                 {
                     currentType = 0;
                 }
+
+                // If needed : we replace the effect counter to the last index of the current list
+                if(goToLastEffect)
+                {
+                    currentEffect = effects[currentType].Count - 1;
+                }
+
+
+                // We check if we end the loop
+                if(input.Key == ConsoleKey.Enter)
+                {
+                    // We set the chosen Effect
+                    chosenEffect = effects[currentType][currentEffect];
+
+                    Console.Clear();
+                    // We display a message, whether the Effect can be chosen or not
+                    if (player.effectsAll.Contains(chosenEffect))
+                    {
+                        CONSOLE.WriteLine(ConsoleColor.Red, "You cannot choose the Effect " + chosenEffect.name() + " :\n\nyour Player already has it !!");
+                    }
+                    else
+                    {
+                        CONSOLE.WriteLine(ConsoleColor.Green, "You have chosen the Effect " + chosenEffect.name() + " !!");
+                        continuing = false;
+                    }
+
+                    CONSOLE.WaitForInput();
+                }
             }
-            while (input.Key != ConsoleKey.Enter);
-
-
-            CONSOLE.WaitForInput();
+            while (continuing);
         }
     }
 }
