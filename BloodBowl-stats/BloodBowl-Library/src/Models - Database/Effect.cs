@@ -98,9 +98,9 @@ namespace BloodBowl_Library
 
         // Bonus,
         BonusMovement,
-        BonusStrength,
-        BonusAgility,
         BonusArmor,
+        BonusAgility,
+        BonusStrength,
 
 
         // Casualties
@@ -149,7 +149,7 @@ namespace BloodBowl_Library
 
 
 
-        // Methods
+        // PARAMETERS
 
         /// <summary>
         /// Returns the type of a given Effect
@@ -249,14 +249,44 @@ namespace BloodBowl_Library
                 case Effect.Sprint:
                     return new EffectData(EffectType.SkillAgility, "Sprint", "The player may attempt to move up to 3 extra squares rather than the normal 2 when Going For It. The coach must still roll to see if the player is Knocked Down.");
                 case Effect.SureFeet:
-                    return new EffectData(EffectType.SkillAgility, "Sure Feet", " A player may re-roll the result if they fail a Go For It action, once per turn.");
+                    return new EffectData(EffectType.SkillAgility, "Sure Feet", "A player may re-roll the result if they fail a Go For It action, once per turn.");
+
+
+                // Skills- Pass
+                case Effect.Accurate:
+                    return new EffectData(EffectType.SkillPass, "Accurate", "The player adds 1 when attempting a Pass.");
+
+
+                // Skills- Strength
+                case Effect.BreakTackle:
+                    return new EffectData(EffectType.SkillStrength, "Break Tackle", "The player uses his Strength instead of his Agility when he fails a Dodge. This skill may only be used once per turn.");
+
+
+                // Skills- Mutation
+                case Effect.BigHand:
+                    return new EffectData(EffectType.SkillMutation, "Big Hand", "The player ignores modifiers for enemy tackle zones or Pouring Rain weather when he attempts to pick up the ball.");
+
+
+                // Skills- Extraordinary
+                case Effect.AlwaysHungry:
+                    return new EffectData(EffectType.SkillStrength, "Always Hungry", "When using Throw Team-Mate, roll a D6 after he has finished moving, but before he throws his team-mate. On a 1, roll another D6. On another 1, the teammate is killed without any opportunity for recovery. If the team-mate had the ball it will scatter once from the their square.");
+
+
+                // Bonuses
+                case Effect.BonusMovement:
+                    return new EffectData(EffectType.BonusMovement, "Bonus Movement", "Adds 1 to the Movement's stat");
+                case Effect.BonusArmor:
+                    return new EffectData(EffectType.BonusArmor, "Bonus Armor", "Adds 1 to the Armor's stat");
+                case Effect.BonusAgility:
+                    return new EffectData(EffectType.BonusAgility, "Bonus Agility", "Adds 1 to the Agility's stat");
+                case Effect.BonusStrength:
+                    return new EffectData(EffectType.BonusStrength, "Bonus Strength", "Adds 1 to the Strength's stat");
+
 
                 /*
                 case Effect.Catch:
                     return new EffectData(EffectType.SkillAgility, "", "");
                 */
-
-
 
                 default:
                     return new EffectData(EffectType.CasualtyAgility, "Default Effect", "Lorem ipsum dolor amet");

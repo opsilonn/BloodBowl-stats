@@ -163,7 +163,7 @@ namespace BloodBowl_Library
         private List<int> levelThresholds = new List<int> { 6, 12, 36 };
 
         [JsonIgnore]
-        public int level { get => numberOfSkills; }
+        public int level { get => 1 + numberOfSkills; }
 
 
         [JsonIgnore]

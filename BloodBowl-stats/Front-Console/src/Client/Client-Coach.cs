@@ -307,7 +307,9 @@ namespace Front_Console
             // We receive / define some variables
             int dice1 = Net.INT.Receive(comm.GetStream());
             int dice2 = Net.INT.Receive(comm.GetStream());
-            List<EffectType> types = new List<EffectType>();
+            dice1 = 5;
+            dice2 = 6;
+            List<EffectType> types = EffectStuff.GetEffectTypesForLevelUp(player.role, dice1, dice2);
 
 
             // There are 2 steps :
@@ -318,33 +320,14 @@ namespace Front_Console
             Console.Clear();
             Console.WriteLine("New level !\n\n\n\nyou rolled {0} - {1} !", dice1, dice2);
 
-            // Select the Effect Types the player can level up in
-            if (dice1 == dice2)
-            {
-                // Display a cool message
-                Console.WriteLine("Great, a double ! you can level up in any category :");
-
-                // All types (and maybe Mutations ?)
-                bool containsMutation = player.role.effectTypes().Contains(EffectType.SkillMutation);
-                types = EffectStuff.GetAllEffectTypesForLevelUp(containsMutation);
-            }
-            else
-            {
-                // Display a cool message
-                Console.WriteLine("no double... you can only level up in specific categories : ");
-
-                // Only the default types
-                types = player.role.effectTypes();
-            }
+            Console.WriteLine("You can level up in any category :");
             types.ForEach(type => Console.WriteLine(" - " + type));
             CONSOLE.WaitForInput();
 
 
             // PART 2 - Wait for the user to choose a new Effect for his Player
             // We initialize our variables
-            List<List<Effect>> effects = new List<List<Effect>>();
-            types.ForEach(type => effects.Add(EffectStuff.GetAllSkillsFromType(type)) );
-
+            List<List<Effect>> effects = EffectStuff.GetEffectsForLevelUp(types);
             bool continuing = true;
             Effect chosenEffect = effects[0][0];
             int currentType = 0;
@@ -449,16 +432,18 @@ namespace Front_Console
                     if (player.effectsAll.Contains(chosenEffect))
                     {
                         CONSOLE.WriteLine(ConsoleColor.Red, "You cannot choose the Effect " + chosenEffect.name() + " :\n\nyour Player already has it !!");
+                        CONSOLE.WaitForInput();
                     }
                     else
                     {
-                        CONSOLE.WriteLine(ConsoleColor.Green, "You have chosen the Effect " + chosenEffect.name() + " !!");
                         continuing = false;
                     }
                 }
             }
             while (continuing);
 
+            // Small message
+            CONSOLE.WriteLine(ConsoleColor.Green, "You have chosen the Effect " + chosenEffect.name() + " !!");
 
             // Sending the chosen Effect
             Net.EFFECT.Send(comm.GetStream(), chosenEffect);

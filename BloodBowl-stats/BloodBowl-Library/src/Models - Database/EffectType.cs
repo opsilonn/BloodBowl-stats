@@ -173,41 +173,72 @@ namespace BloodBowl_Library
 
 
 
-
         /// <summary>
-        /// Returns all the Effect type required for a Levelling up
+        /// Gets all EffectTypes a Player's Role can level in, according to 2 dices
         /// </summary>
-        /// <param name="addMutation">Whether we add the mutation or not</param>
-        /// <returns>All the Effect type required for a Levelling up</returns>
-        public static List<EffectType> GetAllEffectTypesForLevelUp(bool addMutation)
+        /// <param name="role">Role of the Player that levels up</param>
+        /// <param name="dice1">First dice</param>
+        /// <param name="dice2">Second dice</param>
+        /// <returns>All the EffectTypes a Player's Role can level in, according to 2 dices</returns>
+        public static List<EffectType> GetEffectTypesForLevelUp(Role role, int dice1, int dice2)
         {
-            /// We initiate a default list
-            List<EffectType> list = new List<EffectType> {
-                EffectType.SkillGeneral,
-                EffectType.SkillAgility,
-                EffectType.SkillPass,
-                EffectType.SkillStrength,
-            };
+            // We initialize our list
+            List<EffectType> types = new List<EffectType>();
+            int diceTotal = dice1 + dice2;
 
-            // If needed, we add the mutation
-            if (addMutation)
+            // We first add any Stat Bonus
+            if (diceTotal == 10)
             {
-                list.Add(EffectType.SkillMutation);
+                types.Add(EffectType.BonusMovement);
+                types.Add(EffectType.BonusArmor);
+            }
+            else if (diceTotal == 11)
+            {
+                types.Add(EffectType.BonusAgility);
+            }
+            else if (diceTotal == 12)
+            {
+                types.Add(EffectType.BonusStrength);
             }
 
-            // We return the list
-            return list;
+            // Then, we select the Effect Types the player can level up in
+            if (dice1 == dice2)
+            {
+                // Add all generic types
+                types.Add(EffectType.SkillGeneral);
+                types.Add(EffectType.SkillAgility);
+                types.Add(EffectType.SkillPass);
+                types.Add(EffectType.SkillStrength);
+
+                // If needed, we add the mutation
+                if (role.effectTypes().Contains(EffectType.SkillMutation))
+                {
+                    types.Add(EffectType.SkillMutation);
+                }
+            }
+            else
+            {
+                // Add only the default types
+                types.AddRange(role.effectTypes());
+            }
+
+            // We return the types
+            return types;
         }
 
 
         /// <summary>
-        /// Returns all the Effect type of a given EffectType
+        /// Returns all the Effect type accessible for a Levelling up
         /// </summary>
-        /// <param name="type">EffectType of which we are searching the Effects</param>
-        /// <returns>All the Effect type of a given EffectType</returns>
-        public static List<Effect> GetAllSkillsFromType(EffectType type)
+        /// <param name="types">EffectTypes the Player can level up in</param>
+        /// <returns>All the Effect type accessible for a Levelling up</returns>
+        public static List<List<Effect>> GetEffectsForLevelUp(List<EffectType> types)
         {
-            return GetAllSkills().Where(skill => skill.type() == type).ToList();
+            List<List<Effect>> effects = new List<List<Effect>>();
+
+            types.ForEach(type => effects.Add(EffectStuff.GetAllEffectsFromType(type)));
+
+            return effects;
         }
 
 
@@ -225,6 +256,17 @@ namespace BloodBowl_Library
         public static List<Effect> GetAllEffects()
         {
             return Enum.GetValues(typeof(Effect)).Cast<Effect>().ToList();
+        }
+
+
+        /// <summary>
+        /// Returns all the Effect type of a given EffectType
+        /// </summary>
+        /// <param name="type">EffectType of which we are searching the Effects</param>
+        /// <returns>All the Effect type of a given EffectType</returns>
+        public static List<Effect> GetAllEffectsFromType(EffectType type)
+        {
+            return GetAllEffects().Where(skill => skill.type() == type).ToList();
         }
 
 

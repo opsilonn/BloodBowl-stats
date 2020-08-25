@@ -478,29 +478,22 @@ namespace Back_Server
             Net.INT.Send(comm.GetStream(), dice1);
             Net.INT.Send(comm.GetStream(), dice2);
 
+            // While we wait for the result...
+            // Select the Effect Types the player can level up in
+            List<EffectType> types = EffectStuff.GetEffectTypesForLevelUp(player.role, dice1, dice2);
+            List<List<Effect>> effects = EffectStuff.GetEffectsForLevelUp(types);
+
             // We receive the Effect chosen
             Effect? effectReceived = Net.EFFECT.Receive(comm.GetStream());
 
-            // Select the Effect Types the player can level up in
-            List<EffectType> types = new List<EffectType>();
-            if (dice1 == dice2)
-            {
-                // All types (and maybe Mutations ?)
-                bool containsMutation = player.role.effectTypes().Contains(EffectType.SkillMutation);
-                types = EffectStuff.GetAllEffectTypesForLevelUp(containsMutation);
-            }
-            else
-            {
-                // Only the default types
-                types = player.role.effectTypes();
-            }
+
 
             // We check if the Effect received is valid
             // By default, we think it is false, so we search to find the Effect in the valid one. If we find it, then it is valid !
             bool isValid = false;
-            foreach(EffectType type in types)
+            foreach(List<Effect> currentList in effects)
             {
-                foreach (Effect effect in EffectStuff.GetAllSkillsFromType(type))
+                foreach (Effect effect in currentList)
                 {
                     // if we find the Effect : good !
                     if (effect == effectReceived)
