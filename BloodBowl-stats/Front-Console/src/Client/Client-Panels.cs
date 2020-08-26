@@ -52,10 +52,12 @@ namespace Front_Console
                     // LEAGUE
                     case 1:
                         CONSOLE.WriteLine(ConsoleColor.Magenta, "Not yet implemented !");
+                        CONSOLE.WaitForInput();
                         break;
 
                     case 2:
                         CONSOLE.WriteLine(ConsoleColor.Magenta, "Not yet implemented !");
+                        CONSOLE.WaitForInput();
                         break;
 
                     // TEAM
@@ -77,8 +79,6 @@ namespace Front_Console
                         Console.WriteLine("Error at the Main menu");
                         break;
                 }
-
-                CONSOLE.WaitForInput();
             }
         }
 
@@ -98,7 +98,8 @@ namespace Front_Console
             Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, content));
 
 
-            // Environment.Exit(0);
+            // Exit the software
+            Environment.Exit(0);
         }
 
 
@@ -172,8 +173,6 @@ namespace Front_Console
                         Console.WriteLine("Error at the detailled Team menu");
                         break;
                 }
-
-                CONSOLE.WaitForInput();
             }
         }
 

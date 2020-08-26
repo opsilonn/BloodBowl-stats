@@ -18,6 +18,7 @@ namespace Front_Console
             // Display a Coach's data
             Console.Clear();
             Console.WriteLine(coach.ToString());
+            CONSOLE.WaitForInput();
         }
 
 
@@ -29,6 +30,7 @@ namespace Front_Console
             // Display a Coach's data
             Console.Clear();
             Console.WriteLine(team.ToString());
+            CONSOLE.WaitForInput();
         }
 
 
