@@ -24,6 +24,8 @@ namespace BloodBowl_Library
 
         // Casualty
         CasualtyBenign,
+        CasualtyRecovery,
+        CasualtyNiggling,
         CasualtyMovement,
         CasualtyStrength,
         CasualtyAgility,
@@ -123,6 +125,39 @@ namespace BloodBowl_Library
         public static bool isCasualty(this Effect effect)
         {
             return effect.type().ToString().StartsWith("Casualty");
+        }
+
+
+        /// <summary>
+        /// Returns whether an Effect is a Benign Casualty
+        /// </summary>
+        /// <param name="effect">Effect we are analysing</param>
+        /// <returns>Whether an Effect is a Benign Casualty</returns>
+        public static bool isCasualtyBenign(this Effect effect)
+        {
+            return effect.type() == EffectType.CasualtyBenign;
+        }
+
+
+        /// <summary>
+        /// Returns whether an Effect is a Recovery Casualty
+        /// </summary>
+        /// <param name="effect">Effect we are analysing</param>
+        /// <returns>Whether an Effect is a Recovery Casualty</returns>
+        public static bool isCasualtyRecovery(this Effect effect)
+        {
+            return effect.type() == EffectType.CasualtyRecovery;
+        }
+
+
+        /// <summary>
+        /// Returns whether an Effect is a Niggling Casualty
+        /// </summary>
+        /// <param name="effect">Effect we are analysing</param>
+        /// <returns>Whether an Effect is a Niggling Casualty</returns>
+        public static bool isCasualtyNiggling(this Effect effect)
+        {
+            return effect.type() == EffectType.CasualtyNiggling;
         }
 
 
