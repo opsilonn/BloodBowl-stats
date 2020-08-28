@@ -13,7 +13,7 @@ namespace BloodBowl_Library
         private string _name;
         private Role _role;
         private int _xp;
-        private List<Effect> _effects;
+        private List<Perk> _perks;
         private Team _team;
 
 
@@ -28,7 +28,7 @@ namespace BloodBowl_Library
             name = String.Empty;
             role = Role.Default;
             xp = 0;
-            effects = new List<Effect>();
+            perks = new List<Perk>();
             team = new Team();
         }
 
@@ -45,7 +45,7 @@ namespace BloodBowl_Library
             this.name = name;
             this.role = role;
             xp = 0;
-            effects = new List<Effect>();
+            perks = new List<Perk>();
             this.team = team;
         }
 
@@ -57,15 +57,15 @@ namespace BloodBowl_Library
         /// <param name="name">Name of the Player</param>
         /// <param name="role">Role of the Player</param>
         /// <param name="xp">XP of the Player</param>
-        /// <param name="effects">Effects of the Player</param>
+        /// <param name="perks">Perks of the Player</param>
         /// <param name="team">Team of the Player</param>
-        public Player(Guid id, string name, Role role, int xp, List<Effect> effects, Team team)
+        public Player(Guid id, string name, Role role, int xp, List<Perk> perks, Team team)
         {
             this.id = id;
             this.name = name;
             this.role = role;
             this.xp = xp;
-            this.effects = effects;
+            this.perks = perks;
             this.team = team;
         }
 
@@ -87,18 +87,18 @@ namespace BloodBowl_Library
         public string name { get => _name; set => _name = Util.CorrectString(value); }
         public Role role { get => _role; set => _role = value; }
         public int xp { get => _xp; set => _xp = value; }
-        public List<Effect> effects { get => _effects; set => _effects = value; }
+        public List<Perk> perks { get => _perks; set => _perks = value; }
         [JsonIgnore]
-        public List<Effect> effectsAll
+        public List<Perk> perksAll
         {
             get
             {
                 // We initialize a list
-                List<Effect> toReturn = new List<Effect>();
+                List<Perk> toReturn = new List<Perk>();
 
-                // We add : 1) the role's effects 2) the Players acquired effects
-                role.effects().ForEach(effect => toReturn.Add(effect));
-                _effects.ForEach(effect => toReturn.Add(effect));
+                // We add : 1) the role's effects 2) the Players acquired perks
+                role.perks().ForEach(perk => toReturn.Add(perk));
+                _perks.ForEach(perk => toReturn.Add(perk));
 
                 // We return the list
                 return toReturn;
@@ -110,32 +110,32 @@ namespace BloodBowl_Library
         public int movement
         { get =>
                 role.movement()
-                - effects.Where(effect => effect.isCasualtyMovement()).ToList().Count
-                + effects.Where(effect => effect == Effect.BonusMovement).ToList().Count;
+                - perks.Where(perk => perk.isCasualtyMovement()).ToList().Count
+                + perks.Where(perk => perk == Perk.BonusMovement).ToList().Count;
         }
         [JsonIgnore]
         public int strength
         {
             get =>
                     role.strength()
-                    - effects.Where(effect => effect.isCasualtyStrength()).ToList().Count
-                    + effects.Where(effect => effect == Effect.BonusStrength).ToList().Count;
+                    - perks.Where(perk => perk.isCasualtyStrength()).ToList().Count
+                    + perks.Where(perk => perk == Perk.BonusStrength).ToList().Count;
         }
         [JsonIgnore]
         public int agility
         {
             get =>
                     role.agility()
-                    - effects.Where(effect => effect.isCasualtyAgility()).ToList().Count
-                    + effects.Where(effect => effect == Effect.BonusAgility).ToList().Count;
+                    - perks.Where(perk => perk.isCasualtyAgility()).ToList().Count
+                    + perks.Where(perk => perk == Perk.BonusAgility).ToList().Count;
         }
         [JsonIgnore]
         public int armor
         {
             get =>
                     role.armor()
-                    - effects.Where(effect => effect.isCasualtyArmor()).ToList().Count
-                    + effects.Where(effect => effect == Effect.BonusArmor).ToList().Count;
+                    - perks.Where(perk => perk.isCasualtyArmor()).ToList().Count
+                    + perks.Where(perk => perk == Perk.BonusArmor).ToList().Count;
         }
 
 
@@ -149,11 +149,11 @@ namespace BloodBowl_Library
             );
         }
         [JsonIgnore]
-        public bool isDead { get => effects.Contains(Effect.Dead); }
+        public bool isDead { get => perks.Contains(Perk.Dead); }
         [JsonIgnore]
-        public List<Effect> skills { get => effects.Where(effect => effect.isSkill()).ToList(); }
+        public List<Perk> skills { get => perks.Where(perk => perk.isSkill()).ToList(); }
         [JsonIgnore]
-        public List<Effect> casualties { get => effects.Where(effect => effect.isCasualty()).ToList(); }
+        public List<Perk> casualties { get => perks.Where(perk => perk.isCasualty()).ToList(); }
         [JsonIgnore]
         public int numberOfSkills { get => skills.Count; }
         [JsonIgnore]
@@ -201,7 +201,7 @@ namespace BloodBowl_Library
                 // We initialize a counter
                 int baseCpt = role.price();
 
-                return baseCpt + effects.Where(effect => effect.isSkill()).ToList().Count * 20;
+                return baseCpt + perks.Where(perk => perk.isSkill()).ToList().Count * 20;
             }
         }
     }

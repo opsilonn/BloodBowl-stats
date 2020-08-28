@@ -161,16 +161,16 @@ namespace Back_Server
                         // We get the Player to remove
                         Player player = (Player)content;
 
-                        // We add a new Effect to the player
-                        Effect? newEffect = PlayerLevelsUp(player);
+                        // We add a new Perk to the player
+                        Perk? newPerk = PlayerLevelsUp(player);
 
                         // If a new effect was chosen
-                        if (newEffect != null)
+                        if (newPerk != null)
                         {
                             // We add the effect to the Player
-                            player.effects.Add((Effect)newEffect);
+                            player.perks.Add((Perk)newPerk);
 
-                            // We raise the event : an Effect has been added
+                            // We raise the event : an Perk has been added
                             When_Player_LevelsUp?.Invoke(player);
                         }
                         break;
@@ -464,11 +464,11 @@ namespace Back_Server
 
 
         /// <summary>
-        /// Manage the selection of a new Effect for a Player that is leveling up
+        /// Manage the selection of a new Perk for a Player that is leveling up
         /// </summary>
         /// <param name="player">Player that is leveling up</param>
-        /// <returns>Effect chosen for the Player leveling up (if invalid, returns null)</returns>
-        public Effect? PlayerLevelsUp(Player player)
+        /// <returns>Perk chosen for the Player leveling up (if invalid, returns null)</returns>
+        public Perk? PlayerLevelsUp(Player player)
         {
             // We define the dices
             int dice1 = Dice.Roll6();
@@ -479,23 +479,23 @@ namespace Back_Server
             Net.INT.Send(comm.GetStream(), dice2);
 
             // While we wait for the result...
-            // Select the Effect Types the player can level up in
-            List<EffectType> types = EffectStuff.GetEffectTypesForLevelUp(player.role, dice1, dice2);
-            List<List<Effect>> effects = EffectStuff.GetEffectsForLevelUp(types);
+            // Select the Perk Types the player can level up in
+            List<PerkType> types = PerkStuff.GetPerkTypesForLevelUp(player.role, dice1, dice2);
+            List<List<Perk>> perks = PerkStuff.GetPerksForLevelUp(types);
 
-            // We receive the Effect chosen
-            Effect? effectReceived = Net.EFFECT.Receive(comm.GetStream());
+            // We receive the Perk chosen
+            Perk? effectReceived = Net.EFFECT.Receive(comm.GetStream());
 
 
 
-            // We check if the Effect received is valid
-            // By default, we think it is false, so we search to find the Effect in the valid one. If we find it, then it is valid !
+            // We check if the Perk received is valid
+            // By default, we think it is false, so we search to find the Perk in the valid one. If we find it, then it is valid !
             bool isValid = false;
-            foreach(List<Effect> currentList in effects)
+            foreach(List<Perk> currentList in perks)
             {
-                foreach (Effect effect in currentList)
+                foreach (Perk effect in currentList)
                 {
-                    // if we find the Effect : good !
+                    // if we find the Perk : good !
                     if (effect == effectReceived)
                     {
                         isValid = true;
@@ -510,7 +510,7 @@ namespace Back_Server
                 }
             }
 
-            // We return to the user whether the Effect was accepted or not
+            // We return to the user whether the Perk was accepted or not
             Net.BOOL.Send(comm.GetStream(), isValid);
 
             // If reached, return the effect received

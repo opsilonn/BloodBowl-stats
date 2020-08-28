@@ -311,12 +311,12 @@ namespace Front_Console
             int dice2 = Net.INT.Receive(comm.GetStream());
             dice1 = 5;
             dice2 = 6;
-            List<EffectType> types = EffectStuff.GetEffectTypesForLevelUp(player.role, dice1, dice2);
+            List<PerkType> types = PerkStuff.GetPerkTypesForLevelUp(player.role, dice1, dice2);
 
 
             // There are 2 steps :
             // PART 1 - display some useful info to the user
-            // PART 2 - Wait for the user to choose a new Effect for his Player
+            // PART 2 - Wait for the user to choose a new Perk for his Player
 
             // PART 1 - display some useful info to the user
             Console.Clear();
@@ -327,13 +327,13 @@ namespace Front_Console
             CONSOLE.WaitForInput();
 
 
-            // PART 2 - Wait for the user to choose a new Effect for his Player
+            // PART 2 - Wait for the user to choose a new Perk for his Player
             // We initialize our variables
-            List<List<Effect>> effects = EffectStuff.GetEffectsForLevelUp(types);
+            List<List<Perk>> perks = PerkStuff.GetPerksForLevelUp(types);
             bool continuing = true;
-            Effect chosenEffect = effects[0][0];
+            Perk chosenPerk = perks[0][0];
             int currentType = 0;
-            int currentEffect = 0;
+            int currentPerk = 0;
 
 
 
@@ -346,62 +346,62 @@ namespace Front_Console
                 // We display all our Types
                 for(int t = 0; t < types.Count; t++)
                 {
-                    // Display the current EffectType
+                    // Display the current PerkType
                     Console.WriteLine("\n" + types[t]);
 
-                    // Display all its Effects (with an arrow if it is the current one)
-                    for (int e = 0; e < effects[t].Count; e++)
+                    // Display all its Perks (with an arrow if it is the current one)
+                    for (int e = 0; e < perks[t].Count; e++)
                     {
                         // Initialize some variables
-                        Effect effect = effects[t][e];
-                        string arrow = (currentType == t && currentEffect == e) ? "\t --> " : "\t     ";
-                        ConsoleColor color = (player.effectsAll.Contains(effect)) ? ConsoleColor.Red : ConsoleColor.Blue;
+                        Perk perk = perks[t][e];
+                        string arrow = (currentType == t && currentPerk == e) ? "\t --> " : "\t     ";
+                        ConsoleColor color = (player.perksAll.Contains(perk)) ? ConsoleColor.Red : ConsoleColor.Blue;
 
                         // Display the result
-                        CONSOLE.WriteLine(color, arrow + effect.name());
+                        CONSOLE.WriteLine(color, arrow + perk.name());
                     }
                 }
 
 
                 // We read the input
                 ConsoleKeyInfo input = Console.ReadKey();
-                bool goToLastEffect = false;
+                bool goToLastPerk = false;
 
 
                 // If it is an Array key (UP or DOWN), we modify our index accordingly
                 if (input.Key == ConsoleKey.UpArrow)
                 {
-                    currentEffect--;
+                    currentPerk--;
 
                     // If the index goes too low, we change type
-                    if (currentEffect < 0)
+                    if (currentPerk < 0)
                     {
                         currentType--;
-                        goToLastEffect = true;
+                        goToLastPerk = true;
                     }
                 }
                 if (input.Key == ConsoleKey.DownArrow)
                 {
-                    currentEffect++;
+                    currentPerk++;
 
                     // If the index goes too high, we change type
-                    if (currentEffect > effects[currentType].Count - 1)
+                    if (currentPerk > perks[currentType].Count - 1)
                     {
                         currentType++;
-                        currentEffect = 0;
+                        currentPerk = 0;
                     }
                 }
                 // If it is a LEFT Array key : go to the previous type
                 if (input.Key == ConsoleKey.LeftArrow)
                 {
                     currentType--;
-                    currentEffect = 0;
+                    currentPerk = 0;
                 }
                 // If it is a RIGHT Array key : go to the next type
                 if (input.Key == ConsoleKey.RightArrow)
                 {
                     currentType++;
-                    currentEffect = 0;
+                    currentPerk = 0;
                 }
 
 
@@ -417,23 +417,23 @@ namespace Front_Console
                 }
 
                 // If needed : we replace the effect counter to the last index of the current list
-                if(goToLastEffect)
+                if(goToLastPerk)
                 {
-                    currentEffect = effects[currentType].Count - 1;
+                    currentPerk = perks[currentType].Count - 1;
                 }
 
 
                 // We check if we end the loop
                 if(input.Key == ConsoleKey.Enter)
                 {
-                    // We set the chosen Effect
-                    chosenEffect = effects[currentType][currentEffect];
+                    // We set the chosen Perk
+                    chosenPerk = perks[currentType][currentPerk];
 
                     Console.Clear();
-                    // We display a message, whether the Effect can be chosen or not
-                    if (player.effectsAll.Contains(chosenEffect))
+                    // We display a message, whether the Perk can be chosen or not
+                    if (player.perksAll.Contains(chosenPerk))
                     {
-                        CONSOLE.WriteLine(ConsoleColor.Red, "You cannot choose the Effect " + chosenEffect.name() + " :\n\nyour Player already has it !!");
+                        CONSOLE.WriteLine(ConsoleColor.Red, "You cannot choose the Effect " + chosenPerk.name() + " :\n\nyour Player already has it !!");
                         CONSOLE.WaitForInput();
                     }
                     else
@@ -445,16 +445,16 @@ namespace Front_Console
             while (continuing);
 
             // Small message
-            CONSOLE.WriteLine(ConsoleColor.Green, "You have chosen the Effect " + chosenEffect.name() + " !!");
+            CONSOLE.WriteLine(ConsoleColor.Green, "You have chosen the Effect " + chosenPerk.name() + " !!");
 
-            // Sending the chosen Effect
-            Net.EFFECT.Send(comm.GetStream(), chosenEffect);
+            // Sending the chosen Perk
+            Net.EFFECT.Send(comm.GetStream(), chosenPerk);
 
-            // If the Effect was validated : add it to the Player
+            // If the Perk was validated : add it to the Player
             if(Net.BOOL.Receive(comm.GetStream()))
             {
                 CONSOLE.WriteLine(ConsoleColor.Green, "\n\n\tEffect validated !!");
-                player.effects.Add(chosenEffect);
+                player.perks.Add(chosenPerk);
             }
             else
             {

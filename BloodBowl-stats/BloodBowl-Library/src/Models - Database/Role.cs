@@ -30,11 +30,11 @@ namespace BloodBowl_Library
             public int strength { get; }
             public int agility { get; }
             public int armor { get; }
-            public List<Effect> effects { get; }
-            public List<EffectType> effectTypes { get; }
+            public List<Perk> perks { get; }
+            public List<PerkType> perkTypes { get; }
 
 
-            public RoleData(string name, int price, int movement, int strength, int agility, int armor, List<Effect> effects, List<EffectType> effectTypes)
+            public RoleData(string name, int price, int movement, int strength, int agility, int armor, List<Perk> perk, List<PerkType> perkTypes)
             {
                 this.name = name;
                 this.price = price;
@@ -42,8 +42,8 @@ namespace BloodBowl_Library
                 this.strength = strength;
                 this.agility = agility;
                 this.armor = armor;
-                this.effects = effects;
-                this.effectTypes = effectTypes;
+                this.perks = perk;
+                this.perkTypes = perkTypes;
             }
         }
 
@@ -59,18 +59,18 @@ namespace BloodBowl_Library
             {
                 // Humans
                 case Role.HumanBlitzer:
-                    return new RoleData("Blitzer", 90000, 7, 3, 3, 8, new List<Effect> { Effect.Block }, new List<EffectType> { EffectType.SkillGeneral, EffectType.SkillStrength });
+                    return new RoleData("Blitzer", 90000, 7, 3, 3, 8, new List<Perk> { Perk.Block }, new List<PerkType> { PerkType.SkillGeneral, PerkType.SkillStrength });
                 case Role.HumanCatcher:
-                    return new RoleData("Catcher", 70000, 8, 2, 3, 8, new List<Effect> { Effect.Dodge, Effect.Catch }, new List<EffectType> { EffectType.SkillGeneral, EffectType.SkillAgility });
+                    return new RoleData("Catcher", 70000, 8, 2, 3, 8, new List<Perk> { Perk.Dodge, Perk.Catch }, new List<PerkType> { PerkType.SkillGeneral, PerkType.SkillAgility });
                 case Role.HumanLineMan:
-                    return new RoleData("Line man", 50000, 6, 3, 3, 8, new List<Effect>(), new List<EffectType> { EffectType.SkillGeneral });
+                    return new RoleData("Line man", 50000, 6, 3, 3, 8, new List<Perk>(), new List<PerkType> { PerkType.SkillGeneral });
                 case Role.HumanOgre:
-                    return new RoleData("Ogre", 130000, 5, 5, 2, 9, new List<Effect> { Effect.BoneHead, Effect.MightyBlow, Effect.ThickSkull, Effect.ThrowTeamMate, Effect.Loner }, new List<EffectType> { EffectType.SkillStrength });
+                    return new RoleData("Ogre", 130000, 5, 5, 2, 9, new List<Perk> { Perk.BoneHead, Perk.MightyBlow, Perk.ThickSkull, Perk.ThrowTeamMate, Perk.Loner }, new List<PerkType> { PerkType.SkillStrength });
                 case Role.HumanThrower:
-                    return new RoleData("Thrower", 70000, 6, 3, 3, 8, new List<Effect> { Effect.Pass, Effect.SureHands }, new List<EffectType> { EffectType.SkillGeneral, EffectType.SkillPass });
+                    return new RoleData("Thrower", 70000, 6, 3, 3, 8, new List<Perk> { Perk.Pass, Perk.SureHands }, new List<PerkType> { PerkType.SkillGeneral, PerkType.SkillPass });
 
                 default:
-                    return new RoleData("Default", 200000, 10, 10, 10, 10, new List<Effect>(), new List<EffectType>());
+                    return new RoleData("Default", 200000, 10, 10, 10, 10, new List<Perk>(), new List<PerkType>());
             }
         }
 
@@ -142,24 +142,24 @@ namespace BloodBowl_Library
 
 
         /// <summary>
-        /// Effects of the instance
+        /// Perks of the instance
         /// </summary>
         /// <param name="playerRole">Role we are analysing</param>
         /// <returns>Effects of the instance</returns>
-        public static List<Effect> effects(this Role playerRole)
+        public static List<Perk> perks(this Role playerRole)
         {
-            return playerRole.data().effects;
+            return playerRole.data().perks;
         }
 
 
         /// <summary>
-        /// Types of effects the instance can level up with
+        /// Types of Perks the instance can level up with
         /// </summary>
         /// <param name="playerRole">Role we are analysing</param>
         /// <returns>Types of effects the instance can level up with</returns>
-        public static List<EffectType> effectTypes(this Role playerRole)
+        public static List<PerkType> perkTypes(this Role playerRole)
         {
-            return playerRole.data().effectTypes;
+            return playerRole.data().perkTypes;
         }
 
 

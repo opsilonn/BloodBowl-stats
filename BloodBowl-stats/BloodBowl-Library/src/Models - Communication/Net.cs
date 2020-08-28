@@ -276,11 +276,11 @@ namespace BloodBowl_Library
         public static class EFFECT
         {
             /// <summary>
-            /// Sends an Effect
+            /// Sends an Perk
             /// </summary>
             /// <param name="s"> Stream </param>
-            /// <param name="effect"> Effect to send </param>
-            public static void Send(Stream s, Effect effect)
+            /// <param name="effect"> Perk to send </param>
+            public static void Send(Stream s, Perk effect)
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(s, effect);
@@ -288,14 +288,14 @@ namespace BloodBowl_Library
 
 
             /// <summary>
-            /// Receives an Effect
+            /// Receives an Perk
             /// </summary>
             /// <param name="s"> Stream </param>
             /// <returns> The serialized Communication </returns>
-            public static Effect Receive(Stream s)
+            public static Perk Receive(Stream s)
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                return (Effect)bf.Deserialize(s);
+                return (Perk)bf.Deserialize(s);
             }
         }
 

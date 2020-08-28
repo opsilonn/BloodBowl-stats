@@ -47,7 +47,7 @@ namespace Back_Server
                 // Oh tiens, un client s'est connecté
                 CONSOLE.WriteLine(ConsoleColor.DarkGreen, "Connection established @" + comm);
 
-
+                
                 // Je récupère ses infos...
                 Receiver receiver = new Receiver(this, comm);
 
