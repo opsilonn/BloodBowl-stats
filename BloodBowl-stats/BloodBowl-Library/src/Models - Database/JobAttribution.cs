@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BloodBowl_Library
 {
+    [Serializable]
     public class JobAttribution
     {
         private Guid _idCoach;

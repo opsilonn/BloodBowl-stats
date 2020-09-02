@@ -75,8 +75,8 @@ namespace Front_Console
                 {
                     errorMessage = PrefabMessages.INCOMPLETE_FIELDS;
                 }
-                else if (name.Length > PrefabMessages.INPUT_MAXSIZE_STRUCTURE_NAME
-                    || description.Length > PrefabMessages.INPUT_MAXSIZE_STRUCTURE_DESCRIPTION)
+                else if (name.Length > PrefabMessages.INPUT_MAXSIZE_NAME
+                    || description.Length > PrefabMessages.INPUT_MAXSIZE_DESCRIPTION)
                 {
                     errorMessage = PrefabMessages.INCORRECT_INPUT_SIZE;
                 }
@@ -137,6 +137,8 @@ namespace Front_Console
                         {
                             errorMessage = PrefabMessages.TEAM_CREATION_FAILURE;
                         }
+
+                        CONSOLE.WaitForInput();
                     }
                     // The user chose to leave
                     else
@@ -248,6 +250,8 @@ namespace Front_Console
                                 {
                                     errorMessage = PrefabMessages.PLAYER_CREATION_FAILURE;
                                 }
+
+                                CONSOLE.WaitForInput();
                             }
                         }
                         while (continueNewPlayerInputs);

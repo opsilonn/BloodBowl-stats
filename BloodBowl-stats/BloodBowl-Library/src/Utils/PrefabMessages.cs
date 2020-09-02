@@ -25,17 +25,10 @@ namespace BloodBowl_Library
         public static string PLAYER_CREATION_SUCCESS = "The new Player was successfully created !";
         public static string PLAYER_CREATION_FAILURE = "The Player hasn't been created...";
 
-        public static string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
-        /*
-        public static string CHAT_CREATION_SUCCESS = "The new Chat was successfully created !";
-        public static string CHAT_CREATION_FAILURE = "The Chat hasn't been created...";
-        public static string CHAT_CREATION_2ND_MEMBER_IS_SELF = "You cannot add yourself as the 2nd member of this Chat !";
-        public static string CHAT_CREATION_2ND_MEMBER_NOT_FOUND = "Your correspondent's name was not found !";
-        */
+        public static string LEAGUE_CREATION_SUCCESS = "The new League was successfully created !";
+        public static string LEAGUE_CREATION_FAILURE = "The League hasn't been created...";
 
-        public static string NEWCHATMEMBER_SUCCESS = "The new member was successfully added !";
-        public static string NEWCHATMEMBER_FAILURE = "The profile hasn't been added...";
-        public static string NEWCHATMEMBER_ADD_SELF = "You cannot add yourself as another new member of this Chat !";
+        public static string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
 
         // Maximum Input sizes
         public static int INPUT_MAXSIZE_COACH_ID = 6;
@@ -43,8 +36,8 @@ namespace BloodBowl_Library
         public static int INPUT_MAXSIZE_COACH_PASSWORD = 25;
         public static int INPUT_MAXSIZE_COACH_EMAIL = 50;
 
-        public static int INPUT_MAXSIZE_STRUCTURE_NAME = 50;
-        public static int INPUT_MAXSIZE_STRUCTURE_DESCRIPTION = 100;
+        public static int INPUT_MAXSIZE_NAME = 50;
+        public static int INPUT_MAXSIZE_DESCRIPTION = 100;
 
         public static int INPUT_MAXSIZE_PROFILE_CONTENT = 100;
     }

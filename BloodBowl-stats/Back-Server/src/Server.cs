@@ -62,6 +62,8 @@ namespace Back_Server
                 receiver.When_Player_Remove += PlayerRemove;
                 receiver.When_Player_LevelsUp += PlayerLevelsUp;
 
+                receiver.When_League_Create += LeagueCreate;
+
 
                 // ... et je lance une connexion avec le serveur
                 new Thread(receiver.DoOperation).Start();
@@ -167,6 +169,11 @@ namespace Back_Server
         {
             // Updating the JSON file
             Database.TEAM.Write(player.team);
+        }
+        private void LeagueCreate(League league)
+        {
+            // Updating the JSON file
+            Database.LEAGUE.Write(league);
         }
 
 

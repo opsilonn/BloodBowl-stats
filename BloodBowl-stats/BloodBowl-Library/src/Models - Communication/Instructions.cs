@@ -18,6 +18,8 @@
         Team_AddPlayer,
         Team_RemovePlayer,
 
-        Player_LevelUp
+        Player_LevelUp,
+
+        League_New
     }
 }

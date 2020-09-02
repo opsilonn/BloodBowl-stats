@@ -142,7 +142,6 @@ namespace BloodBowl_Library
                 id != Guid.Empty
                 && dateCreation != DateTime.MinValue
                 && name != String.Empty
-                && dateCreation != DateTime.MinValue
                 );
         }
 

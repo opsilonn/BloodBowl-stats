@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace BloodBowl_Library
 {
+    [Serializable]
     public class League
     {
         private Guid _id;
+        private DateTime _dateCreation;
         private string _name;
         private Guid _idCreator;
-        private List<JobAttribution> _organisation;
+        private List<JobAttribution> _members;
 
 
         // CONSTRUCTORS
@@ -24,9 +26,10 @@ namespace BloodBowl_Library
         public League()
         {
             id = Guid.Empty;
+            dateCreation = DateTime.MinValue;
             name = String.Empty;
             idCreator = Guid.Empty;
-            organisation = new List<JobAttribution>();
+            members = new List<JobAttribution>();
         }
 
 
@@ -38,9 +41,10 @@ namespace BloodBowl_Library
         public League(string name, Guid idCreator)
         {
             id = Guid.NewGuid();
+            dateCreation = DateTime.Now;
             this.name = name;
             this.idCreator = idCreator;
-            this.organisation = new List<JobAttribution>()
+            this.members = new List<JobAttribution>()
             {
                 new JobAttribution(idCreator, Job.CEO)
             };
@@ -55,9 +59,10 @@ namespace BloodBowl_Library
         public League(string name, Coach creator)
         {
             id = Guid.NewGuid();
+            dateCreation = DateTime.MinValue;
             this.name = name;
             this.idCreator = creator.id;
-            this.organisation = new List<JobAttribution>()
+            this.members = new List<JobAttribution>()
             {
                 new JobAttribution(creator, Job.CEO)
             };
@@ -68,15 +73,17 @@ namespace BloodBowl_Library
         /// Creates a complete instance of a League with according parameters
         /// </summary>
         /// <param name="id">Id of the League</param>
+        /// <param name="dateCreation">DateTime of creation of the League</param>
         /// <param name="name">Name of the League</param>
         /// <param name="idCreator">Id of the creator of the League</param>
-        /// <param name="organisation">Ids and Jobs of the organisation of the League</param>
-        public League(Guid id, string name, Guid idCreator, List<JobAttribution> organisation)
+        /// <param name="members">Ids and Jobs of the members of the League</param>
+        public League(Guid id, DateTime dateCreation, string name, Guid idCreator, List<JobAttribution> members)
         {
             this.id = id;
+            this.dateCreation = dateCreation;
             this.name = name;
             this.idCreator = idCreator;
-            this.organisation = organisation;
+            this.members = members;
         }
 
 
@@ -118,52 +125,21 @@ namespace BloodBowl_Library
 
         // GETTER - SETTER
         public Guid id { get => _id; set => _id = value; }
+        public DateTime dateCreation { get => _dateCreation; set => _dateCreation = value; }
         public string name { get => _name; set => _name = Util.CorrectString(value); }
         public Guid idCreator { get => _idCreator; set => _idCreator = value; }
-        /*
+        public List<JobAttribution> members { get => _members; set => _members = value; }
+
+
+        // PARAM
         [JsonIgnore]
-        public Coach creator { get => Database.COACH.GetById(_idCreator); set => _idCreator = value.id; }
-        */
-        public List<JobAttribution> organisation { get => _organisation; set => _organisation = value; }
-
-
-        /*
-        [JsonIgnore]
-        public Dictionary<Coach, Role> organisation {
-            get {
-                // We initialize a Dictionay
-                Dictionary<Coach, Role> dictionary = new Dictionary<Coach, Role>();
-
-                // We iterate through the Coaches
-                foreach (KeyValuePair<Guid, Role> kvp in _idsOrganisation)
-                {
-                    // We get the Coach's data from the Database
-                    Coach newCoach = Database.COACH.GetById(kvp.Key);
-
-                    // If its values are complete :
-                    if(newCoach.IsComplete)
-                    {
-                        // We add him to the dictionary
-                        dictionary.Add(newCoach, kvp.Value);
-                    }
-                }
-
-                // We return the dictionary
-                return new Dictionary<Coach, Role>();
-            }
-            set
-            {
-                // We reset the dictionary
-                _idsOrganisation = new Dictionary<Guid, Role>();
-
-                // We iterate through the given values
-                foreach (KeyValuePair<Coach, Role> kvp in value)
-                {
-                    // We add them accordingly to our dictionary (we only keep the ID !)
-                    _idsOrganisation.Add(kvp.Key.id, kvp.Value);
-                }
-            }
+        public bool IsComplete
+        {
+            get => (
+                id != Guid.Empty
+                && dateCreation != DateTime.MinValue
+                && name != String.Empty
+            );
         }
-        */
     }
 }

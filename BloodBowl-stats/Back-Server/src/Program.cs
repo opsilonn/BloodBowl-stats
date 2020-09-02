@@ -19,8 +19,7 @@ namespace Back_Server
             // Want to do some test server-side ? do it here !
             // HERE HERE HERE
             // EffectStuff.GetAllEffects().ForEach(effect => Console.WriteLine(effect.isSkill()));
-            League l = new League();
-            Console.WriteLine(l.ToString());
+            Database.leagues.ForEach(league => Console.WriteLine(league));
             // ... And now, no more testing
 
             // Creating the server's console Interface

@@ -56,8 +56,7 @@ namespace Front_Console
                         break;
 
                     case 2:
-                        CONSOLE.WriteLine(ConsoleColor.Magenta, "Not yet implemented !");
-                        CONSOLE.WaitForInput();
+                        NewLeague();
                         break;
 
                     // TEAM

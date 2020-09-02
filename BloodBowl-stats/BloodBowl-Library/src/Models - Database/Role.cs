@@ -19,7 +19,6 @@ namespace BloodBowl_Library
 
 
 
-
     public static class RoleStuff
     {
         public class RoleData
@@ -51,11 +50,11 @@ namespace BloodBowl_Library
         /// <summary>
         /// Data of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Data of the instance</returns>
-        private static RoleData data(this Role playerRole)
+        private static RoleData data(this Role role)
         {
-            switch (playerRole)
+            switch (role)
             {
                 // Humans
                 case Role.HumanBlitzer:
@@ -78,88 +77,88 @@ namespace BloodBowl_Library
         /// <summary>
         /// Name of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Name of the instance</returns>
-        public static String name(this Role playerRole)
+        public static String name(this Role role)
         {
-            return playerRole.data().name;
+            return role.data().name;
         }
 
 
         /// <summary>
         /// Price of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Price of the instance</returns>
-        public static int price(this Role playerRole)
+        public static int price(this Role role)
         {
-            return playerRole.data().price;
+            return role.data().price;
         }
 
 
         /// <summary>
         /// Movement of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Movement of the instance</returns>
-        public static int movement(this Role playerRole)
+        public static int movement(this Role role)
         {
-            return playerRole.data().movement;
+            return role.data().movement;
         }
 
 
         /// <summary>
         /// Force of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Force of the instance</returns>
-        public static int strength(this Role playerRole)
+        public static int strength(this Role role)
         {
-            return playerRole.data().strength;
+            return role.data().strength;
         }
 
 
         /// <summary>
         /// Agility of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Agility of the instance</returns>
-        public static int agility(this Role playerRole)
+        public static int agility(this Role role)
         {
-            return playerRole.data().agility;
+            return role.data().agility;
         }
 
 
         /// <summary>
         /// Armor of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Armor of the instance</returns>
-        public static int armor(this Role playerRole)
+        public static int armor(this Role role)
         {
-            return playerRole.data().armor;
+            return role.data().armor;
         }
 
 
         /// <summary>
         /// Perks of the instance
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Effects of the instance</returns>
-        public static List<Perk> perks(this Role playerRole)
+        public static List<Perk> perks(this Role role)
         {
-            return playerRole.data().perks;
+            return role.data().perks;
         }
 
 
         /// <summary>
         /// Types of Perks the instance can level up with
         /// </summary>
-        /// <param name="playerRole">Role we are analysing</param>
+        /// <param name="role">Role we are analysing</param>
         /// <returns>Types of effects the instance can level up with</returns>
-        public static List<PerkType> perkTypes(this Role playerRole)
+        public static List<PerkType> perkTypes(this Role role)
         {
-            return playerRole.data().perkTypes;
+            return role.data().perkTypes;
         }
 
 
@@ -170,20 +169,16 @@ namespace BloodBowl_Library
         /// Textual representation of the instance
         /// </summary>
         /// <returns> A textual representation of the instance</returns>
-        public static string ToStringCustom(this Role playerRole)
+        public static string ToStringCustom(this Role role)
         {
             return String.Format("{0} - {1}\nM: {2} S: {3} Ag: {4} Ar:{5}\n",
-                playerRole.name(),
-                playerRole.price(),
-                playerRole.movement(),
-                playerRole.strength(),
-                playerRole.agility(),
-                playerRole.armor());
+                role.name(),
+                role.price(),
+                role.movement(),
+                role.strength(),
+                role.agility(),
+                role.armor());
         }
-
-
-
-
 
 
 
