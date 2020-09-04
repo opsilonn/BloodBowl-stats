@@ -195,6 +195,10 @@ namespace Back_Server
                         }
                         break;
 
+                    case Instructions.League_GetAllForCoach:
+                        SendLeagues((Guid)content);
+                        break;
+
 
                     // otherwise : Error (should not occur, but we're not taking any chance)
                     default:

@@ -10,6 +10,9 @@ namespace Front_Console
 {
     public partial class Client
     {
+        /// <summary>
+        /// Creation of a new League
+        /// </summary>
         private void NewLeague()
         {
             bool continueNewLeague = true;

@@ -51,8 +51,7 @@ namespace Front_Console
 
                     // LEAGUE
                     case 1:
-                        CONSOLE.WriteLine(ConsoleColor.Magenta, "Not yet implemented !");
-                        CONSOLE.WaitForInput();
+                        PanelLeagues();
                         break;
 
                     case 2:
@@ -102,6 +101,66 @@ namespace Front_Console
         }
 
 
+
+
+        /// <summary>
+        /// Panel displaying all the Leagues related to an user
+        /// </summary>
+        private void PanelLeagues()
+        {
+            bool continuingLeagues = true;
+
+
+            while (continuingLeagues)
+            {
+                // We ask to get all the Leagues the user is in
+                Net.COMMUNICATION.Send(comm.GetStream(), new Communication(
+                    Instructions.League_GetAllForCoach,
+                    userData.id
+                    ));
+
+                // We get the Leagues
+                List<League> leagues = Net.LIST_LEAGUE.Receive(comm.GetStream());
+
+
+                if(leagues.Count == 0)
+                {
+                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_NONE_ARE_AVAILABLE);
+                    CONSOLE.WaitForInput();
+                    continuingLeagues = false;
+                }
+                else
+                {
+                    // CHOICE
+                    // We dynamically create a List containing all the League's name
+                    List<string> choiceString = new List<string>();
+                    leagues.ForEach(league => choiceString.Add(league.name));
+
+                    // We add as a last choice the option to "Go Back"
+                    choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
+
+                    // We create the Choice
+                    Choice choice = new Choice(PrefabMessages.SELECTION_LEAGUE, choiceString);
+                    int index = choice.GetChoice();
+
+                    if (index != choiceString.Count - 1)
+                    {
+                        //PanelTeam(userData.teams[index]);
+                        Console.WriteLine("you have chosen : " + leagues[index].name);
+                        CONSOLE.WaitForInput();
+                    }
+                    else
+                    {
+                        continuingLeagues = false;
+                    }
+                }
+            }
+
+        }
+
+
+
+
         /// <summary>
         /// Panel displaying all the Teams of the user
         /// </summary>
@@ -109,28 +168,36 @@ namespace Front_Console
         {
             bool continuingTeams = true;
 
-
             while (continuingTeams)
             {
-                // CHOICE
-                // We dynamically create a List containing all the topic's name
-                List<string> choiceString = new List<string>();
-                userData.teams.ForEach(team => choiceString.Add(team.name));
-
-                // We add as a last choice the option to "Go Back"
-                choiceString.Add("Go Back");
-
-                // We create the Choice
-                Choice choice = new Choice("please Select a Team (last one = leave) : ", choiceString);
-                int index = choice.GetChoice();
-
-                if (index != choiceString.Count - 1)
+                if(userData.teams.Count == 0)
                 {
-                    PanelTeam(userData.teams[index]);
+                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.TEAM_NONE_ARE_AVAILABLE);
+                    CONSOLE.WaitForInput();
+                    continuingTeams = false;
                 }
                 else
                 {
-                    continuingTeams = false;
+                    // CHOICE
+                    // We dynamically create a List containing all the Team's name
+                    List<string> choiceString = new List<string>();
+                    userData.teams.ForEach(team => choiceString.Add(team.name));
+
+                    // We add as a last choice the option to "Go Back"
+                    choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
+
+                    // We create the Choice
+                    Choice choice = new Choice(PrefabMessages.SELECTION_TEAM, choiceString);
+                    int index = choice.GetChoice();
+
+                    if (index != choiceString.Count - 1)
+                    {
+                        PanelTeam(userData.teams[index]);
+                    }
+                    else
+                    {
+                        continuingTeams = false;
+                    }
                 }
             }
         }
@@ -193,10 +260,10 @@ namespace Front_Console
                 team.players.ForEach(player => choiceString.Add(player.name));
 
                 // We add as a last choice the option to "Go Back"
-                choiceString.Add("Go Back");
+                choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
 
                 // We create the Choice
-                Choice c = new Choice("please Select a Player (last one = leave) : ", choiceString);
+                Choice c = new Choice(PrefabMessages.SELECTION_PLAYER, choiceString);
                 int index = c.GetChoice();
 
                 if (index != choiceString.Count - 1)
@@ -224,18 +291,18 @@ namespace Front_Console
                 // CHOICE
                 // We dynamically create a List containing all the players names
                 List<string> choiceString = new List<string>();
-                choiceString.Add("See Data");
+                choiceString.Add(PrefabMessages.SELECTION_SEE_DATA);
 
                 if (player.hasNewLevel)
                 {
-                    choiceString.Add("New Level !");
+                    choiceString.Add(PrefabMessages.SELECTION_NEW_LEVEL);
                 }
 
                 // We add another choice : "Remove Player"
-                choiceString.Add("Remove Player");
+                choiceString.Add(PrefabMessages.SELECTION_REMOVE_PLAYER);
 
                 // We add a last choice: "Go Back"
-                choiceString.Add("Go Back");
+                choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
 
                 // We create the Choice
                 Choice c = new Choice("please Select an action for " + player.name + " (last one = leave) : ", choiceString);

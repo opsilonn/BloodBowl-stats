@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -140,6 +141,17 @@ namespace BloodBowl_Library
                 && dateCreation != DateTime.MinValue
                 && name != String.Empty
             );
+        }
+
+
+        /// <summary>
+        /// Returns whether a given Coach is a member of this League instance
+        /// </summary>
+        /// <param name="coachId">Id of the Coach</param>
+        /// <returns>Whether a given Coach is a member of this League instance</returns>
+        public bool ContainsCoach(Guid coachId)
+        {
+            return members.Count(member => (member.idCoach == coachId)) != 0;
         }
     }
 }

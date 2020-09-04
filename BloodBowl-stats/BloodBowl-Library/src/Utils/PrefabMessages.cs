@@ -28,7 +28,23 @@ namespace BloodBowl_Library
         public static string LEAGUE_CREATION_SUCCESS = "The new League was successfully created !";
         public static string LEAGUE_CREATION_FAILURE = "The League hasn't been created...";
 
+
+        public static string LEAGUE_NONE_ARE_AVAILABLE = "It seems you are not a member of any League !\nPlease consider creating your own, or being invited in an existing League";
+        public static string TEAM_NONE_ARE_AVAILABLE = "It seems you have no Team !\nPlease consider creating your a Team";
+
         public static string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
+
+
+        // SELECTION
+        public static string SELECTION_GO_BACK = "Go back";
+        public static string SELECTION_LEAGUE = "please Select a League (last one = leave) : ";
+        public static string SELECTION_TEAM = "please Select a Team (last one = leave) : ";
+        public static string SELECTION_PLAYER = "please Select a Player (last one = leave) : ";
+        // SELECTION - PLAYER'S NEW LEVEL
+        public static string SELECTION_SEE_DATA = "See Data";
+        public static string SELECTION_NEW_LEVEL = "New Level !";
+        public static string SELECTION_REMOVE_PLAYER = "Remove Player";
+
 
         // Maximum Input sizes
         public static int INPUT_MAXSIZE_COACH_ID = 6;

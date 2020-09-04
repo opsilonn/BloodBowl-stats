@@ -20,6 +20,7 @@
 
         Player_LevelUp,
 
-        League_New
+        League_New,
+        League_GetAllForCoach
     }
 }

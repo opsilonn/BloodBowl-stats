@@ -34,5 +34,21 @@ namespace Back_Server
             // We return the new Team
             return newLeague;
         }
+
+
+
+
+        /// <summary>
+        /// Sends all Leagues related to a Coach
+        /// </summary>
+        /// <param name="idCoach">Id of the Coach of which we seek the Leagues</param>
+        private void SendLeagues(Guid idCoach)
+        {
+            // We get all the Leagues a Coach is in
+            List<League> leagues = Database.leagues.Where(league => league.ContainsCoach(idCoach)).ToList();
+
+            // We send the Leagues
+            Net.LIST_LEAGUE.Send(comm.GetStream(), leagues);
+        }
     }
 }

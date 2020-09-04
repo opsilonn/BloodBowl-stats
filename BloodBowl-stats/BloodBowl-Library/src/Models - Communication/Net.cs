@@ -272,18 +272,17 @@ namespace BloodBowl_Library
             }
         }
 
-
-        public static class EFFECT
+        public static class PERK
         {
             /// <summary>
-            /// Sends an Perk
+            /// Sends a Perk
             /// </summary>
             /// <param name="s"> Stream </param>
-            /// <param name="effect"> Perk to send </param>
-            public static void Send(Stream s, Perk effect)
+            /// <param name="perk"> Perk to send </param>
+            public static void Send(Stream s, Perk perk)
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(s, effect);
+                bf.Serialize(s, perk);
             }
 
 
@@ -291,11 +290,37 @@ namespace BloodBowl_Library
             /// Receives an Perk
             /// </summary>
             /// <param name="s"> Stream </param>
-            /// <returns> The serialized Communication </returns>
+            /// <returns> The serialized Perk </returns>
             public static Perk Receive(Stream s)
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 return (Perk)bf.Deserialize(s);
+            }
+        }
+
+        public static class LIST_LEAGUE
+        {
+            /// <summary>
+            /// Sends a League
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <param name="leagues"> League to send </param>
+            public static void Send(Stream s, List<League> leagues)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(s, leagues);
+            }
+
+
+            /// <summary>
+            /// Receives a League
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <returns> The serialized League </returns>
+            public static List<League> Receive(Stream s)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                return (List<League>)bf.Deserialize(s);
             }
         }
 

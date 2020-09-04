@@ -452,7 +452,7 @@ namespace Front_Console
             CONSOLE.WriteLine(ConsoleColor.Green, "You have chosen the Effect " + chosenPerk.name() + " !!");
 
             // Sending the chosen Perk
-            Net.EFFECT.Send(comm.GetStream(), chosenPerk);
+            Net.PERK.Send(comm.GetStream(), chosenPerk);
 
             // If the Perk was validated : add it to the Player
             if(Net.BOOL.Receive(comm.GetStream()))

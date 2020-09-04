@@ -189,7 +189,7 @@ namespace Back_Server
             List<List<Perk>> perks = PerkStuff.GetPerksForLevelUp(types);
 
             // We receive the Perk chosen
-            Perk? effectReceived = Net.EFFECT.Receive(comm.GetStream());
+            Perk? effectReceived = Net.PERK.Receive(comm.GetStream());
 
 
 
