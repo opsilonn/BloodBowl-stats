@@ -301,7 +301,7 @@ namespace BloodBowl_Library
         public static class LIST_LEAGUE
         {
             /// <summary>
-            /// Sends a League
+            /// Sends a list of Leagues
             /// </summary>
             /// <param name="s"> Stream </param>
             /// <param name="leagues"> League to send </param>
@@ -313,14 +313,40 @@ namespace BloodBowl_Library
 
 
             /// <summary>
-            /// Receives a League
+            /// Receives a list of Leagues
             /// </summary>
             /// <param name="s"> Stream </param>
-            /// <returns> The serialized League </returns>
+            /// <returns> The serialized list of Leagues </returns>
             public static List<League> Receive(Stream s)
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 return (List<League>)bf.Deserialize(s);
+            }
+        }
+        
+        public static class LIST_COACH
+        {
+            /// <summary>
+            /// Sends a List of Coaches
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <param name="coaches"> Coach to send </param>
+            public static void Send(Stream s, List<Coach> coaches)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(s, coaches);
+            }
+
+
+            /// <summary>
+            /// Receives a list of Coaches
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <returns> The serialized list of Coaches </returns>
+            public static List<Coach> Receive(Stream s)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                return (List<Coach>)bf.Deserialize(s);
             }
         }
 

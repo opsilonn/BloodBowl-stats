@@ -13,6 +13,7 @@ namespace Front_Console
         /// <summary>
         /// Display all data about a Coach
         /// </summary>
+        /// <param name="coach">Coach instance to display</param>
         private void DisplayCoach(Coach coach)
         {
             // Display a Coach's data
@@ -25,6 +26,7 @@ namespace Front_Console
         /// <summary>
         /// Display all data about a Team
         /// </summary>
+        /// <param name="team">Team instance to display</param>
         private void DisplayTeam(Team team)
         {
             // Display a Coach's data
@@ -132,6 +134,11 @@ namespace Front_Console
 
                             // Ending the loop
                             continueNewTeam = false;
+
+                            CONSOLE.WaitForInput();
+
+                            // We redirect the user to the Team Panel
+                            PanelTeam(newTeam);
                         }
                         else
                         {

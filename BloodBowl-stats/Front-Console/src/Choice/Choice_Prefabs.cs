@@ -32,6 +32,17 @@ namespace Front_Console
        );
 
 
+        public static Choice CHOICE_LEAGUE = new Choice
+       (
+           "Please choose an action :",
+           new List<string>()
+           {
+               "See League's Data",
+               "Go Back"
+           }
+       );
+
+
         public static Choice CHOICE_TEAM = new Choice
        (
            "Please choose an action :",

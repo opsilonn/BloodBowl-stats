@@ -142,46 +142,46 @@ namespace Back_Server
 
 
             /// <summary>
-            /// Returns a Coach given its name (if it exists)
+            /// Returns a League given its name (if it exists)
             /// </summary>
-            /// <param name="name"> Name of the Coach we are searching for </param>
-            /// <returns> the Coach of a given name (if it exists) </returns>
-            public static Coach GetByName(string name)
+            /// <param name="name"> Name of the League we are searching for </param>
+            /// <returns> the League of a given name (if it exists) </returns>
+            public static League GetByName(string name)
             {
                 // We iterate through all the profiles
-                foreach (Coach coach in coaches)
+                foreach (League league in leagues)
                 {
                     // If we find a similar Coach in the Database
-                    if (coach.name == name)
+                    if (league.name == name)
                     {
-                        return coach;
+                        return league;
                     }
                 }
 
-                // otherwise, we return default Coach
-                return new Coach();
+                // otherwise, we return default League
+                return new League();
             }
 
 
             /// <summary>
-            /// Returns a Coach given its ID (if it exists)
+            /// Returns a League given its ID (if it exists)
             /// </summary>
-            /// <param name="id"> ID of the Coach </param>
-            /// <returns> the Coach of a given ID (if it exists) </returns>
-            public static Coach GetById(Guid id)
+            /// <param name="id"> ID of the League </param>
+            /// <returns> the League of a given ID (if it exists) </returns>
+            public static League GetById(Guid id)
             {
                 // We iterate through all the profiles
-                foreach (Coach coach in coaches)
+                foreach (League league in leagues)
                 {
-                    // If we find a similar Coach in the Database
-                    if (coach.id == id)
+                    // If we find a similar League in the Database
+                    if (league.id == id)
                     {
-                        return coach;
+                        return league;
                     }
                 }
 
-                // otherwise, we return default Coach
-                return new Coach();
+                // otherwise, we return default League
+                return new League();
             }
         }
     }

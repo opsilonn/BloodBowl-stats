@@ -21,6 +21,7 @@
         Player_LevelUp,
 
         League_New,
-        League_GetAllForCoach
+        League_GetAllForCoach,
+        League_GetMembersData
     }
 }

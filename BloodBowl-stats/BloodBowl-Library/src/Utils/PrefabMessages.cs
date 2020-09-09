@@ -8,53 +8,56 @@ namespace BloodBowl_Library
 {
     public static class PrefabMessages
     {
-        public static string INCOMPLETE_FIELDS = "INCOMPLETE FIELDS !!";
+        public const string INCOMPLETE_FIELDS = "INCOMPLETE FIELDS !!";
 
-        public static string INCORRECT_INPUT = "you didn't entered a correct value !!";
-        public static string INCORRECT_INPUT_CHARACTER = "you entered a character which wasn't allowed !!";
-        public static string INCORRECT_INPUT_SIZE = "your input(s) are too long !!";
+        public const string INCORRECT_INPUT = "you didn't entered a correct value !!";
+        public const string INCORRECT_INPUT_CHARACTER = "you entered a character which wasn't allowed !!";
+        public const string INCORRECT_INPUT_SIZE = "your input(s) are too long !!";
 
-        public static string LOGIN_FAILURE = "The Credentials are incorrect : please try again";
+        public const string LOGIN_FAILURE = "The Credentials are incorrect : please try again";
 
-        public static string SIGNIN_PASSWORD_DONT_MATCH = "The password and its verification are different : please try again";
-        public static string SIGNIN_FAILURE = "There already is a user with your name and / or email !";
+        public const string SIGNIN_PASSWORD_DONT_MATCH = "The password and its verification are different : please try again";
+        public const string SIGNIN_FAILURE = "There already is a user with your name and / or email !";
 
-        public static string TEAM_CREATION_SUCCESS = "The new Team was successfully created !";
-        public static string TEAM_CREATION_FAILURE = "The Team hasn't been created...";
+        public const string TEAM_CREATION_SUCCESS = "The new Team was successfully created !";
+        public const string TEAM_CREATION_FAILURE = "The Team hasn't been created...";
 
-        public static string PLAYER_CREATION_SUCCESS = "The new Player was successfully created !";
-        public static string PLAYER_CREATION_FAILURE = "The Player hasn't been created...";
+        public const string PLAYER_CREATION_SUCCESS = "The new Player was successfully created !";
+        public const string PLAYER_CREATION_FAILURE = "The Player hasn't been created...";
 
-        public static string LEAGUE_CREATION_SUCCESS = "The new League was successfully created !";
-        public static string LEAGUE_CREATION_FAILURE = "The League hasn't been created...";
+        public const string LEAGUE_CREATION_SUCCESS = "The new League was successfully created !";
+        public const string LEAGUE_CREATION_FAILURE = "The League hasn't been created...";
 
 
-        public static string LEAGUE_NONE_ARE_AVAILABLE = "It seems you are not a member of any League !\nPlease consider creating your own, or being invited in an existing League";
-        public static string TEAM_NONE_ARE_AVAILABLE = "It seems you have no Team !\nPlease consider creating your a Team";
+        public const string LEAGUE_NONE_ARE_AVAILABLE = "It seems you are not a member of any League !\nPlease consider creating your own, or being invited in an existing League";
+        public const string LEAGUE_HAS_NO_COACH = "It seems there is no member in this League...";
+        public const string TEAM_NONE_ARE_AVAILABLE = "It seems you have no Team !\nPlease consider creating your a Team";
 
-        public static string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
+        public const string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
 
 
         // SELECTION
-        public static string SELECTION_GO_BACK = "Go back";
-        public static string SELECTION_LEAGUE = "please Select a League (last one = leave) : ";
-        public static string SELECTION_TEAM = "please Select a Team (last one = leave) : ";
-        public static string SELECTION_PLAYER = "please Select a Player (last one = leave) : ";
-        // SELECTION - PLAYER'S NEW LEVEL
-        public static string SELECTION_SEE_DATA = "See Data";
-        public static string SELECTION_NEW_LEVEL = "New Level !";
-        public static string SELECTION_REMOVE_PLAYER = "Remove Player";
+        public const string SELECTION_SEE_DATA = "See Data";
+        public const string SELECTION_GO_BACK = "Go back";
+        public const string SELECTION_LEAGUE = "please Select a League (last one = leave) : ";
+        public const string SELECTION_TEAM = "please Select a Team (last one = leave) : ";
+        public const string SELECTION_PLAYER = "please Select a Player (last one = leave) : ";
+        // SELECTION - PLAYER
+        public const string SELECTION_PLAYER_NEW_LEVEL = "New Level !";
+        public const string SELECTION_PLAYER_REMOVE = "Remove Player";
+        // SELECTION - LEAGUE
+        public const string SELECTION_LEAGUE_SEE_MEMBERS = "See Members";
 
 
         // Maximum Input sizes
-        public static int INPUT_MAXSIZE_COACH_ID = 6;
-        public static int INPUT_MAXSIZE_COACH_NAME = 25;
-        public static int INPUT_MAXSIZE_COACH_PASSWORD = 25;
-        public static int INPUT_MAXSIZE_COACH_EMAIL = 50;
+        public const int INPUT_MAXSIZE_COACH_ID = 6;
+        public const int INPUT_MAXSIZE_COACH_NAME = 25;
+        public const int INPUT_MAXSIZE_COACH_PASSWORD = 25;
+        public const int INPUT_MAXSIZE_COACH_EMAIL = 50;
 
-        public static int INPUT_MAXSIZE_NAME = 50;
-        public static int INPUT_MAXSIZE_DESCRIPTION = 100;
+        public const int INPUT_MAXSIZE_NAME = 50;
+        public const int INPUT_MAXSIZE_DESCRIPTION = 100;
 
-        public static int INPUT_MAXSIZE_PROFILE_CONTENT = 100;
+        public const int INPUT_MAXSIZE_PROFILE_CONTENT = 100;
     }
 }

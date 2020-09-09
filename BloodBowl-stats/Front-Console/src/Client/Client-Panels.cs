@@ -5,9 +5,10 @@ using System.Collections.Generic;
 namespace Front_Console
 {
     public partial class Client
-    {/// <summary>
-     /// A panel displaying all data about connecting to the program (Login / Sign-in)
-     /// </summary>
+    {
+        /// <summary>
+         /// A panel displaying all data about connecting to the program (Login / Sign-in)
+         /// </summary>
         private void PanelConnection()
         {
             int choice = Choice_Prefabs.CHOICE_CONNECTION.GetChoice();
@@ -145,9 +146,7 @@ namespace Front_Console
 
                     if (index != choiceString.Count - 1)
                     {
-                        //PanelTeam(userData.teams[index]);
-                        Console.WriteLine("you have chosen : " + leagues[index].name);
-                        CONSOLE.WaitForInput();
+                        PanelLeague(leagues[index]);
                     }
                     else
                     {
@@ -156,6 +155,61 @@ namespace Front_Console
                 }
             }
 
+        }
+
+
+        /// <summary>
+        /// A panel displaying all options a user can perform with a given League
+        /// </summary>
+        /// <param name="league">League instance of which we display the options</param>
+        private void PanelLeague(League league)
+        {
+            bool continuingLeague = true;
+
+            while (continuingLeague)
+            {
+                // We create a list containing all the choices
+                List<string> choiceStrings = new List<string>();
+
+                // Add choice to see the League's data
+                choiceStrings.Add(PrefabMessages.SELECTION_SEE_DATA);
+
+                // Add choice to see the Members
+                choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_SEE_MEMBERS);
+
+                // Add choice to go back
+                choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
+
+
+                // We create the Choice
+                Choice c = new Choice("please Select an action for " + league.name + " (last one = leave) : ", choiceStrings);
+
+                // We get the user's choice STRING !!!
+                string choice = choiceStrings[c.GetChoice()];
+
+                // Depending on his choice :
+                switch(choice)
+                {
+                    // Display basic data
+                    case PrefabMessages.SELECTION_SEE_DATA:
+                        DisplayLeague(league);
+                        break;
+
+                    // See Members
+                    case PrefabMessages.SELECTION_LEAGUE_SEE_MEMBERS:
+                        DisplayMembers(league);
+                        break;
+
+                    // Go Back
+                    case PrefabMessages.SELECTION_GO_BACK:
+                        continuingLeague = false;
+                        break;
+
+                    default:
+                        CONSOLE.WriteLine(ConsoleColor.Red, "Error at the League " + league.name);
+                        break;
+                }
+            }
         }
 
 
@@ -170,6 +224,7 @@ namespace Front_Console
 
             while (continuingTeams)
             {
+                // if there is no team, display an error message
                 if(userData.teams.Count == 0)
                 {
                     CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.TEAM_NONE_ARE_AVAILABLE);
@@ -204,8 +259,9 @@ namespace Front_Console
 
 
         /// <summary>
-        /// A panel displaying all options a user can perform while logged to the program (Topic / Chat)
+        /// A panel displaying all options a user can perform with a given Team
         /// </summary>
+        /// <param name="team">Team instance of which we display the options</param>
         private void PanelTeam(Team team)
         {
             bool continuingTeam = true;
@@ -290,47 +346,55 @@ namespace Front_Console
             {
                 // CHOICE
                 // We dynamically create a List containing all the players names
-                List<string> choiceString = new List<string>();
-                choiceString.Add(PrefabMessages.SELECTION_SEE_DATA);
+                List<string> choiceStrings = new List<string>();
+                choiceStrings.Add(PrefabMessages.SELECTION_SEE_DATA);
 
                 if (player.hasNewLevel)
                 {
-                    choiceString.Add(PrefabMessages.SELECTION_NEW_LEVEL);
+                    choiceStrings.Add(PrefabMessages.SELECTION_PLAYER_NEW_LEVEL);
                 }
 
                 // We add another choice : "Remove Player"
-                choiceString.Add(PrefabMessages.SELECTION_REMOVE_PLAYER);
+                choiceStrings.Add(PrefabMessages.SELECTION_PLAYER_REMOVE);
 
                 // We add a last choice: "Go Back"
-                choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
+                choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
+
 
                 // We create the Choice
-                Choice c = new Choice("please Select an action for " + player.name + " (last one = leave) : ", choiceString);
-                int index = c.GetChoice();
+                Choice c = new Choice("please Select an action for " + player.name + " (last one = leave) : ", choiceStrings);
+
+                // We get the user's choice STRING !!!
+                string choice = choiceStrings[c.GetChoice()];
 
 
-                // Since we have a dynamic attribution of choices, the on-going program is quite... messy
+                // Depending on his choice :
+                switch (choice)
+                {
+                    // Display basic data
+                    case PrefabMessages.SELECTION_SEE_DATA:
+                        Console.WriteLine(player);
+                        CONSOLE.WaitForInput();
+                        break;
 
-                // If it is the first choice : SEE DATA
-                if (index == 0)
-                {
-                    Console.WriteLine(player);
-                    CONSOLE.WaitForInput();
-                }
-                // If it is the second choice AND the player has a new level : NEW LEVEL
-                else if (index == 1 && player.hasNewLevel)
-                {
-                    PlayerLevelsUp(player);
-                }
-                // If it is the last choice : GO BACK
-                else if(index == choiceString.Count-1)
-                {
-                    continuingPlayer = false;
-                }
-                // Otherwise : REMOVE PLAYER
-                else
-                {
-                    RemovePlayer(player);
+                    // New Level
+                    case PrefabMessages.SELECTION_PLAYER_NEW_LEVEL:
+                        PlayerLevelsUp(player);
+                        break;
+
+                    // Go Back
+                    case PrefabMessages.SELECTION_PLAYER_REMOVE:
+                        RemovePlayer(player);
+                        break;
+
+                    // Go Back
+                    case PrefabMessages.SELECTION_GO_BACK:
+                        continuingPlayer = false;
+                        break;
+
+                    default:
+                        CONSOLE.WriteLine(ConsoleColor.Red, "Error at the Player " + player.name);
+                        break;
                 }
             }
         }

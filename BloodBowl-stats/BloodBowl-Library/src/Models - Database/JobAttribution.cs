@@ -52,6 +52,19 @@ namespace BloodBowl_Library
 
 
 
+
+        /// <summary>
+        /// Textual representation of the instance
+        /// </summary>
+        /// <returns> A textual representation of the instance</returns>
+        public override string ToString()
+        {
+            string s = String.Format("\tJob Attribution : {0} - {1}\n", idCoach, job);
+
+            return s;
+        }
+
+
         // GETTER - SETTER
         public Guid idCoach { get => _idCoach; set => _idCoach = value; }
         public Job job { get => _job; set => _job = value; }

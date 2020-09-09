@@ -50,5 +50,30 @@ namespace Back_Server
             // We send the Leagues
             Net.LIST_LEAGUE.Send(comm.GetStream(), leagues);
         }
+
+
+
+
+        /// <summary>
+        /// Sends all Coaches that belong to a League
+        /// </summary>
+        /// <param name="idLeague">Id of the League of which we seek the >Coaches</param>
+        private void SendLeagueMembers(Guid idLeague)
+        {
+            // We initialize a list
+            List<Coach> coaches = new List<Coach>();
+
+            // We get the League
+            League league = Database.LEAGUE.GetById(idLeague);
+
+            // get all the Coaches in a League
+            league.members.ForEach(member => coaches.Add(Database.COACH.GetById(member.idCoach)));
+
+            // We remove all occurences of an incomplete Coach
+            coaches.RemoveAll(coach => !coach.IsComplete);
+
+            // We send the Leagues
+            Net.LIST_COACH.Send(comm.GetStream(), coaches);
+        }
     }
 }

@@ -199,6 +199,10 @@ namespace Back_Server
                         SendLeagues((Guid)content);
                         break;
 
+                    case Instructions.League_GetMembersData:
+                        SendLeagueMembers((Guid)content);
+                        break;
+
 
                     // otherwise : Error (should not occur, but we're not taking any chance)
                     default:
