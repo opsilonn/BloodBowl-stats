@@ -1,6 +1,7 @@
 ﻿using BloodBowl_Library;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Front_Console
 {
@@ -177,6 +178,13 @@ namespace Front_Console
                 // Add choice to see the Members
                 choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_SEE_MEMBERS);
 
+                // if the user is allowed to invite : Add choice to Invite a new Member
+                if(league.members.FirstOrDefault(member => member.coach.id == userData.id).job.canAddPlayer())
+                {
+                    choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_INVITE_MEMBERS);
+                }
+
+
                 // Add choice to go back
                 choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
 
@@ -198,6 +206,11 @@ namespace Front_Console
                     // See Members
                     case PrefabMessages.SELECTION_LEAGUE_SEE_MEMBERS:
                         DisplayMembers(league);
+                        break;
+
+                    // Invite Member
+                    case PrefabMessages.SELECTION_LEAGUE_INVITE_MEMBERS:
+                        InviteToLeague(league);
                         break;
 
                     // Go Back
@@ -236,7 +249,7 @@ namespace Front_Console
                     // CHOICE
                     // We dynamically create a List containing all the Team's name
                     List<string> choiceString = new List<string>();
-                    userData.teams.ForEach(team => choiceString.Add(team.name));
+                    userData.teams.ForEach(team => choiceString.Add(team.shortDescription));
 
                     // We add as a last choice the option to "Go Back"
                     choiceString.Add(PrefabMessages.SELECTION_GO_BACK);

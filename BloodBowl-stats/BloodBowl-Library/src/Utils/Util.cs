@@ -71,7 +71,7 @@ namespace BloodBowl_Library
         /// </summary>
         /// <param name="input">String given to be modified</param>
         /// <returns></returns>
-        public static string CorrectString(string input)
+        public static string ConvertToCorrectString(string input)
         {
             // A char array to store and modify the input
             List<char> output = new List<char>();
@@ -101,6 +101,105 @@ namespace BloodBowl_Library
 
             // Return the string
             return new String(output.ToArray());
+        }
+
+
+        public static int Compute(string s, string t)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                if (string.IsNullOrEmpty(t))
+                    return 0;
+                return t.Length;
+            }
+
+            if (string.IsNullOrEmpty(t))
+            {
+                return s.Length;
+            }
+
+            int n = s.Length;
+            int m = t.Length;
+            int[,] d = new int[n + 1, m + 1];
+
+            // initialize the top and right of the table to 0, 1, 2, ...
+            for (int i = 0; i <= n; d[i, 0] = i++) ;
+            for (int j = 1; j <= m; d[0, j] = j++) ;
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= m; j++)
+                {
+                    int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+                    int min1 = d[i - 1, j] + 1;
+                    int min2 = d[i, j - 1] + 1;
+                    int min3 = d[i - 1, j - 1] + cost;
+                    d[i, j] = Math.Min(Math.Min(min1, min2), min3);
+                }
+            }
+            return d[n, m];
+        }
+
+
+
+
+
+
+
+        /// <summary>
+        /// Calculate percentage similarity of two strings
+        /// <param name="source">Source String to Compare with</param>
+        /// <param name="target">Targeted String to Compare</param>
+        /// <returns>Return Similarity between two strings from 0 to 1.0</returns>
+        /// </summary>
+        public static double CalculateSimilarity(this string source, string target)
+        {
+            if ((source == null) || (target == null)) return 0.0;
+            if ((source.Length == 0) || (target.Length == 0)) return 0.0;
+            if (source == target) return 1.0;
+
+            int stepsToSame = ComputeLevenshteinDistance(source, target);
+            return (1.0 - ((double)stepsToSame / (double)Math.Max(source.Length, target.Length)));
+        }
+        /// <summary>
+        /// Returns the number of steps required to transform the source string
+        /// into the target string.
+        /// </summary>
+        static int ComputeLevenshteinDistance(string source, string target)
+        {
+            if ((source == null) || (target == null)) return 0;
+            if ((source.Length == 0) || (target.Length == 0)) return 0;
+            if (source == target) return source.Length;
+
+            int sourceWordCount = source.Length;
+            int targetWordCount = target.Length;
+
+            // Step 1
+            if (sourceWordCount == 0)
+                return targetWordCount;
+
+            if (targetWordCount == 0)
+                return sourceWordCount;
+
+            int[,] distance = new int[sourceWordCount + 1, targetWordCount + 1];
+
+            // Step 2
+            for (int i = 0; i <= sourceWordCount; distance[i, 0] = i++) ;
+            for (int j = 0; j <= targetWordCount; distance[0, j] = j++) ;
+
+            for (int i = 1; i <= sourceWordCount; i++)
+            {
+                for (int j = 1; j <= targetWordCount; j++)
+                {
+                    // Step 3
+                    int cost = (target[j - 1] == source[i - 1]) ? 0 : 1;
+
+                    // Step 4
+                    distance[i, j] = Math.Min(Math.Min(distance[i - 1, j] + 1, distance[i, j - 1] + 1), distance[i - 1, j - 1] + cost);
+                }
+            }
+
+            return distance[sourceWordCount, targetWordCount];
         }
     }
 }

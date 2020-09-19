@@ -117,7 +117,7 @@ namespace BloodBowl_Library
 
         // GETTER - SETTER
         public Guid id { get => _id; set => _id = value; }
-        public string name { get => _name; set => _name = Util.CorrectString(value); }
+        public string name { get => _name; set => _name = Util.ConvertToCorrectString(value); }
         public string email { get => _email; set => _email = value; }
         [JsonIgnore]
         public List<Team> teams { get => _teams; set => _teams = value; }

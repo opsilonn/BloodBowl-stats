@@ -49,6 +49,26 @@ namespace Back_Server
             Net.COACH.Send(comm.GetStream(), Database.COACH.GetByName(name));
         }
 
+
+        /// <summary>
+        /// Searches a Coach by name, and returns up to 10 of the best matches
+        /// </summary>
+        /// <param name="name">name of the Coach we seek</param>
+        public void SearchCoachByName(string name)
+        {
+            // Writing a Log in the Console
+            CONSOLE.WriteLine(ConsoleColor.Yellow, "Coach's name : " + name);
+
+            // We create a list list that
+            // - orders all the Coach by similitude to the searched name
+            // - takes only the 10 first results
+            List<Coach> listCoaches = Database.coaches.OrderByDescending(c => name.CalculateSimilarity(c.name)).Take(10).ToList();
+
+
+            // We send the default Coach if no match was found / the correct one if a match was found
+            Net.LIST_COACH.Send(comm.GetStream(), listCoaches);
+        }
+
         // TEAM
 
 

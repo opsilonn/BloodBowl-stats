@@ -11,6 +11,7 @@
         Coach_GetAll,
         Coach_GetById,
         Coach_GetByName,
+        Player_SearchByName,
 
         Team_GetAllFromCoach,
         Team_GetById,
@@ -22,6 +23,8 @@
 
         League_New,
         League_GetAllForCoach,
-        League_GetMembersData
+        League_GetMembersData,
+        League_InviteCoach,
+        League_InviteTeam
     }
 }

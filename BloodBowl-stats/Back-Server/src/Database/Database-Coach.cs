@@ -33,7 +33,7 @@ namespace Back_Server
                         Read(directory);
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     CONSOLE.WriteLine(ConsoleColor.Magenta, "\nCOULD NOT READ THE COACHES");
                 }

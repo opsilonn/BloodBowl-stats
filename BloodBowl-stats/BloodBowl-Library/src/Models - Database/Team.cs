@@ -147,5 +147,11 @@ namespace BloodBowl_Library
 
         [JsonIgnore]
         public int value { get => players.Select(player => player.value).Sum(); }
+        [JsonIgnore]
+        public string valueToString { get => string.Format("{0:#,0, K}", value); }
+        
+
+        [JsonIgnore]
+        public string shortDescription { get => name + "\n\t" + valueToString + " - " + race.name(); }
     }
 }

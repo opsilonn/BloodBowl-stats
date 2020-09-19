@@ -33,7 +33,7 @@ namespace Back_Server
                         Read(directory);
                     }
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     CONSOLE.WriteLine(ConsoleColor.Magenta, "\nCOULD NOT READ THE LEAGUES");
                 }
@@ -81,11 +81,16 @@ namespace Back_Server
                         }
                     }
                     */
+                    // We associate to each Member the correct link to its coach data
+                    newLeague.members.ForEach(member => member.coach = COACH.GetById(member.idCoach));
 
-                    // If the instances are complete (all fields are OK)
+                    // We remove all the useless links
+                    newLeague.members.RemoveAll(member => !member.IsComplete);
+
+                    // If the instance is complete (all fields are OK)
                     if (newLeague.IsComplete)
                     {
-                        // We add them to their respective lists
+                        // We add it to its respective list
                         leagues.Add(newLeague);
 
                         // It worked !

@@ -27,6 +27,9 @@ namespace BloodBowl_Library
 
         public const string LEAGUE_CREATION_SUCCESS = "The new League was successfully created !";
         public const string LEAGUE_CREATION_FAILURE = "The League hasn't been created...";
+        public const string LEAGUE_INVITATION_COACH_SELF = "You cannot invite yourself to a League !";
+        public const string LEAGUE_INVITATION_COACH_SUCCESS = "The invitation was successful !";
+        public const string LEAGUE_INVITATION_COACH_FAILURE = "The invitation has not worked...";
 
 
         public const string LEAGUE_NONE_ARE_AVAILABLE = "It seems you are not a member of any League !\nPlease consider creating your own, or being invited in an existing League";
@@ -40,6 +43,7 @@ namespace BloodBowl_Library
         public const string SELECTION_SEE_DATA = "See Data";
         public const string SELECTION_GO_BACK = "Go back";
         public const string SELECTION_LEAGUE = "please Select a League (last one = leave) : ";
+        public const string SELECTION_COACH = "please Select a Coach (last one = leave) : ";
         public const string SELECTION_TEAM = "please Select a Team (last one = leave) : ";
         public const string SELECTION_PLAYER = "please Select a Player (last one = leave) : ";
         // SELECTION - PLAYER
@@ -47,6 +51,7 @@ namespace BloodBowl_Library
         public const string SELECTION_PLAYER_REMOVE = "Remove Player";
         // SELECTION - LEAGUE
         public const string SELECTION_LEAGUE_SEE_MEMBERS = "See Members";
+        public const string SELECTION_LEAGUE_INVITE_MEMBERS = "Invite Member";
 
 
         // Maximum Input sizes

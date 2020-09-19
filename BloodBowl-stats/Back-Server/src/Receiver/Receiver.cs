@@ -33,6 +33,18 @@ namespace Back_Server
         public delegate void LeagueEvent(League league);
         public event LeagueEvent When_League_Create;
 
+        public delegate void LeagueInvitationCoachEvent(InvitationCoach invitation);
+        public event LeagueInvitationCoachEvent When_League_InvitationCoach_Create;
+        public event LeagueInvitationCoachEvent When_League_InvitationCoach_Accept;
+        public event LeagueInvitationCoachEvent When_League_InvitationCoach_Refuse;
+
+        /*
+        public delegate void LeagueInvitationTeamEvent(InvitationTeam invitation);
+        public event LeagueInvitationTeamEvent When_League_InvitationTeam_Create;
+        public event LeagueInvitationTeamEvent When_League_InvitationTeam_Accept;
+        public event LeagueInvitationTeamEvent When_League_InvitationTeam_Refuse;
+        */ 
+
 
         // Data of the User currently logged in
         public Coach userCoach;
@@ -117,6 +129,10 @@ namespace Back_Server
                         GetCoachById((Guid)content);
                         break;
 
+                    case Instructions.Player_SearchByName:
+                        SearchCoachByName((string)content);
+                        break;
+
 
 
                     // TEAM
@@ -163,7 +179,7 @@ namespace Back_Server
 
                     // PLAYER
                     case Instructions.Player_LevelUp:
-                        // We get the Player to remove
+                        // We get the Player to level up
                         Player player = (Player)content;
 
                         // We add a new Perk to the player
@@ -201,6 +217,21 @@ namespace Back_Server
 
                     case Instructions.League_GetMembersData:
                         SendLeagueMembers((Guid)content);
+                        break;
+
+                    case Instructions.League_InviteCoach:
+                        InvitationCoach invitationCoach = (InvitationCoach)content;
+                        if(InviteCoachToLeague(invitationCoach))
+                        {
+                            // We set the Invitation League to th eone of our Database (otherwise, there is conflict...)
+                            invitationCoach.league = Database.LEAGUE.GetById(invitationCoach.league.id);
+
+                            // We add the invitation to the League
+                            invitationCoach.league.invitedCoaches.Add(invitationCoach);
+
+                            // We raise the event : an Invitation has been created
+                            When_League_InvitationCoach_Create(invitationCoach);
+                        }
                         break;
 
 

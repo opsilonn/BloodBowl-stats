@@ -61,6 +61,8 @@
     <Compile Include="src\Models - Communication\Net.cs" />
     <Compile Include="src\Models - Database\Coach.cs" />
     <Compile Include="src\Models - Database\CoachWithPassword.cs" />
+    <Compile Include="src\Models - Database\Invitation.cs" />
+    <Compile Include="src\Models - Database\InvitationCoach.cs" />
     <Compile Include="src\Models - Database\Perk.cs" />
     <Compile Include="src\Models - Database\PerkType.cs" />
     <Compile Include="src\Models - Database\Job.cs" />

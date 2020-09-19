@@ -24,7 +24,7 @@ namespace Back_Server
             {
                 // Success !
                 // We create a new Team instance from the data receiveds
-                newLeague = new League(leagueReceived.name, leagueReceived.idCreator);
+                newLeague = new League(leagueReceived.name, leagueReceived.creator);
             }
 
             // We return the id of the newly created team (error : default empty id; success : correct id)
@@ -45,7 +45,7 @@ namespace Back_Server
         private void SendLeagues(Guid idCoach)
         {
             // We get all the Leagues a Coach is in
-            List<League> leagues = Database.leagues.Where(league => league.ContainsCoach(idCoach)).ToList();
+            List<League> leagues = Database.leagues.Where(league => league.ContainsMember(idCoach)).ToList();
 
             // We send the Leagues
             Net.LIST_LEAGUE.Send(comm.GetStream(), leagues);
@@ -74,6 +74,44 @@ namespace Back_Server
 
             // We send the Leagues
             Net.LIST_COACH.Send(comm.GetStream(), coaches);
+        }
+
+
+
+
+        /// <summary>
+        /// Manage the invitation of a new Coach to a League
+        /// </summary>
+        /// <param name="invitation"></param>
+        public bool InviteCoachToLeague(InvitationCoach invitation)
+        {
+            // We initialize a bool
+            bool isValid = false;
+
+            // First, we search the correct League in the database
+            League league = Database.LEAGUE.GetById(invitation.league.id);
+            if(league.IsComplete)
+            {
+                // Second, we check if the invitor is in the League AND if he is allowed to perform an invitation
+                JobAttribution invitor = league.GetMember(invitation.idInvitor);
+
+                if(invitor.IsComplete && invitor.job.canAddPlayer())
+                {
+                    // Third, we verify if the invited Coach exists, and if he's not already in the League
+                    if (Database.COACH.GetById(invitation.idInvited).IsComplete)
+                    {
+                        // Fourth, we check that the invited is not in the League (whether as a member or an already invited)
+                        isValid = (!league.ContainsMember(invitation.idInvited) && !league.ContainsInvitedCoach(invitation.idInvited));
+                    }
+                }
+            }
+
+
+            // We return to the user whether it worked or not
+            Net.BOOL.Send(comm.GetStream(), isValid);
+
+            // We return to the server whether it worked or not
+            return isValid;
         }
     }
 }

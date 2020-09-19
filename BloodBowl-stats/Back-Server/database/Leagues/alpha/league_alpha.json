@@ -8,5 +8,13 @@
       "idCoach": "203b0c8a-fbb8-42f4-830d-eae711801c2e",
       "job": 0
     }
+  ],
+  "invitedCoaches": [
+    {
+      "idInvited": "d412e2ca-cf1e-4b2c-95d3-313b792d15b0",
+      "date": "2020-09-19T16:03:35.3065867+02:00",
+      "idLeague": "081da065-6bd0-4094-af14-7e798623859d",
+      "idInvitor": "203b0c8a-fbb8-42f4-830d-eae711801c2e"
+    }
   ]
 }

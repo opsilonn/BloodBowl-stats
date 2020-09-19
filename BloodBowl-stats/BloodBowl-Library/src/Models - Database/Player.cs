@@ -84,7 +84,7 @@ namespace BloodBowl_Library
 
         // GETTER - SETTER
         public Guid id { get => _id; set => _id = value; }
-        public string name { get => _name; set => _name = Util.CorrectString(value); }
+        public string name { get => _name; set => _name = Util.ConvertToCorrectString(value); }
         public Role role { get => _role; set => _role = value; }
         public int xp { get => _xp; set => _xp = value; }
         public List<Perk> perks { get => _perks; set => _perks = value; }

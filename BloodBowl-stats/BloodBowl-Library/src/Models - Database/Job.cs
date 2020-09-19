@@ -69,5 +69,27 @@ namespace BloodBowl_Library
         {
             return job.data().name;
         }
+
+
+        /// <summary>
+        /// If the instance can add Player
+        /// </summary>
+        /// <param name="job">Job we are analysing</param>
+        /// <returns>If the instance can add Player</returns>
+        public static bool canAddPlayer(this Job job)
+        {
+            return job.data().canAddPlayer;
+        }
+
+
+        /// <summary>
+        /// If the instance can write articles
+        /// </summary>
+        /// <param name="job">Job we are analysing</param>
+        /// <returns>If the instance can write articles</returns>
+        public static bool canWriteArticles(this Job job)
+        {
+            return job.data().canWriteArticles;
+        }
     }
 }

@@ -35,14 +35,11 @@ namespace Front_Console
 
             while (continueMembers)
             {
-                // FIRST - we ask for the List of detailled data about the members
-                Net.COMMUNICATION.Send(comm.GetStream(), new Communication(Instructions.League_GetMembersData, league.id));
-
-                // We receive the id of the League from the server
-                List<Coach> members = Net.LIST_COACH.Receive(comm.GetStream());
+                // We create a list with all the league's members, ordered in hierarchical position
+                List<JobAttribution> members = league.members.OrderBy(member => member.job).ToList();
 
                 // If there is no member : cancel
-                if(members.Count == 0)
+                if (members.Count == 0)
                 {
                     // Display error message
                     CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_HAS_NO_COACH);
@@ -56,7 +53,7 @@ namespace Front_Console
                     // CHOICE
                     // We dynamically create a List containing all the Coaches names
                     List<string> choiceString = new List<string>();
-                    members.ForEach(member => choiceString.Add(member.name));
+                    members.ForEach(member => choiceString.Add(member.job + " - " + member.coach.name));
 
                     // We add as a last choice the option to "Go Back"
                     choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
@@ -69,7 +66,7 @@ namespace Front_Console
 
                     if (index != choiceString.Count - 1)
                     {
-                        Console.WriteLine("you have chosen : " + members[index].name);
+                        Console.WriteLine("you have chosen : " + members[index].coach.name);
                         CONSOLE.WaitForInput();
                         // ManagePlayer(members[index]);
                     }
@@ -119,6 +116,7 @@ namespace Front_Console
                     errorMessage = PrefabMessages.INCOMPLETE_FIELDS;
                 }
                 */
+                // input is too long : ERROR
                 else if (name.Length > PrefabMessages.INPUT_MAXSIZE_NAME)
                 {
                     errorMessage = PrefabMessages.INCORRECT_INPUT_SIZE;
@@ -133,7 +131,7 @@ namespace Front_Console
                 {
                     // Sending the new League
                     Instructions instruction = Instructions.League_New;
-                    League newLeague = new League(name, userData.id);
+                    League newLeague = new League(name, userData);
                     Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, newLeague));
 
                     // We receive the id of the League from the server
@@ -159,6 +157,111 @@ namespace Front_Console
                     else
                     {
                         errorMessage = PrefabMessages.LEAGUE_CREATION_FAILURE;
+                    }
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Invite a new Member to the League
+        /// </summary>
+        /// <param name="league">League where we are inviting the Player to</param>
+        public void InviteToLeague(League league)
+        {
+
+            bool continueInvitation = true;
+            string errorMessage = "";
+
+            while (continueInvitation)
+            {
+                // Displaying some messages
+                Console.Clear();
+                CONSOLE.WriteLine(ConsoleColor.Blue, "\n   Enter empty fields to leave the INVITATION of a new Member :");
+
+                // Displays a message if the credentials are incorrect
+                CONSOLE.WriteLine(ConsoleColor.Red, errorMessage);
+
+                // NAME
+                Console.Write("\n Please enter the name of the user you want to invite to this League : ");
+                string name = Console.ReadLine();
+
+
+                // All the fields are empty : go back to the menu
+                if (name.Length == 0)
+                {
+                    continueInvitation = false;
+                }
+                // input is too long : ERROR
+                else if (name.Length > PrefabMessages.INPUT_MAXSIZE_NAME)
+                {
+                    errorMessage = PrefabMessages.INCORRECT_INPUT_SIZE;
+                }
+                // If at least one field has one incorrect character : ERROR
+                else if (!Util.CorrectInput(name))
+                {
+                    errorMessage = PrefabMessages.INCORRECT_INPUT_CHARACTER;
+                }
+                // Otherwise : continue the protocol
+                else
+                {
+                    // Sending the name of the Coach
+                    Instructions instruction = Instructions.Player_SearchByName;
+                    Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, name));
+
+                    // We receive the list of potential matches
+                    List<Coach> listCoaches = Net.LIST_COACH.Receive(comm.GetStream());
+
+
+                    // CHOICE
+                    // We dynamically create a List containing all the Coaches names
+                    List<string> choiceString = new List<string>();
+                    listCoaches.ForEach(coach => choiceString.Add(coach.name));
+
+                    // We add as a last choice the option to "Go Back"
+                    choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
+
+
+                    // We create the Choice
+                    Choice c = new Choice(PrefabMessages.SELECTION_COACH, choiceString);
+                    int index = c.GetChoice();
+
+
+                    if (index != choiceString.Count - 1)
+                    {
+                        Coach selectedCoach = listCoaches[index];
+
+                        // We check if the user didn't invite himself
+                        if(selectedCoach.id == userData.id)
+                        {
+                            CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_INVITATION_COACH_SELF);
+                        }
+                        else
+                        {
+                            // Sending the ID of the Coach we invite
+                            instruction = Instructions.League_InviteCoach;
+                            InvitationCoach invitationCoach = new InvitationCoach(league, userData, selectedCoach);
+                            Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationCoach));
+
+                            // We receive whether it worked or not
+                            if(Net.BOOL.Receive(comm.GetStream()))
+                            {
+                                // We add the invitation to the League
+                                league.invitedCoaches.Add(invitationCoach);
+
+                                // We display a message accordingly
+                                CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.LEAGUE_INVITATION_COACH_SUCCESS);
+                                continueInvitation = false;
+                            }
+                            else
+                            {
+                                // We display a message accordingly
+                                CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_INVITATION_COACH_FAILURE);
+                            }
+                        }
+
+                        CONSOLE.WaitForInput();
                     }
                 }
             }
