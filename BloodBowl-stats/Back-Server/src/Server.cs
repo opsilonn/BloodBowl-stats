@@ -64,6 +64,7 @@ namespace Back_Server
 
                 receiver.When_League_Create += LeagueCreate;
                 receiver.When_League_InvitationCoach_Create += LeagueInvitationCoachCreate;
+                receiver.When_League_InvitationCoach_Accept += LeagueInvitationCoachAccept;
 
 
                 // ... et je lance une connexion avec le serveur
@@ -177,6 +178,11 @@ namespace Back_Server
             Database.LEAGUE.Write(league);
         }
         private void LeagueInvitationCoachCreate(InvitationCoach ia)
+        {
+            // Updating the JSON file
+            Database.LEAGUE.Write(ia.league);
+        }
+        private void LeagueInvitationCoachAccept(InvitationCoach ia)
         {
             // Updating the JSON file
             Database.LEAGUE.Write(ia.league);

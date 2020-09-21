@@ -25,7 +25,11 @@
         League_New,
         League_GetAllForCoach,
         League_GetMembersData,
-        League_InviteCoach,
-        League_InviteTeam
+        League_InviteCoachCreate,
+        League_InviteCoachAccept,
+        League_InviteCoachDismiss,
+        League_InviteTeamCreate,
+        League_InviteTeamAccept,
+        League_InviteTeamDismiss
     }
 }

@@ -257,7 +257,7 @@ namespace Front_Console
                                 Job job = jobs[index];
 
                                 // Sending the ID of the Coach we invite
-                                instruction = Instructions.League_InviteCoach;
+                                instruction = Instructions.League_InviteCoachCreate;
                                 InvitationCoach invitationCoach = new InvitationCoach(league, userData, selectedCoach, job);
                                 Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationCoach));
 
@@ -330,13 +330,45 @@ namespace Front_Console
                     Choice c = new Choice(PrefabMessages.SELECTION_PLAYER, choiceString);
                     int index = c.GetChoice();
 
-
+                    // The user chose an Invitation
                     if (index != choiceString.Count - 1)
                     {
+                        // We verify with the server if it is still valid
                         InvitationCoach invitationSelected = invitations[index];
-                        Console.WriteLine("you have chosen : " + invitationSelected.league.name + " as " + invitationSelected.job);
-                        CONSOLE.WaitForInput();
-                        // ManagePlayer(members[index]);
+
+                        index = Choice_Prefabs.CHOICE_INVITATION.GetChoice();
+
+                        // Send yes
+                        if (index == 0)
+                        {
+                            // We verify with the server if it is still valid
+                            instruction = Instructions.League_InviteCoachAccept;
+                            Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationSelected));
+
+                            // We get the response
+                            bool itWorked = Net.BOOL.Receive(comm.GetStream());
+
+                            // If the server response is positive : accept the invitation
+                            if(itWorked)
+                            {
+                                // Accept the invitation
+                                invitationSelected.league.AcceptInvitationCoach(invitationSelected);
+
+                                // End the loop
+                                continueInvitations = false;
+                            }
+                        }
+                        // Send no
+                        else if (index == 1)
+                        {
+                            // Send no
+                            Console.WriteLine("Dismiss");
+                            CONSOLE.WaitForInput();
+                        }
+                        else
+                        {
+                            // Go back
+                        }
                     }
                     else
                     {

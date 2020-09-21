@@ -168,6 +168,23 @@ namespace BloodBowl_Library
 
 
         /// <summary>
+        /// Accepts an InvitationCoach
+        /// </summary>
+        /// <param name="invitationCoach">InvitationCoach that has been accepted</param>
+        public void AcceptInvitationCoach(InvitationCoach invitationCoach)
+        {
+            // First - we add the invited as a member
+            JobAttribution ja = new JobAttribution(invitationCoach.invited, invitationCoach.job);
+            members.Add(ja);
+
+            // Second - remove all similar invitations
+            invitedCoaches.RemoveAll(invit => invit.idInvited == invitationCoach.idInvited);
+        }
+
+
+
+
+        /// <summary>
         /// Returns whether a given Coach is a member of this League instance
         /// </summary>
         /// <param name="invitedId">Id of the Member</param>
@@ -175,20 +192,6 @@ namespace BloodBowl_Library
         public bool ContainsSimilarInvitedCoach(InvitationCoach iaReceived)
         {
             return invitedCoaches.Where(ia => (ia.idInvited == iaReceived.idInvited && ia.job == iaReceived.job)).Any();
-
-            /*
-            foreach(InvitationCoach iaCurrent in invitedCoaches)
-            {
-                // If the person was already invited, and to the same post : return true
-                if(iaCurrent.idInvited == iaReceived.idInvited && iaCurrent.job == iaReceived.job)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-            */
-            // return invitedCoaches.Count(invited => (invited.idInvited == invitedId)) != 0;
         }
     }
 }

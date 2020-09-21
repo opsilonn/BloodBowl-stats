@@ -66,6 +66,17 @@ namespace Front_Console
            }
        );
 
+        public static Choice CHOICE_INVITATION = new Choice
+       (
+           "Do you want to accept this invitation ?",
+           new List<string>()
+           {
+               "Accept invitation",
+               "Dismiss invitation",
+               "Go Back"
+           }
+       );
+
         public static string CHOICE_TOPIC_JOIN = "Join the Topic";
         public static string CHOICE_TOPIC_LEAVE = "Leave the Topic";
         public static string CHOICE_TOPIC_GOBACK = "Go Back";

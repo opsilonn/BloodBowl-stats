@@ -223,9 +223,9 @@ namespace Back_Server
                         SendLeagueMembers((Guid)content);
                         break;
 
-                    case Instructions.League_InviteCoach:
+                    case Instructions.League_InviteCoachCreate:
                         InvitationCoach invitationCoach = (InvitationCoach)content;
-                        if(InviteCoachToLeague(invitationCoach))
+                        if (InviteCoachToLeague(invitationCoach))
                         {
                             // We set the Invitation League to th eone of our Database (otherwise, there is conflict...)
                             invitationCoach.league = Database.LEAGUE.GetById(invitationCoach.league.id);
@@ -235,6 +235,18 @@ namespace Back_Server
 
                             // We raise the event : an Invitation has been created
                             When_League_InvitationCoach_Create(invitationCoach);
+                        }
+                        break;
+
+                    case Instructions.League_InviteCoachAccept:
+                        InvitationCoach invitationCoachToAccept = (InvitationCoach)content;
+                        if (InvitationCoachAccepted(invitationCoachToAccept))
+                        {
+                            // We accept the invitation
+                            invitationCoachToAccept.league.AcceptInvitationCoach(invitationCoachToAccept);
+
+                            // We raise the event : an Invitation has been created
+                            When_League_InvitationCoach_Accept(invitationCoachToAccept);
                         }
                         break;
 
