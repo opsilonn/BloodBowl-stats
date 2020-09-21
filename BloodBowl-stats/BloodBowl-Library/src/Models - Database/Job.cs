@@ -91,5 +91,40 @@ namespace BloodBowl_Library
         {
             return job.data().canWriteArticles;
         }
+
+
+
+
+        /// <summary>
+        /// Returns a list of all the Jobs a given Job can offer (if allowed)
+        /// </summary>
+        /// <param name="job">Job we are analysing</param>
+        /// <returns>a list of all the Jobs a given Job can offer (if allowed)</returns>
+        public static List<Job> JobsItCanPropose(this Job job)
+        {
+            // We initialize a list
+            List<Job> jobs = new List<Job>();
+
+            // If allowed, we fill the list
+            if(job.canAddPlayer())
+            {
+                jobs = GetAllJobs().Where(j => j >= job).ToList();
+            }
+
+            // Return the list
+            return jobs;
+        }
+
+
+
+
+        /// <summary>
+        /// Returns a list of all the Jobs
+        /// </summary>
+        /// <returns>A list of all the Jobs</returns>
+        public static List<Job> GetAllJobs()
+        {
+            return Enum.GetValues(typeof(Job)).Cast<Job>().ToList();
+        }
     }
 }

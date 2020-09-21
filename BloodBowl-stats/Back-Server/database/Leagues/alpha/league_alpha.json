@@ -12,7 +12,22 @@
   "invitedCoaches": [
     {
       "idInvited": "d412e2ca-cf1e-4b2c-95d3-313b792d15b0",
-      "date": "2020-09-19T16:03:35.3065867+02:00",
+      "job": 2,
+      "date": "2020-09-20T13:23:05.1260039+02:00",
+      "idLeague": "081da065-6bd0-4094-af14-7e798623859d",
+      "idInvitor": "203b0c8a-fbb8-42f4-830d-eae711801c2e"
+    },
+    {
+      "idInvited": "d412e2ca-cf1e-4b2c-95d3-313b792d15b0",
+      "job": 1,
+      "date": "2020-09-20T20:24:49.6848378+02:00",
+      "idLeague": "081da065-6bd0-4094-af14-7e798623859d",
+      "idInvitor": "203b0c8a-fbb8-42f4-830d-eae711801c2e"
+    },
+    {
+      "idInvited": "d412e2ca-cf1e-4b2c-95d3-313b792d15b0",
+      "job": 3,
+      "date": "2020-09-20T20:25:06.1614571+02:00",
       "idLeague": "081da065-6bd0-4094-af14-7e798623859d",
       "idInvitor": "203b0c8a-fbb8-42f4-830d-eae711801c2e"
     }

@@ -11,7 +11,7 @@
         Coach_GetAll,
         Coach_GetById,
         Coach_GetByName,
-        Player_SearchByName,
+        Coach_GetInvitations,
 
         Team_GetAllFromCoach,
         Team_GetById,
@@ -19,6 +19,7 @@
         Team_AddPlayer,
         Team_RemovePlayer,
 
+        Player_SearchByName,
         Player_LevelUp,
 
         League_New,

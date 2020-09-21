@@ -85,23 +85,30 @@ namespace Back_Server
         /// <param name="invitation"></param>
         public bool InviteCoachToLeague(InvitationCoach invitation)
         {
-            // We initialize a bool
+            // We initialize a bool, that tells us if the received invitation is valid or not
             bool isValid = false;
 
             // First, we search the correct League in the database
             League league = Database.LEAGUE.GetById(invitation.league.id);
             if(league.IsComplete)
             {
-                // Second, we check if the invitor is in the League AND if he is allowed to perform an invitation
+                // Second, we check if the invitor is in the League
+                // AND if he is allowed to perform an invitation
+                // AND if he is allowed to give that role
                 JobAttribution invitor = league.GetMember(invitation.idInvitor);
 
-                if(invitor.IsComplete && invitor.job.canAddPlayer())
+                if(invitor.IsComplete
+                    && invitor.job.canAddPlayer()
+                    && invitor.job.JobsItCanPropose().Contains(invitation.job))
                 {
                     // Third, we verify if the invited Coach exists, and if he's not already in the League
                     if (Database.COACH.GetById(invitation.idInvited).IsComplete)
                     {
-                        // Fourth, we check that the invited is not in the League (whether as a member or an already invited)
-                        isValid = (!league.ContainsMember(invitation.idInvited) && !league.ContainsInvitedCoach(invitation.idInvited));
+                        // Fourth, we check that the invited is not already a member of the League
+                        // OR that he hasn't already been invited with this very Job
+                        // (if he has for another Job, we consider the invitation still valid)
+
+                        isValid = !league.ContainsMember(invitation.idInvited) && !league.ContainsSimilarInvitedCoach(invitation);
                     }
                 }
             }

@@ -25,6 +25,7 @@ namespace Front_Console
                "See my Data",
                "Manage my Leagues",
                "Create a new League",
+               "Check my invitations",
                "Manage my Teams",
                "Create a new Team",
                "Log out"

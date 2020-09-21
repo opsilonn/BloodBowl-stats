@@ -129,6 +129,10 @@ namespace Back_Server
                         GetCoachById((Guid)content);
                         break;
 
+                    case Instructions.Coach_GetInvitations:
+                        GetInvitationsCoach((Guid)content);
+                        break;
+
                     case Instructions.Player_SearchByName:
                         SearchCoachByName((string)content);
                         break;

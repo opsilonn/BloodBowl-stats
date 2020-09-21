@@ -60,17 +60,21 @@ namespace Front_Console
                         NewLeague();
                         break;
 
-                    // TEAM
                     case 3:
+                        SeeInvitationsCoach();
+                        break;
+
+                    // TEAM
+                    case 4:
                         PanelTeams();
                         break;
 
-                    case 4:
+                    case 5:
                         NewTeam();
                         break;
 
                     // LOG OUT
-                    case 5:
+                    case 6:
                         LogOut();
                         continuingConnection = false;
                         break;

@@ -35,17 +35,20 @@ namespace BloodBowl_Library
         public const string LEAGUE_NONE_ARE_AVAILABLE = "It seems you are not a member of any League !\nPlease consider creating your own, or being invited in an existing League";
         public const string LEAGUE_HAS_NO_COACH = "It seems there is no member in this League...";
         public const string TEAM_NONE_ARE_AVAILABLE = "It seems you have no Team !\nPlease consider creating your a Team";
+        public const string INVITATION_COACH_NONE = "It seems you have no invitation at the moment...";
+        public const string INVITATION_TEAM_NONE = "It seems you have no invitation for this Team at the moment...";
 
         public const string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
 
 
         // SELECTION
-        public const string SELECTION_SEE_DATA = "See Data";
+        public const string SELECTION_SEE_DATA = "See data";
         public const string SELECTION_GO_BACK = "Go back";
-        public const string SELECTION_LEAGUE = "please Select a League (last one = leave) : ";
-        public const string SELECTION_COACH = "please Select a Coach (last one = leave) : ";
-        public const string SELECTION_TEAM = "please Select a Team (last one = leave) : ";
-        public const string SELECTION_PLAYER = "please Select a Player (last one = leave) : ";
+        public const string SELECTION_LEAGUE = "Please select a League (last one = leave) : ";
+        public const string SELECTION_COACH = "Please select a Coach (last one = leave) : ";
+        public const string SELECTION_TEAM = "Please select a Team (last one = leave) : ";
+        public const string SELECTION_PLAYER = "Please select a Player (last one = leave) : ";
+        public const string SELECTION_JOB = "Please select a Job (last one = leave) : ";
         // SELECTION - PLAYER
         public const string SELECTION_PLAYER_NEW_LEVEL = "New Level !";
         public const string SELECTION_PLAYER_REMOVE = "Remove Player";
@@ -54,6 +57,8 @@ namespace BloodBowl_Library
         public const string SELECTION_LEAGUE_INVITE_MEMBERS = "Invite Member";
 
 
+
+        // A DEPLACER DANS UTIL (ou créér une nouvelle classe InputSize) !!
         // Maximum Input sizes
         public const int INPUT_MAXSIZE_COACH_ID = 6;
         public const int INPUT_MAXSIZE_COACH_NAME = 25;

@@ -87,6 +87,9 @@ namespace Back_Server
                     // We remove all the useless links
                     newLeague.members.RemoveAll(member => !member.IsComplete);
 
+                    // We associate to each InvitationCoach the correct link to its League data
+                    newLeague.invitedCoaches.ForEach(invitation => invitation.league = newLeague);
+
                     // If the instance is complete (all fields are OK)
                     if (newLeague.IsComplete)
                     {

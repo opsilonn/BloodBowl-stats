@@ -20,11 +20,6 @@ namespace Back_Server
             // HERE HERE HERE
             // ... And now, no more testing
 
-            /*
-            InvitationCoach invitation = new InvitationCoach(Database.leagues[0], Database.coaches[0], Job.Player, Database.coaches[0]);
-            Console.WriteLine(invitation.Serialize());
-            */
-
             // Creating the server's console Interface
             Console.Write("Launching the server...");
             Server server = new Server(8976);

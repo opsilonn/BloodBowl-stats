@@ -194,6 +194,9 @@ namespace Front_Console
             Instructions instruction = Instructions.LogOut;
             Object content = null;
             Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, content));
+
+            // Wait for input
+            CONSOLE.WaitForInput();
         }
     }
 }

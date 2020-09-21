@@ -170,7 +170,6 @@ namespace Front_Console
         /// <param name="league">League where we are inviting the Player to</param>
         public void InviteToLeague(League league)
         {
-
             bool continueInvitation = true;
             string errorMessage = "";
 
@@ -216,20 +215,21 @@ namespace Front_Console
 
                     // CHOICE
                     // We dynamically create a List containing all the Coaches names
-                    List<string> choiceString = new List<string>();
-                    listCoaches.ForEach(coach => choiceString.Add(coach.name));
+                    List<string> choiceStrings = new List<string>();
+                    listCoaches.ForEach(coach => choiceStrings.Add(coach.name));
 
                     // We add as a last choice the option to "Go Back"
-                    choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
+                    choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
 
 
-                    // We create the Choice
-                    Choice c = new Choice(PrefabMessages.SELECTION_COACH, choiceString);
-                    int index = c.GetChoice();
+                    // We create the 1st Choice : the COACH to invite
+                    Choice choice = new Choice(PrefabMessages.SELECTION_COACH, choiceStrings);
+                    int index = choice.GetChoice();
 
 
-                    if (index != choiceString.Count - 1)
+                    if (index != choiceStrings.Count - 1)
                     {
+                        // We save the selected Coach
                         Coach selectedCoach = listCoaches[index];
 
                         // We check if the user didn't invite himself
@@ -239,29 +239,108 @@ namespace Front_Console
                         }
                         else
                         {
-                            // Sending the ID of the Coach we invite
-                            instruction = Instructions.League_InviteCoach;
-                            InvitationCoach invitationCoach = new InvitationCoach(league, userData, selectedCoach);
-                            Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationCoach));
+                            // We create the 2nd choice : the JOB
+                            // We get all the Jobs the user can select
+                            List<Job> jobs = league.GetMember(userData.id).job.JobsItCanPropose();
 
-                            // We receive whether it worked or not
-                            if(Net.BOOL.Receive(comm.GetStream()))
-                            {
-                                // We add the invitation to the League
-                                league.invitedCoaches.Add(invitationCoach);
+                            // We create a list of choices
+                            choiceStrings = jobs.Select(j => j.name()).ToList();
+                            choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
 
-                                // We display a message accordingly
-                                CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.LEAGUE_INVITATION_COACH_SUCCESS);
-                                continueInvitation = false;
-                            }
-                            else
+                            // We create the choice
+                            choice = new Choice(PrefabMessages.SELECTION_JOB, choiceStrings);
+                            index = choice.GetChoice();
+
+                            if(index != choiceStrings.Count - 1)
                             {
-                                // We display a message accordingly
-                                CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_INVITATION_COACH_FAILURE);
+                                // We save the selected Job
+                                Job job = jobs[index];
+
+                                // Sending the ID of the Coach we invite
+                                instruction = Instructions.League_InviteCoach;
+                                InvitationCoach invitationCoach = new InvitationCoach(league, userData, selectedCoach, job);
+                                Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationCoach));
+
+                                // We receive whether it worked or not
+                                if (Net.BOOL.Receive(comm.GetStream()))
+                                {
+                                    // We add the invitation to the League
+                                    league.invitedCoaches.Add(invitationCoach);
+
+                                    // We display a message accordingly
+                                    CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.LEAGUE_INVITATION_COACH_SUCCESS);
+                                    continueInvitation = false;
+                                }
+                                else
+                                {
+                                    // We display a message accordingly
+                                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_INVITATION_COACH_FAILURE);
+                                }
                             }
                         }
 
                         CONSOLE.WaitForInput();
+                    }
+                }
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// See your invitations to Leagues as a Coach
+        /// </summary>
+        public void SeeInvitationsCoach()
+        {
+            bool continueInvitations = true;
+
+            while (continueInvitations)
+            {
+                // First - get all invitations
+                // Sending the name of the Coach
+                Instructions instruction = Instructions.Coach_GetInvitations;
+                Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, userData.id));
+
+                List<InvitationCoach> invitations = Net.LIST_INVITATION_COACH.Receive(comm.GetStream());
+
+
+                // If there is no invitation : cancel
+                if (invitations.Count == 0)
+                {
+                    // Display error message
+                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.INVITATION_COACH_NONE);
+                    CONSOLE.WaitForInput();
+
+                    // end loop
+                    continueInvitations = false;
+                }
+                else
+                {
+                    // CHOICE
+                    // We dynamically create a List containing all the Coaches names
+                    List<string> choiceString = new List<string>();
+                    invitations.ForEach(invitation => choiceString.Add(invitation.league.name + " as " + invitation.job));
+
+                    // We add as a last choice the option to "Go Back"
+                    choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
+
+
+                    // We create the Choice
+                    Choice c = new Choice(PrefabMessages.SELECTION_PLAYER, choiceString);
+                    int index = c.GetChoice();
+
+
+                    if (index != choiceString.Count - 1)
+                    {
+                        InvitationCoach invitationSelected = invitations[index];
+                        Console.WriteLine("you have chosen : " + invitationSelected.league.name + " as " + invitationSelected.job);
+                        CONSOLE.WaitForInput();
+                        // ManagePlayer(members[index]);
+                    }
+                    else
+                    {
+                        continueInvitations = false;
                     }
                 }
             }

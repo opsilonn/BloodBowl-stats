@@ -69,6 +69,32 @@ namespace Back_Server
             Net.LIST_COACH.Send(comm.GetStream(), listCoaches);
         }
 
+
+        /// <summary>
+        /// Sends to the Client all the InvitationCoach the user has
+        /// </summary>
+        /// <param name="coachId">Id of the Coach</param>
+        public void GetInvitationsCoach(Guid coachId)
+        {
+            // We initialize a list
+            List<InvitationCoach> invitations = new List<InvitationCoach>();
+
+            // Foreach League, we add to the list the corresponding Invitations
+            foreach (League league in Database.leagues)
+            {
+                List<InvitationCoach> currentInvits = league.invitedCoaches.Where(invit => invit.idInvited == coachId).ToList();
+                invitations.AddRange(currentInvits);
+            }
+
+            // We send the list of InvitationCoach to the user
+
+            invitations.ForEach(i => Console.WriteLine(i.league));
+            Net.LIST_INVITATION_COACH.Send(comm.GetStream(), invitations);
+        }
+
+
+
+
         // TEAM
 
 

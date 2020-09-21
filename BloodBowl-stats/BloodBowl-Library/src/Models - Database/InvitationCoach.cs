@@ -13,6 +13,7 @@ namespace BloodBowl_Library
     {
         private Coach _invited;
         private Guid _idInvited;
+        private Job _job;
 
 
 
@@ -25,17 +26,22 @@ namespace BloodBowl_Library
         {
             invited = new Coach();
             idInvitor = Guid.NewGuid();
+            job = Job.Player;
         }
+
+
         /// <summary>
         /// Creates a new instance of an Invitation with according parameters
         /// </summary>
         /// <param name="league">League of the Invitation</param>
         /// <param name="invitor">Invitor of the Invitation</param>
         /// <param name="invited">Coach that is invited</param>
-        public InvitationCoach(League league, Coach invitor, Coach invited): base(league, invitor)
+        /// <param name="job">Job that the invited Coach is elected to</param>
+        public InvitationCoach(League league, Coach invitor, Coach invited, Job job): base(league, invitor)
         {
             this.invited = invited;
             idInvited = invited.id;
+            this.job = job;
         }
 
 
@@ -46,10 +52,12 @@ namespace BloodBowl_Library
         /// <param name="league">League of the Invitation</param>
         /// <param name="invitor">Invitor of the Invitation</param>
         /// <param name="invited">Coach that is invited</param>
-        public InvitationCoach(DateTime date, League league, Coach invitor, Coach invited) : base(date, league, invitor)
+        /// <param name="job">Job that the invited Coach is elected to</param>
+        public InvitationCoach(DateTime date, League league, Coach invitor, Coach invited, Job job) : base(date, league, invitor)
         {
             this.invited = invited;
             idInvited = invited.id;
+            this.job = job;
         }
 
 
@@ -96,5 +104,6 @@ namespace BloodBowl_Library
         [JsonIgnore]
         public Coach invited { get => _invited; set => _invited = value; }
         public Guid idInvited { get => _idInvited; set => _idInvited = value; }
+        public Job job { get => _job; set => _job = value; }
     }
 }

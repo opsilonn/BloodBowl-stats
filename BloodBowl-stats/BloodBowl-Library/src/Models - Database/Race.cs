@@ -180,9 +180,9 @@ namespace BloodBowl_Library
 
 
         /// <summary>
-        /// Returns an array of all the Races
+        /// Returns a list of all the Races
         /// </summary>
-        /// <returns>An array of all the Races</returns>
+        /// <returns>A list of all the Races</returns>
         public static List<Race> GetAllRaces()
         {
             return Enum.GetValues(typeof(Race)).Cast<Race>().ToList();

@@ -323,7 +323,7 @@ namespace BloodBowl_Library
                 return (List<League>)bf.Deserialize(s);
             }
         }
-        
+
         public static class LIST_COACH
         {
             /// <summary>
@@ -347,6 +347,33 @@ namespace BloodBowl_Library
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 return (List<Coach>)bf.Deserialize(s);
+            }
+        }
+
+
+        public static class LIST_INVITATION_COACH
+        {
+            /// <summary>
+            /// Sends a List of InvitationCoach
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <param name="invitationsCoach"> Invitations to send </param>
+            public static void Send(Stream s, List<InvitationCoach> invitationsCoach)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(s, invitationsCoach);
+            }
+
+
+            /// <summary>
+            /// Receives a list of InvitationCoach
+            /// </summary>
+            /// <param name="s"> Stream </param>
+            /// <returns> The serialized list of InvitationCoach </returns>
+            public static List<InvitationCoach> Receive(Stream s)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                return (List<InvitationCoach>)bf.Deserialize(s);
             }
         }
 
