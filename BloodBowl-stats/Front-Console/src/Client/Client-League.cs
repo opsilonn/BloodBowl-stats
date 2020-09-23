@@ -261,6 +261,7 @@ namespace Front_Console
                                 InvitationCoach invitationCoach = new InvitationCoach(league, userData, selectedCoach, job);
                                 Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationCoach));
 
+
                                 // We receive whether it worked or not
                                 if (Net.BOOL.Receive(comm.GetStream()))
                                 {
@@ -356,6 +357,13 @@ namespace Front_Console
 
                                 // End the loop
                                 continueInvitations = false;
+
+                                CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.INVITATION_COACH_ACCEPT_VALID);
+                                CONSOLE.WaitForInput();
+                            }
+                            else
+                            {
+
                             }
                         }
                         // Send no

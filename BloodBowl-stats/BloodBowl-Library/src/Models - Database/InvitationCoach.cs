@@ -25,7 +25,7 @@ namespace BloodBowl_Library
         public InvitationCoach() : base()
         {
             invited = new Coach();
-            idInvitor = Guid.NewGuid();
+            idInvitor = Guid.Empty;
             job = Job.Player;
         }
 
@@ -102,8 +102,31 @@ namespace BloodBowl_Library
 
         // GETTER - SETTER
         [JsonIgnore]
-        public Coach invited { get => _invited; set => _invited = value; }
+        public Coach invited
+        {
+            get => _invited;
+            set
+            {
+                _invited = value;
+                _idInvited = _invited.id;
+            }
+        }
         public Guid idInvited { get => _idInvited; set => _idInvited = value; }
         public Job job { get => _job; set => _job = value; }
+
+
+
+
+
+        // PARAM
+        [JsonIgnore]
+        public bool IsComplete
+        {
+            get => (
+                idLeague != Guid.Empty
+                && idInvitor != Guid.Empty
+                && idInvited != Guid.Empty
+                );
+        }
     }
 }

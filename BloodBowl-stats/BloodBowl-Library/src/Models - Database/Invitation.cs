@@ -29,8 +29,8 @@ namespace BloodBowl_Library
             date = DateTime.MinValue;
             league = new League();
             invitor = new Coach();
-            idLeague = Guid.NewGuid();
-            idInvitor = Guid.NewGuid();
+            idLeague = Guid.Empty;
+            idInvitor = Guid.Empty;
         }
 
 
@@ -87,9 +87,24 @@ namespace BloodBowl_Library
         // GETTER - SETTER
         public DateTime date { get => _date; set => _date = value; }
         [JsonIgnore]
-        public League league { get => _league; set => _league = value; }
+        public League league {
+            get => _league;
+            set
+            {
+                _league = value;
+                _idLeague = _league.id;
+            }
+        }
         [JsonIgnore]
-        public Coach invitor { get => _invitor; set => _invitor = value; }
+        public Coach invitor
+        {
+            get => _invitor;
+            set
+            {
+                _invitor = value;
+                _idInvitor = _invitor.id;
+            }
+        }
         public Guid idLeague { get => _idLeague; set => _idLeague = value; }
         public Guid idInvitor { get => _idInvitor; set => _idInvitor = value; }
     }

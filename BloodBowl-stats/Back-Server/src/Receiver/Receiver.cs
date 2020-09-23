@@ -224,12 +224,11 @@ namespace Back_Server
                         break;
 
                     case Instructions.League_InviteCoachCreate:
-                        InvitationCoach invitationCoach = (InvitationCoach)content;
-                        if (InviteCoachToLeague(invitationCoach))
-                        {
-                            // We set the Invitation League to th eone of our Database (otherwise, there is conflict...)
-                            invitationCoach.league = Database.LEAGUE.GetById(invitationCoach.league.id);
+                        // We get the profile Signed In
+                        InvitationCoach invitationCoach = InviteCoachToLeague((InvitationCoach)content);
 
+                        if (invitationCoach.IsComplete)
+                        {
                             // We add the invitation to the League
                             invitationCoach.league.invitedCoaches.Add(invitationCoach);
 
@@ -239,8 +238,9 @@ namespace Back_Server
                         break;
 
                     case Instructions.League_InviteCoachAccept:
-                        InvitationCoach invitationCoachToAccept = (InvitationCoach)content;
-                        if (InvitationCoachAccepted(invitationCoachToAccept))
+                        InvitationCoach invitationCoachToAccept = InvitationCoachAccept((InvitationCoach)content);
+
+                        if (invitationCoachToAccept.IsComplete)
                         {
                             // We accept the invitation
                             invitationCoachToAccept.league.AcceptInvitationCoach(invitationCoachToAccept);

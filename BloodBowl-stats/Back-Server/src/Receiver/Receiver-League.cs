@@ -82,48 +82,51 @@ namespace Back_Server
         /// <summary>
         /// Manage the invitation of a new Coach to a League
         /// </summary>
-        /// <param name="invitation"></param>
-        public bool InviteCoachToLeague(InvitationCoach invitation)
+        /// <param name="invitationReceived">InvitationCoach received</param>
+        public InvitationCoach InviteCoachToLeague(InvitationCoach invitationReceived)
         {
             // We initialize a bool, that tells us if the received invitation is valid or not
-            bool isValid = false;
+            InvitationCoach invitationNew = new InvitationCoach();
 
             // First, we search the correct League in the database
-            League league = Database.LEAGUE.GetById(invitation.league.id);
+            League league = Database.LEAGUE.GetById(invitationReceived.league.id);
+            
+            // We check if the league is valid
             if (league.IsComplete)
             {
-                // Second, we check if the invitor is in the League
+                // Second, we check the invitor
+                JobAttribution invitor = league.GetMember(invitationReceived.idInvitor);
+
+                // we check if the invitor is in the League
                 // AND if he is allowed to perform an invitation
                 // AND if he is allowed to give that role
-                JobAttribution invitor = league.GetMember(invitation.idInvitor);
-
                 if (invitor.IsComplete
                     && invitor.job.canAddPlayer()
-                    && invitor.job.JobsItCanPropose().Contains(invitation.job))
+                    && invitor.job.JobsItCanPropose().Contains(invitationReceived.job))
                 {
-                    // Third, we verify if the invited Coach exists, and if he's not already in the League
-                    if (Database.COACH.GetById(invitation.idInvited).IsComplete)
-                    {
-                        // Fourth, we check that the invited is not already a member of the League
-                        // OR that he hasn't already been invited with this very Job
-                        // (if he has for another Job, we consider the invitation still valid)
+                    // Third, we check the invited
+                    Coach invited = Database.COACH.GetById(invitationReceived.idInvited);
 
-                        if(!league.ContainsMember(invitation.idInvited) && !league.ContainsSimilarInvitedCoach(invitation))
-                        {
-                            // I know that writing if(true) { myBool = true } is bad, 
-                            // But since I may rewrite this code sometimes, it makes the process easier
-                            isValid = true;
+                    // We verify if the invited Coach exists
+                    // AND that that he is not already a member of the League
+                    // AND that he hasn't already been invited with this very Job
+                    // (if he has for another Job, we consider the invitation still valid)
+                    if (invited.IsComplete
+                        && !league.ContainsMember(invitationReceived.idInvited)
+                        && !league.ContainsSimilarInvitedCoach(invitationReceived))
+                    {
+                        Console.WriteLine("it changed !");
+                        // Sounds good, we can reallocate the Invitation with server data
+                        invitationNew = new InvitationCoach(league, invitor.coach, invited, invitationReceived.job);
                         }
                     }
                 }
-            }
-
 
             // We return to the user whether it worked or not
-            Net.BOOL.Send(comm.GetStream(), isValid);
+            Net.BOOL.Send(comm.GetStream(), invitationNew.IsComplete);
 
-            // We return to the server whether it worked or not
-            return isValid;
+            // We return to the server the processed Invitation (or a default one if it did not work)
+            return invitationNew;
         }
 
 
@@ -132,45 +135,32 @@ namespace Back_Server
         /// <summary>
         /// Manage the acception of an invitation of a new Coach to a League
         /// </summary>
-        /// <param name="invitation"></param>
-        public bool InvitationCoachAccepted(InvitationCoach invitation)
+        /// <param name="invitationReceived"></param>
+        public InvitationCoach InvitationCoachAccept(InvitationCoach invitationReceived)
         {
-            // We initialize a bool, that tells us if the received invitation is valid or not
-            bool isValid = false;
+            // We initialize an InvitationCoach to a default instance
+            // If the invitation is found to be valid, it'll transform to a regular InvitationCoach
+            InvitationCoach invitationFromServer = new InvitationCoach();
 
             // First, we search the correct League in the database
-            League league = Database.LEAGUE.GetById(invitation.league.id);
+            League league = Database.LEAGUE.GetById(invitationReceived.idLeague);
 
-
+            // We check if the League is valid
             if (league.IsComplete)
             {
-
-                // Second, we check if the invitation do exist in the league
-                if (league.ContainsSimilarInvitedCoach(invitation))
-                {
-                    // Third, we check if the Coach invited do exist
-                    Coach invited = Database.COACH.GetById(invitation.idInvited);
-
-                    if(invited.IsComplete)
-                    {
-                        // Well, it seems the invitation is valid
-                        // We update the Invitation with structure from the server
-                        invitation.league = league;
-                        invitation.invited = invited;
-
-                        // I know that writing if(true) { myBool = true } is bad, 
-                        // But since I may rewrite this code sometimes, it makes the process easier
-                        isValid = true;
-                    }
-                }
+                // We get the invitation instance from the league
+                invitationReceived = league.invitedCoaches.FirstOrDefault(invit => 
+                    invit.idInvitor == invitationReceived.idInvitor
+                    && invit.idInvited == invitationReceived.idInvited
+                    && invit.job == invitationReceived.job);
             }
 
 
             // We return to the user whether it worked or not
-            Net.BOOL.Send(comm.GetStream(), isValid);
+            Net.BOOL.Send(comm.GetStream(), invitationReceived.IsComplete);
 
-            // We return to the server whether it worked or not
-            return isValid;
+            // We return the Invitation to the server (if something went wrong, it returns a default instance)
+            return invitationReceived;
         }
     }
 }
