@@ -15,8 +15,7 @@ namespace Back_Server
         /// Returns an instance of the Profile logged in (if it didn't work, its ID = -1)
         /// </summary>
         /// <param name="credentials">Credentials of the user</param>
-        /// <returns> Whether the Login was successful or not</returns>
-        public bool LogIn(Credentials credentials)
+        public void LogIn(Credentials credentials)
         {
             // We extract the credential's data
             string name = credentials.name;
@@ -43,6 +42,9 @@ namespace Back_Server
 
                         // We save the Coach representing the user's data
                         userCoach = Database.COACH.GetById(ID_toReturn);
+
+                        // We raise the event
+                        When_Server_LogIn?.Invoke(comm);
                     }
 
                     // whatever the result is, we end the loop, since we found the credentials, successful or not
@@ -52,10 +54,6 @@ namespace Back_Server
 
             // We send the default Profile if no match was found / the correct one if a match was found
             Net.COACH.Send(comm.GetStream(), userCoach);
-
-
-            // Returns whether we succeeded or not in Logging in
-            return ID_toReturn != Guid.Empty;
         }
 
 
@@ -64,8 +62,7 @@ namespace Back_Server
         /// Returns an instance of the newly created Coach (if it didn't work, its ID = -1)
         /// </summary>
         /// <param name="coachReceived">Coach's data of the user trying to Sign in</param>
-        /// <returns> The newly created Coach (with password), if successful; otherwise, a default one</returns>
-        public CoachWithPassword SignIn(CoachWithPassword coachReceived)
+        public void SignIn(CoachWithPassword coachReceived)
         {
             // We extract the profile's data
             string name = coachReceived.name;
@@ -93,13 +90,16 @@ namespace Back_Server
             {
                 // We create a new Coach representing the user's data
                 userCoach = new Coach(name, email);
+
+                // We raise the event : a Profile has been created
+                When_Coach_Create(new CoachWithPassword(userCoach, password));
+
+                // We raise the event : a user has logged in
+                When_Server_LogIn?.Invoke(comm);
             }
 
             // We send the Coach (Empty id = SignIn failed)
             Net.COACH.Send(comm.GetStream(), userCoach);
-
-            // We return the profile created
-            return new CoachWithPassword(userCoach, password);
         }
 
 
@@ -113,6 +113,9 @@ namespace Back_Server
 
             // We reset the user's data
             userCoach = new Coach();
+
+            // We raise the event : a user has logged off
+            When_Server_LogOff?.Invoke(comm);
         }
     }
 }

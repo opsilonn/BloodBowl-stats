@@ -102,29 +102,35 @@ namespace Back_Server
         /// Creates a Team
         /// </summary>
         /// <param name="teamReceived">Team's data send by the client</param>
-        public Team NewTeam(Team teamReceived)
+        public void NewTeam(Team teamReceived)
         {
             // We initialize a new Team
             Team newTeam = new Team();
 
             // ...Let's say we do some verification here...
 
-            if (true)
+            // The user does not have any Team with the same name AND same race
+            // (same name, different race OR same race, different name is accepted)
+            if (userCoach.teams.Any(team =>
+                team.name == teamReceived.name
+                && team.race == teamReceived.race))
             {
                 // Success !
                 // We create a new Team instance from the data receiveds
                 newTeam = new Team(teamReceived.name, teamReceived.description, teamReceived.race, teamReceived.coach);
 
-                // we save it into the representation of the user's data
+                // We save it into the representation of the user's data
                 userCoach.teams.Add(newTeam);
+
+                // We save it into the Database's list
+                Database.teams.Add(newTeam);
+
+                // We raise the event : a Team has been created
+                When_Team_Create?.Invoke(newTeam);
             }
 
             // We return the id of the newly created team (error : default empty id; success : correct id)
             Net.GUID.Send(comm.GetStream(), newTeam.id);
-
-
-            // We return the new Team
-            return newTeam;
         }
 
 
@@ -137,11 +143,10 @@ namespace Back_Server
         /// Creates a Player
         /// </summary>
         /// <param name="playerReceived">Player's data send by the client</param>
-        public Player NewPlayer(Player playerReceived)
+        public void NewPlayer(Player playerReceived)
         {
             // We initialize a new Player
             Player newPlayer = new Player();
-            bool isValid = true;
 
             // We get the Team to add the player in
             Team teamToAddIn = GetTeamById(playerReceived.team.id);
@@ -151,9 +156,8 @@ namespace Back_Server
             // We check that :
             // - the Team to put the player in is valid
             // - the Team has enough money
-            isValid = (teamToAddIn.IsComplete) && (teamToAddIn.money >= playerReceived.role.price());
-
-            if (isValid)
+            if (teamToAddIn.IsComplete
+                && teamToAddIn.money >= playerReceived.role.price())
             {
                 // Success !
                 // We create a new Player instance from the data receiveds
@@ -162,15 +166,15 @@ namespace Back_Server
                 // we save it into the representation of the user's data
                 teamToAddIn.players.Add(newPlayer);
 
+                // We withdraw the correct amount of money from the Team
                 teamToAddIn.money -= newPlayer.role.price();
+
+                // We raise the event : a Player has been created
+                When_Player_Create?.Invoke(newPlayer);
             }
 
             // We return the id of the newly created team (error : default empty id; success : correct id)
             Net.GUID.Send(comm.GetStream(), newPlayer.id);
-
-
-            // We return the new Player
-            return newPlayer;
         }
 
 
@@ -178,8 +182,7 @@ namespace Back_Server
         /// Removes a Player
         /// </summary>
         /// <param name="playerReceived">Player we are removing</param>
-        /// <returns>The Player removed (if the process didn't work, we send a default instance)</returns>
-        public Player RemovePlayer(Player playerReceived)
+        public void RemovePlayer(Player playerReceived)
         {
             // We initialize the Player we are removing
             Player playerToRemove = new Player();
@@ -190,27 +193,22 @@ namespace Back_Server
             // If the Team is valid
             if (team.IsComplete)
             {
-                // We get all the Players of the given Id
-                // OF COURSE THERE IS ONLY ONE !! but hey, that's how functional programming works ^^'
-                List<Player> ListPlayersWithGivenId = team.players.Where(p => p.id == playerReceived.id).ToList();
+                // We get the Player with the given Id
+                playerToRemove = team.players.FirstOrDefault(p => p.id == playerReceived.id);
 
-                // If we found at least one Player (a.k.a. : if we found the ONLY Player)
-                if (ListPlayersWithGivenId.Count != 0)
+                // If we found the Player
+                if (playerToRemove != null)
                 {
-                    // We set the Player instance accordingly
-                    playerToRemove = ListPlayersWithGivenId[0];
-
                     // We remove the Player from its Team
                     team.players.Remove(playerToRemove);
-                }
 
+                    // We raise the event : a Player has been removed
+                    When_Player_Remove?.Invoke(playerToRemove);
+                }
             }
 
             // We return to the Client whether the operation worked
-            Net.BOOL.Send(comm.GetStream(), playerToRemove.IsComplete);
-
-            // We return to the Server whether the operation worked
-            return playerToRemove;
+            Net.BOOL.Send(comm.GetStream(), (playerToRemove != null && playerToRemove.IsComplete));
         }
 
 
@@ -218,8 +216,7 @@ namespace Back_Server
         /// Manage the selection of a new Perk for a Player that is leveling up
         /// </summary>
         /// <param name="player">Player that is leveling up</param>
-        /// <returns>Perk chosen for the Player leveling up (if invalid, returns null)</returns>
-        public Perk? PlayerLevelsUp(Player player)
+        public void PlayerLevelsUp(Player player)
         {
             // We define the dices
             int dice1 = Dice.Roll6();
@@ -235,8 +232,7 @@ namespace Back_Server
             List<List<Perk>> perks = PerkStuff.GetPerksForLevelUp(types);
 
             // We receive the Perk chosen
-            Perk? effectReceived = Net.PERK.Receive(comm.GetStream());
-
+            Perk perkReceived = Net.PERK.Receive(comm.GetStream());
 
 
             // We check if the Perk received is valid
@@ -244,28 +240,25 @@ namespace Back_Server
             bool isValid = false;
             foreach (List<Perk> currentList in perks)
             {
-                foreach (Perk effect in currentList)
-                {
-                    // if we find the Perk : good !
-                    if (effect == effectReceived)
-                    {
-                        isValid = true;
-                        break;
-                    }
-                }
+                // We check if the current list of Perks contain the received Perk
+                isValid = currentList.Contains(perkReceived);
 
                 // We stop itirating once it is found
                 if (isValid)
                 {
+                    // We add the effect to the Player
+                    player.perks.Add(perkReceived);
+
+                    // We raise the event : an Perk has been added
+                    When_Player_LevelsUp?.Invoke(player);
+
+                    // We break the loop
                     break;
                 }
             }
 
             // We return to the user whether the Perk was accepted or not
             Net.BOOL.Send(comm.GetStream(), isValid);
-
-            // If reached, return the effect received
-            return (isValid) ? effectReceived : null;
         }
 
 

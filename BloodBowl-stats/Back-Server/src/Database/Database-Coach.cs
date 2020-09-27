@@ -123,12 +123,25 @@ namespace Back_Server
                         Directory.CreateDirectory(pathFolder);
                     }
 
-                    // We also need the password !
-                    // Hence, we need to get the credentials
-                    Credentials credentials = CREDENTIALS.GetById(coach.id);
 
-                    // We put all the data into a single instance : a Coach With a Password
-                    CoachWithPassword coachWithPassword = new CoachWithPassword(coach, credentials);
+                    // We initialize a default instance of a CoachWithPassword
+                    CoachWithPassword coachWithPassword = new CoachWithPassword();
+
+                    // Is the instance a regular Coach, or a CoachWithPassword ?
+                    // If it is a CoachWithPassword, then we're good to go
+                    if (coach is CoachWithPassword)
+                    {
+                        coachWithPassword = (CoachWithPassword)coach;
+                    }
+                    // If it is a regular Coach, we need to get its password !!
+                    else
+                    {
+                        // To begin with, we need to get the credentials
+                        Credentials credentials = CREDENTIALS.GetById(coach.id);
+
+                        // Then, we put all the data into a single instance : a Coach With a Password
+                        coachWithPassword = new CoachWithPassword(coach, credentials);
+                    }
 
 
                     // Get the JSON file's path

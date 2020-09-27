@@ -156,7 +156,7 @@ namespace Front_Console
                 {
                     // Sending the new Coach (with password !)
                     Instructions instruction = Instructions.SignIn;
-                    Object content = new CoachWithPassword(name, password, email);
+                    Object content = new CoachWithPassword(name, email, password);
                     Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, content));
 
                     // We get the Coach data back

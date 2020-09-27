@@ -58,6 +58,18 @@ namespace BloodBowl_Library
             this.isLogged = isLogged;
         }
 
+        /// <summary>
+        /// Creates a complete instance of a Credentials with according parameters
+        /// </summary>
+        /// <param name="coachWithPassword">CoachWithPassword of which we'll extract the data</param>
+        public Credentials(CoachWithPassword coachWithPassword)
+        {
+            id = coachWithPassword.id;
+            name = coachWithPassword.name;
+            password = coachWithPassword.password;
+            isLogged = true;
+        }
+
 
 
 

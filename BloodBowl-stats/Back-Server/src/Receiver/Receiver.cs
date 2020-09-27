@@ -91,35 +91,17 @@ namespace Back_Server
 
 
 
-
                     // CREDENTIALS
                     case Instructions.LogIn:
-                        if (LogIn((Credentials)content))
-                        {
-                            // We raise the event : a user has logged in
-                            When_Server_LogIn?.Invoke(comm);
-                        }
+                        LogIn((Credentials)content);
                         break;
 
                     case Instructions.SignIn:
-                        // We get the profile Signed In
-                        CoachWithPassword newCoach = SignIn((CoachWithPassword)content);
-
-                        // If the Profile's ID is not Empty (means that the Sign In was successful)
-                        if (newCoach.id != Guid.Empty)
-                        {
-                            // We raise the event : a user has logged in
-                            When_Server_LogIn?.Invoke(comm);
-
-                            // We raise the event : a Profile has been created
-                            When_Coach_Create(newCoach);
-                        }
+                        SignIn((CoachWithPassword)content);
                         break;
 
                     case Instructions.LogOut:
                         LogOut();
-                        // We raise the event : a user has logged off
-                        When_Server_LogOff?.Invoke(comm);
                         break;
 
 
@@ -141,78 +123,29 @@ namespace Back_Server
 
                     // TEAM
                     case Instructions.Team_New:
-                        // We get the newly created Team
-                        Team newTeam = NewTeam((Team)content);
-
-                        // If the Team can be created (ID is not empty)
-                        if (newTeam.IsComplete)
-                        {
-                            // We raise the event : a Team has been created
-                            When_Team_Create?.Invoke(newTeam);
-                        }
+                        NewTeam((Team)content);
                         break;
 
                     case Instructions.Team_AddPlayer:
-                        // We get the newly created Player
-                        Player newPlayer = NewPlayer((Player)content);
-
-                        // If the Player can be created (ID is not empty)
-                        if (newPlayer.IsComplete)
-                        {
-                            // We raise the event : a Player has been created
-                            When_Player_Create?.Invoke(newPlayer);
-                        }
+                        NewPlayer((Player)content);
                         break;
 
                     case Instructions.Team_RemovePlayer:
-                        // We get the Player to remove
-                        Player playerToRemove = (Player)content;
-
-                        // We remove him from the database
-                        playerToRemove = RemovePlayer(playerToRemove);
-
-                        // If the removal was successful)
-                        if (playerToRemove.IsComplete)
-                        {
-                            // We raise the event : a Player has been removed
-                            When_Player_Remove?.Invoke(playerToRemove);
-                        }
+                        RemovePlayer((Player)content);
                         break;
 
 
 
                     // PLAYER
                     case Instructions.Player_LevelUp:
-                        // We get the Player to level up
-                        Player player = (Player)content;
-
-                        // We add a new Perk to the player
-                        Perk? newPerk = PlayerLevelsUp(player);
-
-                        // If a new effect was chosen
-                        if (newPerk != null)
-                        {
-                            // We add the effect to the Player
-                            player.perks.Add((Perk)newPerk);
-
-                            // We raise the event : an Perk has been added
-                            When_Player_LevelsUp?.Invoke(player);
-                        }
+                        PlayerLevelsUp((Player)content);
                         break;
 
 
 
                     // LEAGUE
                     case Instructions.League_New:
-                        // We get the newly created League
-                        League newLeague = NewLeague((League)content);
-
-                        // If the Team can be created (ID is not empty)
-                        if (newLeague.IsComplete)
-                        {
-                            // We raise the event : a League has been created
-                            When_League_Create?.Invoke(newLeague);
-                        }
+                        NewLeague((League)content);
                         break;
 
                     case Instructions.League_GetAllForCoach:
@@ -224,43 +157,15 @@ namespace Back_Server
                         break;
 
                     case Instructions.League_InviteCoachCreate:
-                        // We get the profile Signed In
-                        InvitationCoach invitationCoach = InviteCoachToLeague((InvitationCoach)content);
-
-                        if (invitationCoach.IsComplete)
-                        {
-                            // We add the invitation to the League
-                            invitationCoach.league.invitedCoaches.Add(invitationCoach);
-
-                            // We raise the event : an Invitation has been created
-                            When_League_InvitationCoach_Create(invitationCoach);
-                        }
+                        InviteCoachToLeague((InvitationCoach)content);
                         break;
 
                     case Instructions.League_InviteCoachAccept:
-                        InvitationCoach invitationCoachToAccept = InvitationCoachAccept((InvitationCoach)content);
-
-                        if (invitationCoachToAccept.IsComplete)
-                        {
-                            // We accept the invitation
-                            invitationCoachToAccept.league.AcceptInvitationCoach(invitationCoachToAccept);
-
-                            // We raise the event : an Invitation has been created
-                            When_League_InvitationCoach_Accept(invitationCoachToAccept);
-                        }
+                        InvitationCoachAccept((InvitationCoach)content);
                         break;
 
                     case Instructions.League_InviteCoachRefuse:
-                        InvitationCoach invitationCoachToRefuse = InvitationCoachRefuse((InvitationCoach)content);
-
-                        if (invitationCoachToRefuse.IsComplete)
-                        {
-                            // We accept the invitation
-                            invitationCoachToRefuse.league.RefuseInvitationCoach(invitationCoachToRefuse);
-
-                            // We raise the event : an Invitation has been created
-                            When_League_InvitationCoach_Refuse(invitationCoachToRefuse);
-                        }
+                        InvitationCoachRefuse((InvitationCoach)content);
                         break;
 
 

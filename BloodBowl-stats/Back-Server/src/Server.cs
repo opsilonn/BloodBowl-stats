@@ -141,11 +141,11 @@ namespace Back_Server
         /// <param name="newCoach">Data of the newly created Coach</param>
         private void CoachCreate(CoachWithPassword newCoach)
         {
-            // We convert the Coach (with a password) into a regular Coach
-            Coach coach = new Coach(newCoach);
+            // Adding the new COACH to the database representation
+            Database.coaches.Add(new Coach(newCoach));
 
-            // Adding the new objects to the database representation
-            Database.coaches.Add(coach);
+            // Adding the new CREDENTIAL to the database representation
+            Database.credentials.Add(new Credentials(newCoach));
 
             // Creating an JSON file in the database
             Database.COACH.Write(newCoach);

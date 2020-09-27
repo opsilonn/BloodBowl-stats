@@ -14,7 +14,7 @@ namespace Back_Server
         /// Creates a Team
         /// </summary>
         /// <param name="leagueReceived">League's data send by the client</param>
-        public League NewLeague(League leagueReceived)
+        public void NewLeague(League leagueReceived)
         {
             // We initialize a new League (default has a null Id)
             League newLeague = new League();
@@ -23,16 +23,15 @@ namespace Back_Server
             if (leagueReceived.IsComplete)
             {
                 // Success !
-                // We create a new Team instance from the data receiveds
+                // We create a new Team instance from the data received
                 newLeague = new League(leagueReceived.name, leagueReceived.creator);
+
+                // We raise the event : a League has been created
+                When_League_Create?.Invoke(newLeague);
             }
 
             // We return the id of the newly created team (error : default empty id; success : correct id)
             Net.GUID.Send(comm.GetStream(), newLeague.id);
-
-
-            // We return the new Team
-            return newLeague;
         }
 
 
@@ -83,7 +82,7 @@ namespace Back_Server
         /// Manage the invitation of a new Coach to a League
         /// </summary>
         /// <param name="invitationReceived">InvitationCoach received</param>
-        public InvitationCoach InviteCoachToLeague(InvitationCoach invitationReceived)
+        public void InviteCoachToLeague(InvitationCoach invitationReceived)
         {
             // We initialize an instance, that tells us if the received invitation is valid or not
             InvitationCoach invitationNew = new InvitationCoach();
@@ -115,18 +114,20 @@ namespace Back_Server
                         && !league.ContainsMember(invitationReceived.idInvited)
                         && !league.ContainsSimilarInvitedCoach(invitationReceived))
                     {
-                        Console.WriteLine("it changed !");
                         // Sounds good, we can reallocate the Invitation with server data
                         invitationNew = new InvitationCoach(league, invitor.coach, invited, invitationReceived.job);
-                        }
+
+                        // We add the invitation to the League
+                        league.invitedCoaches.Add(invitationNew);
+
+                        // We raise the event : an Invitation has been created
+                        When_League_InvitationCoach_Create(invitationNew);
                     }
                 }
+            }
 
             // We return to the user whether it worked or not
             Net.BOOL.Send(comm.GetStream(), invitationNew.IsComplete);
-
-            // We return to the server the processed Invitation (or a default one if it did not work)
-            return invitationNew;
         }
 
 
@@ -134,7 +135,7 @@ namespace Back_Server
         /// Manage the acception of an invitation of a new Coach to a League
         /// </summary>
         /// <param name="invitationReceived"></param>
-        public InvitationCoach InvitationCoachAccept(InvitationCoach invitationReceived)
+        public void InvitationCoachAccept(InvitationCoach invitationReceived)
         {
             // We initialize an InvitationCoach to a default instance
             // If the invitation is found to be valid, it'll transform to a regular InvitationCoach
@@ -151,14 +152,22 @@ namespace Back_Server
                     invit.idInvitor == invitationReceived.idInvitor
                     && invit.idInvited == invitationReceived.idInvited
                     && invit.job == invitationReceived.job);
+
+                // If the invitation is valid
+                if (invitationReceived != null && invitationReceived.IsComplete)
+                {
+                    // We accept the invitation
+                    invitationReceived.league.AcceptInvitationCoach(invitationReceived);
+
+                    // We raise the event : an Invitation has been accepted
+                    When_League_InvitationCoach_Accept(invitationReceived);
+                }
             }
 
 
             // We return to the user whether it worked or not
-            Net.BOOL.Send(comm.GetStream(), invitationReceived.IsComplete);
+            Net.BOOL.Send(comm.GetStream(), (invitationReceived != null && invitationReceived.IsComplete));
 
-            // We return the Invitation to the server (if something went wrong, it returns a default instance)
-            return invitationReceived;
         }
 
 
@@ -166,7 +175,7 @@ namespace Back_Server
         /// Manage the refusal of an invitation of a new Coach to a League
         /// </summary>
         /// <param name="invitationReceived"></param>
-        public InvitationCoach InvitationCoachRefuse(InvitationCoach invitationReceived)
+        public void InvitationCoachRefuse(InvitationCoach invitationReceived)
         {
             // We initialize an InvitationCoach to a default instance
             // If the invitation is found to be valid, it'll transform to a regular InvitationCoach
@@ -183,14 +192,20 @@ namespace Back_Server
                     invit.idInvitor == invitationReceived.idInvitor
                     && invit.idInvited == invitationReceived.idInvited
                     && invit.job == invitationReceived.job);
+
+                // If the invitation is valid
+                if (invitationReceived != null && invitationReceived.IsComplete)
+                {
+                    // We accept the invitation
+                    invitationReceived.league.RefuseInvitationCoach(invitationReceived);
+
+                    // We raise the event : an Invitation has been refused
+                    When_League_InvitationCoach_Refuse(invitationReceived);
+                }
             }
 
-
             // We return to the user whether it worked or not
-            Net.BOOL.Send(comm.GetStream(), invitationReceived.IsComplete);
-
-            // We return the Invitation to the server (if something went wrong, it returns a default instance)
-            return invitationReceived;
+            Net.BOOL.Send(comm.GetStream(), (invitationReceived != null && invitationReceived.IsComplete));
         }
     }
 }
