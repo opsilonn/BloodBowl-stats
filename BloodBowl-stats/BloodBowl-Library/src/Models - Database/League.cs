@@ -182,6 +182,21 @@ namespace BloodBowl_Library
         }
 
 
+        /// <summary>
+        /// Declines an InvitationCoach
+        /// </summary>
+        /// <param name="invitationCoach">InvitationCoach that has been declined</param>
+        public void RefuseInvitationCoach(InvitationCoach invitationCoach)
+        {
+            // Second - remove the invitation
+            invitedCoaches.RemoveAll(invit =>
+                invit.idInvited == invitationCoach.idInvited
+                && invit.idInvitor == invitationCoach.idInvitor
+                && invit.job == invitationCoach.job
+                );
+        }
+
+
 
 
         /// <summary>

@@ -250,6 +250,19 @@ namespace Back_Server
                         }
                         break;
 
+                    case Instructions.League_InviteCoachRefuse:
+                        InvitationCoach invitationCoachToRefuse = InvitationCoachRefuse((InvitationCoach)content);
+
+                        if (invitationCoachToRefuse.IsComplete)
+                        {
+                            // We accept the invitation
+                            invitationCoachToRefuse.league.RefuseInvitationCoach(invitationCoachToRefuse);
+
+                            // We raise the event : an Invitation has been created
+                            When_League_InvitationCoach_Refuse(invitationCoachToRefuse);
+                        }
+                        break;
+
 
                     // otherwise : Error (should not occur, but we're not taking any chance)
                     default:

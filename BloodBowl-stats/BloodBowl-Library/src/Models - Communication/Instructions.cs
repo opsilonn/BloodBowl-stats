@@ -27,9 +27,9 @@
         League_GetMembersData,
         League_InviteCoachCreate,
         League_InviteCoachAccept,
-        League_InviteCoachDismiss,
+        League_InviteCoachRefuse,
         League_InviteTeamCreate,
         League_InviteTeamAccept,
-        League_InviteTeamDismiss
+        League_InviteTeamRefuse
     }
 }

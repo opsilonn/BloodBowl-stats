@@ -85,7 +85,7 @@ namespace Back_Server
         /// <param name="invitationReceived">InvitationCoach received</param>
         public InvitationCoach InviteCoachToLeague(InvitationCoach invitationReceived)
         {
-            // We initialize a bool, that tells us if the received invitation is valid or not
+            // We initialize an instance, that tells us if the received invitation is valid or not
             InvitationCoach invitationNew = new InvitationCoach();
 
             // First, we search the correct League in the database
@@ -130,8 +130,6 @@ namespace Back_Server
         }
 
 
-
-
         /// <summary>
         /// Manage the acception of an invitation of a new Coach to a League
         /// </summary>
@@ -149,7 +147,39 @@ namespace Back_Server
             if (league.IsComplete)
             {
                 // We get the invitation instance from the league
-                invitationReceived = league.invitedCoaches.FirstOrDefault(invit => 
+                invitationReceived = league.invitedCoaches.FirstOrDefault(invit =>
+                    invit.idInvitor == invitationReceived.idInvitor
+                    && invit.idInvited == invitationReceived.idInvited
+                    && invit.job == invitationReceived.job);
+            }
+
+
+            // We return to the user whether it worked or not
+            Net.BOOL.Send(comm.GetStream(), invitationReceived.IsComplete);
+
+            // We return the Invitation to the server (if something went wrong, it returns a default instance)
+            return invitationReceived;
+        }
+
+
+        /// <summary>
+        /// Manage the refusal of an invitation of a new Coach to a League
+        /// </summary>
+        /// <param name="invitationReceived"></param>
+        public InvitationCoach InvitationCoachRefuse(InvitationCoach invitationReceived)
+        {
+            // We initialize an InvitationCoach to a default instance
+            // If the invitation is found to be valid, it'll transform to a regular InvitationCoach
+            InvitationCoach invitationFromServer = new InvitationCoach();
+
+            // First, we search the correct League in the database
+            League league = Database.LEAGUE.GetById(invitationReceived.idLeague);
+
+            // We check if the League is valid
+            if (league.IsComplete)
+            {
+                // We get the invitation instance from the league
+                invitationReceived = league.invitedCoaches.FirstOrDefault(invit =>
                     invit.idInvitor == invitationReceived.idInvitor
                     && invit.idInvited == invitationReceived.idInvited
                     && invit.job == invitationReceived.job);

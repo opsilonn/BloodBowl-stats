@@ -358,19 +358,41 @@ namespace Front_Console
                                 // End the loop
                                 continueInvitations = false;
 
+                                // Display message accordingly
                                 CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.INVITATION_COACH_ACCEPT_VALID);
-                                CONSOLE.WaitForInput();
                             }
                             else
                             {
+                                // Display message accordingly
+                                CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.INVITATION_COACH_ACCEPT_REFUSED);
 
                             }
+                            CONSOLE.WaitForInput();
                         }
                         // Send no
                         else if (index == 1)
                         {
-                            // Send no
-                            Console.WriteLine("Dismiss");
+                            // We verify with the server if it is still valid
+                            instruction = Instructions.League_InviteCoachRefuse;
+                            Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationSelected));
+
+                            // We get the response
+                            bool itWorked = Net.BOOL.Receive(comm.GetStream());
+
+                            // If the server response is positive : dismiss the invitation
+                            if (itWorked)
+                            {
+                                // Dismiss the invitation
+                                invitationSelected.league.RefuseInvitationCoach(invitationSelected);
+
+                                // Display message accordingly
+                                CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.INVITATION_COACH_DISMISS_VALID);
+                            }
+                            else
+                            {
+                                // Display message accordingly
+                                CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.INVITATION_COACH_DISMISS_REFUSED);
+                            }
                             CONSOLE.WaitForInput();
                         }
                         else
