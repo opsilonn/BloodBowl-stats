@@ -139,8 +139,7 @@ namespace Front_Console
                 {
                     // CHOICE
                     // We dynamically create a List containing all the League's name
-                    List<string> choiceString = new List<string>();
-                    leagues.ForEach(league => choiceString.Add(league.name));
+                    List<string> choiceString = leagues.Select(league => league.name).ToList();
 
                     // We add as a last choice the option to "Go Back"
                     choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
@@ -151,10 +150,12 @@ namespace Front_Console
 
                     if (index != choiceString.Count - 1)
                     {
+                        // We continue to browse Leagues depending on future decisions
                         PanelLeague(leagues[index]);
                     }
                     else
                     {
+                        // We end browsing Leagues NOW
                         continuingLeagues = false;
                     }
                 }
@@ -167,6 +168,7 @@ namespace Front_Console
         /// A panel displaying all options a user can perform with a given League
         /// </summary>
         /// <param name="league">League instance of which we display the options</param>
+        /// <returns>Whether the user wants to keep browing Leagues afterward</returns>
         private void PanelLeague(League league)
         {
             bool continuingLeague = true;
@@ -189,6 +191,8 @@ namespace Front_Console
                     choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_REMOVE_MEMBER);
                 }
 
+                // Add choice to leave the League
+                choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_LEAVE);
 
                 // Add choice to go back
                 choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
@@ -218,9 +222,15 @@ namespace Front_Console
                         InviteToLeague(league);
                         break;
 
-                    // Invite Member
+                    // Remove Member
                     case PrefabMessages.SELECTION_LEAGUE_REMOVE_MEMBER:
                         RemoveMemberFromLeague(league);
+                        break;
+
+                    // Leave League
+                    case PrefabMessages.SELECTION_LEAGUE_LEAVE:
+                        // we continue inversely to whether we could depart from the League
+                        continuingLeague = !CoachLeaveLeague(league);
                         break;
 
                     // Go Back

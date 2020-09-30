@@ -262,5 +262,32 @@ namespace Back_Server
             // We return to the user whether it worked or not
             Net.BOOL.Send(comm.GetStream(), isValid);
         }
+
+
+        /// <summary>
+        /// We remove the current user from the League
+        /// </summary>
+        /// <param name="league">League the user is leaving</param>
+        private void LeagueLeaveCoach(League league)
+        {
+            // We get the League from our Database
+            league = Database.LEAGUE.GetById(league.id);
+
+            // If the league found is complete
+            if(league.IsComplete)
+            {
+                // We get the JobAttribution of the user
+                JobAttribution ja = league.GetMember(userCoach.id);
+
+                // We remove him from the League
+                league.RemoveMember(ja);
+
+                // We raise the event
+                When_Member_Leaves_League(league);
+            }
+
+            // We return to the user whether it worked or not
+            Net.BOOL.Send(comm.GetStream(), league.IsComplete);
+        }
     }
 }

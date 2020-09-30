@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BloodBowl_Library
+﻿namespace BloodBowl_Library
 {
     public static class PrefabMessages
     {
@@ -33,6 +27,9 @@ namespace BloodBowl_Library
 
         public const string LEAGUE_REMOVE_COACH_SUCCESS = "The removal was successful !";
         public const string LEAGUE_REMOVE_COACH_FAILURE = "The removal has not worked...";
+
+        public const string LEAGUE_LEAVE_SUCCESS = "You leaved the League !";
+        public const string LEAGUE_LEAVE_FAILURE = "Error : could not leave the League...";
 
         public const string INVITATION_COACH_ACCEPT_VALID = "The invitation has been accepted !";
         public const string INVITATION_COACH_ACCEPT_REFUSED = "There has been an error with the invitation...";
@@ -65,6 +62,7 @@ namespace BloodBowl_Library
         public const string SELECTION_LEAGUE_SEE_MEMBERS = "See Members";
         public const string SELECTION_LEAGUE_INVITE_MEMBER = "Invite Member";
         public const string SELECTION_LEAGUE_REMOVE_MEMBER = "Remove Member";
+        public const string SELECTION_LEAGUE_LEAVE = "Leave the League";
 
 
 
@@ -78,6 +76,6 @@ namespace BloodBowl_Library
         public const int INPUT_MAXSIZE_NAME = 50;
         public const int INPUT_MAXSIZE_DESCRIPTION = 100;
 
-        public const int INPUT_MAXSIZE_PROFILE_CONTENT = 100;
+        public const int INPUT_MAXSIZE__CONTENT = 100;
     }
 }

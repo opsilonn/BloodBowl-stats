@@ -77,6 +77,16 @@ namespace Front_Console
            }
        );
 
+        public static Choice CHOICE_COACH_LEAVE_LEAGUE = new Choice
+       (
+           "Are you sure you want to leave the League ?",
+           new List<string>()
+           {
+               "Yes, leave League",
+               "No, go Back"
+           }
+       );
+
         public static string CHOICE_TOPIC_JOIN = "Join the Topic";
         public static string CHOICE_TOPIC_LEAVE = "Leave the Topic";
         public static string CHOICE_TOPIC_GOBACK = "Go Back";

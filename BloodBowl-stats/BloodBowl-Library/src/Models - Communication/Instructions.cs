@@ -30,6 +30,7 @@
         League_InviteCoachAccept,
         League_InviteCoachRefuse,
         League_RemoveCoach,
+        League_Coach_Leave,
 
         League_InviteTeamCreate,
         League_InviteTeamAccept,

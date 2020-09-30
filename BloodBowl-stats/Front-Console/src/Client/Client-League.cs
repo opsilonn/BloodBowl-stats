@@ -452,11 +452,8 @@ namespace Front_Console
                             instruction = Instructions.League_InviteCoachRefuse;
                             Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, invitationSelected));
 
-                            // We get the response
-                            bool itWorked = Net.BOOL.Receive(comm.GetStream());
-
                             // If the server response is positive : dismiss the invitation
-                            if (itWorked)
+                            if (Net.BOOL.Receive(comm.GetStream()))
                             {
                                 // Dismiss the invitation
                                 invitationSelected.league.RefuseInvitationCoach(invitationSelected);
@@ -482,6 +479,46 @@ namespace Front_Console
                     }
                 }
             }
+        }
+
+
+
+        /// <summary>
+        /// The user leaves the League
+        /// </summary>
+        /// <param name="league">League the user is leaving</param>
+        /// <returns>Whether the departure from the League was successful or not</returns>
+        private bool CoachLeaveLeague(League league)
+        {
+            // We initialize a bool
+            bool leave = false;
+
+            // We ask one last time for the user to confirm his choice
+            if (Choice_Prefabs.CHOICE_COACH_LEAVE_LEAGUE.GetChoice() == 0)
+            {
+                // We send the League the user wants to leave (the user data is already stored on the server)
+                Instructions instruction = Instructions.League_Coach_Leave;
+                Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, league));
+
+
+                leave = Net.BOOL.Receive(comm.GetStream());
+                // If the server response is positive : remove the user from the League
+                if (leave)
+                {
+                    // Display message accordingly
+                    CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.LEAGUE_LEAVE_SUCCESS);
+                }
+                else
+                {
+                    // Display message accordingly
+                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_LEAVE_FAILURE);
+                }
+
+                CONSOLE.WaitForInput();
+            }
+
+            // We return whether the protocol worked
+            return leave;
         }
     }
 }

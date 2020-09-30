@@ -30,6 +30,7 @@ namespace Back_Server
 
         public delegate void LeagueEvent(League league);
         public event LeagueEvent When_League_Create;
+        public event LeagueEvent When_Member_Leaves_League;
 
         public delegate void LeagueInvitationCoachEvent(InvitationCoach invitation);
         public event LeagueInvitationCoachEvent When_League_InvitationCoach_Create;
@@ -171,6 +172,10 @@ namespace Back_Server
 
                     case Instructions.League_RemoveCoach:
                         RemoveCoachFromLeague((ExpulsionCoach)content);
+                        break;
+
+                    case Instructions.League_Coach_Leave:
+                        LeagueLeaveCoach((League)content);
                         break;
 
 
