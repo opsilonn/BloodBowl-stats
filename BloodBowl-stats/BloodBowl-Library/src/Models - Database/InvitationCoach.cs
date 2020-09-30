@@ -68,7 +68,7 @@ namespace BloodBowl_Library
         /// Serializes the Invitation instance
         /// </summary>
         /// <returns>A JSON string representation of the Invitation instance</returns>
-        public override string Serialize()
+        public string Serialize()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }

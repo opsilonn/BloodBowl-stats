@@ -66,6 +66,7 @@ namespace Back_Server
                 receiver.When_League_InvitationCoach_Create += LeagueInvitationCoachCreate;
                 receiver.When_League_InvitationCoach_Accept += LeagueInvitationCoachAccept;
                 receiver.When_League_InvitationCoach_Refuse += LeagueInvitationCoachRefuse;
+                receiver.When_League_Expel_Coach += LeagueExpelMember;
 
 
                 // ... et je lance une connexion avec le serveur
@@ -178,20 +179,25 @@ namespace Back_Server
             // Updating the JSON file
             Database.LEAGUE.Write(league);
         }
-        private void LeagueInvitationCoachCreate(InvitationCoach ia)
+        private void LeagueInvitationCoachCreate(InvitationCoach ic)
         {
             // Updating the JSON file
-            Database.LEAGUE.Write(ia.league);
+            Database.LEAGUE.Write(ic.league);
         }
-        private void LeagueInvitationCoachAccept(InvitationCoach ia)
+        private void LeagueInvitationCoachAccept(InvitationCoach ic)
         {
             // Updating the JSON file
-            Database.LEAGUE.Write(ia.league);
+            Database.LEAGUE.Write(ic.league);
         }
-        private void LeagueInvitationCoachRefuse(InvitationCoach ia)
+        private void LeagueInvitationCoachRefuse(InvitationCoach ic)
         {
             // Updating the JSON file
-            Database.LEAGUE.Write(ia.league);
+            Database.LEAGUE.Write(ic.league);
+        }
+        private void LeagueExpelMember(ExpulsionCoach ec)
+        {
+            // Updating the JSON file
+            Database.LEAGUE.Write(ec.league);
         }
 
 

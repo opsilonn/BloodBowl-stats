@@ -30,6 +30,10 @@ namespace BloodBowl_Library
         public const string LEAGUE_INVITATION_COACH_SELF = "You cannot invite yourself to a League !";
         public const string LEAGUE_INVITATION_COACH_SUCCESS = "The invitation was successful !";
         public const string LEAGUE_INVITATION_COACH_FAILURE = "The invitation has not worked...";
+
+        public const string LEAGUE_REMOVE_COACH_SUCCESS = "The removal was successful !";
+        public const string LEAGUE_REMOVE_COACH_FAILURE = "The removal has not worked...";
+
         public const string INVITATION_COACH_ACCEPT_VALID = "The invitation has been accepted !";
         public const string INVITATION_COACH_ACCEPT_REFUSED = "There has been an error with the invitation...";
         public const string INVITATION_COACH_DISMISS_VALID = "The invitation has been declined !";
@@ -40,6 +44,7 @@ namespace BloodBowl_Library
         public const string LEAGUE_HAS_NO_COACH = "It seems there is no member in this League...";
         public const string TEAM_NONE_ARE_AVAILABLE = "It seems you have no Team !\nPlease consider creating your a Team";
         public const string INVITATION_COACH_NONE = "It seems you have no invitation at the moment...";
+        public const string REMOVAL_COACH_NONE = "It seems there is no member to remove at the moment...";
         public const string INVITATION_TEAM_NONE = "It seems you have no invitation for this Team at the moment...";
 
         public const string NOT_ENOUGH_MONEY = "You don't have enough money to buy this !";
@@ -58,7 +63,8 @@ namespace BloodBowl_Library
         public const string SELECTION_PLAYER_REMOVE = "Remove Player";
         // SELECTION - LEAGUE
         public const string SELECTION_LEAGUE_SEE_MEMBERS = "See Members";
-        public const string SELECTION_LEAGUE_INVITE_MEMBERS = "Invite Member";
+        public const string SELECTION_LEAGUE_INVITE_MEMBER = "Invite Member";
+        public const string SELECTION_LEAGUE_REMOVE_MEMBER = "Remove Member";
 
 
 

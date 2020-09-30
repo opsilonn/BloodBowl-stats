@@ -66,23 +66,6 @@ namespace BloodBowl_Library
 
 
 
-        // SERIALIZATION
-
-        /// <summary>
-        /// Serializes the Invitation instance
-        /// </summary>
-        /// <returns>A JSON string representation of the Invitation instance</returns>
-        public abstract string Serialize();
-
-
-        /// <summary>
-        /// Textual representation of the instance
-        /// </summary>
-        /// <returns> A textual representation of the instance</returns>
-        public override abstract string ToString();
-
-
-
 
         // GETTER - SETTER
         public DateTime date { get => _date; set => _date = value; }

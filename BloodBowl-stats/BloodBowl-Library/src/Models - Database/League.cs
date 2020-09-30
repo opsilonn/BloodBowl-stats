@@ -165,6 +165,16 @@ namespace BloodBowl_Library
         }
 
 
+        /// <summary>
+        /// Removes a member from the instance
+        /// </summary>
+        /// <param name="member">Member to remove</param>
+        public void RemoveMember(JobAttribution member)
+        {
+            members.Remove(member);
+        }
+
+
 
 
         /// <summary>
@@ -197,16 +207,14 @@ namespace BloodBowl_Library
         }
 
 
-
-
         /// <summary>
         /// Returns whether a given Coach is a member of this League instance
         /// </summary>
-        /// <param name="invitedId">Id of the Member</param>
+        /// <param name="icReceived">InvitationCoach received</param>
         /// <returns>Whether a given Coach is a member of this League instance</returns>
-        public bool ContainsSimilarInvitedCoach(InvitationCoach iaReceived)
+        public bool ContainsSimilarInvitedCoach(InvitationCoach icReceived)
         {
-            return invitedCoaches.Where(ia => (ia.idInvited == iaReceived.idInvited && ia.job == iaReceived.job)).Any();
+            return invitedCoaches.Where(ia => (ia.idInvited == icReceived.idInvited && ia.job == icReceived.job)).Any();
         }
     }
 }

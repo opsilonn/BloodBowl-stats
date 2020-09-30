@@ -1,8 +1,6 @@
 ﻿using BloodBowl_Library;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Linq;
 
 
 namespace Back_Server
@@ -38,12 +36,15 @@ namespace Back_Server
         public event LeagueInvitationCoachEvent When_League_InvitationCoach_Accept;
         public event LeagueInvitationCoachEvent When_League_InvitationCoach_Refuse;
 
+        public delegate void LeagueExpulsionCoachEvent(ExpulsionCoach expelled);
+        public event LeagueExpulsionCoachEvent When_League_Expel_Coach;
+
         /*
         public delegate void LeagueInvitationTeamEvent(InvitationTeam invitation);
         public event LeagueInvitationTeamEvent When_League_InvitationTeam_Create;
         public event LeagueInvitationTeamEvent When_League_InvitationTeam_Accept;
         public event LeagueInvitationTeamEvent When_League_InvitationTeam_Refuse;
-        */ 
+        */
 
 
         // Data of the User currently logged in
@@ -166,6 +167,10 @@ namespace Back_Server
 
                     case Instructions.League_InviteCoachRefuse:
                         InvitationCoachRefuse((InvitationCoach)content);
+                        break;
+
+                    case Instructions.League_RemoveCoach:
+                        RemoveCoachFromLeague((ExpulsionCoach)content);
                         break;
 
 

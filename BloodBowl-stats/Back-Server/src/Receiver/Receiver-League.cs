@@ -14,7 +14,7 @@ namespace Back_Server
         /// Creates a Team
         /// </summary>
         /// <param name="leagueReceived">League's data send by the client</param>
-        public void NewLeague(League leagueReceived)
+        private void NewLeague(League leagueReceived)
         {
             // We initialize a new League (default has a null Id)
             League newLeague = new League();
@@ -82,7 +82,7 @@ namespace Back_Server
         /// Manage the invitation of a new Coach to a League
         /// </summary>
         /// <param name="invitationReceived">InvitationCoach received</param>
-        public void InviteCoachToLeague(InvitationCoach invitationReceived)
+        private void InviteCoachToLeague(InvitationCoach invitationReceived)
         {
             // We initialize an instance, that tells us if the received invitation is valid or not
             InvitationCoach invitationNew = new InvitationCoach();
@@ -100,7 +100,7 @@ namespace Back_Server
                 // AND if he is allowed to perform an invitation
                 // AND if he is allowed to give that role
                 if (invitor.IsComplete
-                    && invitor.job.canAddPlayer()
+                    && invitor.job.canManageMember()
                     && invitor.job.JobsItCanPropose().Contains(invitationReceived.job))
                 {
                     // Third, we check the invited
@@ -135,7 +135,7 @@ namespace Back_Server
         /// Manage the acception of an invitation of a new Coach to a League
         /// </summary>
         /// <param name="invitationReceived"></param>
-        public void InvitationCoachAccept(InvitationCoach invitationReceived)
+        private void InvitationCoachAccept(InvitationCoach invitationReceived)
         {
             // We initialize an InvitationCoach to a default instance
             // If the invitation is found to be valid, it'll transform to a regular InvitationCoach
@@ -175,7 +175,7 @@ namespace Back_Server
         /// Manage the refusal of an invitation of a new Coach to a League
         /// </summary>
         /// <param name="invitationReceived"></param>
-        public void InvitationCoachRefuse(InvitationCoach invitationReceived)
+        private void InvitationCoachRefuse(InvitationCoach invitationReceived)
         {
             // We initialize an InvitationCoach to a default instance
             // If the invitation is found to be valid, it'll transform to a regular InvitationCoach
@@ -206,6 +206,61 @@ namespace Back_Server
 
             // We return to the user whether it worked or not
             Net.BOOL.Send(comm.GetStream(), (invitationReceived != null && invitationReceived.IsComplete));
+        }
+
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="expulsionCoach"></param>
+        private void RemoveCoachFromLeague(ExpulsionCoach expulsionCoach)
+        {
+            // We initialize a bool
+            bool isValid = false;
+
+            // First, we search the correct League in the database
+            League league = Database.LEAGUE.GetById(expulsionCoach.league.id);
+
+            // We check that the league do exist
+            if(league.IsComplete)
+            {
+                // We get the expeller
+                JobAttribution expeller = league.GetMember(expulsionCoach.expeller.idCoach);
+
+                // We verify that the expeller :
+                // exists
+                // Is in the League
+                // has Admin rights
+                if(expeller.IsComplete && league.ContainsMember(expeller.idCoach) && expeller.job.canManageMember())
+                {
+                    // We get the expelled
+                    JobAttribution expelled = league.GetMember(expulsionCoach.expelled.idCoach);
+
+                    // We verify that the expelled :
+                    // exists
+                    // Is in the League
+                    // can be removed by the expeller (check their ranks)
+                    if (expelled.IsComplete && league.ContainsMember(expeller.idCoach) && expeller.job < expelled.job)
+                    {
+                        // If reached : the removal is valid !
+                        isValid = true;
+
+                        // We remove the expelled from the league
+                        league.RemoveMember(expelled);
+
+                        // We raise the event : a Coach has been removed from a League
+                        expulsionCoach = new ExpulsionCoach(league, expeller, expelled);
+                        When_League_Expel_Coach(expulsionCoach);
+                    }
+                }
+            }
+
+
+            // We return to the user whether it worked or not
+            Net.BOOL.Send(comm.GetStream(), isValid);
         }
     }
 }

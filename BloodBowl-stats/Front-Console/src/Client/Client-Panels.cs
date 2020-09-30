@@ -182,10 +182,11 @@ namespace Front_Console
                 // Add choice to see the Members
                 choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_SEE_MEMBERS);
 
-                // if the user is allowed to invite : Add choice to Invite a new Member
-                if(league.members.FirstOrDefault(member => member.coach.id == userData.id).job.canAddPlayer())
+                // if the user is allowed to manage member : Add choice to Invite / Remove a Member
+                if(league.members.FirstOrDefault(member => member.coach.id == userData.id).job.canManageMember())
                 {
-                    choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_INVITE_MEMBERS);
+                    choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_INVITE_MEMBER);
+                    choiceStrings.Add(PrefabMessages.SELECTION_LEAGUE_REMOVE_MEMBER);
                 }
 
 
@@ -209,12 +210,17 @@ namespace Front_Console
 
                     // See Members
                     case PrefabMessages.SELECTION_LEAGUE_SEE_MEMBERS:
-                        DisplayMembers(league);
+                        DisplayLeagueMembers(league);
                         break;
 
                     // Invite Member
-                    case PrefabMessages.SELECTION_LEAGUE_INVITE_MEMBERS:
+                    case PrefabMessages.SELECTION_LEAGUE_INVITE_MEMBER:
                         InviteToLeague(league);
+                        break;
+
+                    // Invite Member
+                    case PrefabMessages.SELECTION_LEAGUE_REMOVE_MEMBER:
+                        RemoveMemberFromLeague(league);
                         break;
 
                     // Go Back
@@ -362,7 +368,7 @@ namespace Front_Console
             while (continuingPlayer)
             {
                 // CHOICE
-                // We dynamically create a List containing all the players names
+                // We create a list containing all the choices
                 List<string> choiceStrings = new List<string>();
                 choiceStrings.Add(PrefabMessages.SELECTION_SEE_DATA);
 

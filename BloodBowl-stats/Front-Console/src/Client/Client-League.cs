@@ -29,7 +29,7 @@ namespace Front_Console
         /// Display all members of a League
         /// </summary>
         /// <param name="league">League instance to display</param>
-        private void DisplayMembers(League league)
+        private void DisplayLeagueMembers(League league)
         {
             bool continueMembers = true;
 
@@ -52,8 +52,7 @@ namespace Front_Console
                 {
                     // CHOICE
                     // We dynamically create a List containing all the Coaches names
-                    List<string> choiceString = new List<string>();
-                    members.ForEach(member => choiceString.Add(member.job + " - " + member.coach.name));
+                    List<string> choiceString = members.Select(member => member.job.name() + " - " + member.coach.name).ToList();
 
                     // We add as a last choice the option to "Go Back"
                     choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
@@ -68,7 +67,6 @@ namespace Front_Console
                     {
                         Console.WriteLine("you have chosen : " + members[index].coach.name);
                         CONSOLE.WaitForInput();
-                        // ManagePlayer(members[index]);
                     }
                     else
                     {
@@ -215,8 +213,7 @@ namespace Front_Console
 
                     // CHOICE
                     // We dynamically create a List containing all the Coaches names
-                    List<string> choiceStrings = new List<string>();
-                    listCoaches.ForEach(coach => choiceStrings.Add(coach.name));
+                    List<string> choiceStrings = listCoaches.Select(coach => coach.name).ToList();
 
                     // We add as a last choice the option to "Go Back"
                     choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
@@ -233,7 +230,7 @@ namespace Front_Console
                         Coach selectedCoach = listCoaches[index];
 
                         // We check if the user didn't invite himself
-                        if(selectedCoach.id == userData.id)
+                        if (selectedCoach.id == userData.id)
                         {
                             CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_INVITATION_COACH_SELF);
                         }
@@ -251,7 +248,7 @@ namespace Front_Console
                             choice = new Choice(PrefabMessages.SELECTION_JOB, choiceStrings);
                             index = choice.GetChoice();
 
-                            if(index != choiceStrings.Count - 1)
+                            if (index != choiceStrings.Count - 1)
                             {
                                 // We save the selected Job
                                 Job job = jobs[index];
@@ -281,6 +278,86 @@ namespace Front_Console
                         }
 
                         CONSOLE.WaitForInput();
+                    }
+                }
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// Remove a Member from the League
+        /// </summary>
+        /// <param name="league">League where we are removing a member</param>
+        public void RemoveMemberFromLeague(League league)
+        {
+            bool continueRemoval = true;
+
+            // We get the Coach data of the user within the League
+            JobAttribution user = league.GetMember(userData.id);
+
+
+            while (continueRemoval)
+            {
+                // We initialize a list of strings
+                List<string> choiceStrings = new List<string>();
+
+                // We get all the member that the user can remove (job is under the user's, and is not the user)
+                List<JobAttribution> membersToRemove = league.members.Where(member => user.job < member.job && user.idCoach != member.idCoach).ToList();
+
+                // We check that there is at least 1 member to remove
+                if(membersToRemove.Count == 0)
+                {
+                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.REMOVAL_COACH_NONE);
+                    CONSOLE.WaitForInput();
+
+                    continueRemoval = false;
+                }
+                else
+                {
+                    // We add a string for each member of the league that can be removed
+                    membersToRemove.ForEach(member => choiceStrings.Add(member.coach.name + " - " + member.job.name()));
+
+                    // We add a choice to go back
+                    choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
+
+                    // We create the Choice : the COACH to remove
+                    Choice choice = new Choice(PrefabMessages.SELECTION_COACH, choiceStrings);
+                    int index = choice.GetChoice();
+
+
+                    // All the fields are empty : go back to the menu
+                    if (index < membersToRemove.Count)
+                    {
+                        // We get the Member to remove
+                        JobAttribution expelled = membersToRemove[index];
+
+                        // Send data
+                        Instructions instruction = Instructions.League_RemoveCoach;
+                        ExpulsionCoach expulsionData = new ExpulsionCoach(league, user, expelled);
+                        Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, expulsionData));
+
+                        // We receive whether it worked or not
+                        if (Net.BOOL.Receive(comm.GetStream()))
+                        {
+                            // We remove him from the League
+                            league.RemoveMember(expelled);
+
+                            // We display a message accordingly
+                            CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.LEAGUE_REMOVE_COACH_SUCCESS);
+                            continueRemoval = false;
+                        }
+                        else
+                        {
+                            // We display a message accordingly
+                            CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_REMOVE_COACH_FAILURE);
+                        }
+                        CONSOLE.WaitForInput();
+                    }
+                    else
+                    {
+                        continueRemoval = false;
                     }
                 }
             }
@@ -320,19 +397,18 @@ namespace Front_Console
                 {
                     // CHOICE
                     // We dynamically create a List containing all the Coaches names
-                    List<string> choiceString = new List<string>();
-                    invitations.ForEach(invitation => choiceString.Add(invitation.league.name + " as " + invitation.job));
+                    List<string> choiceStrings = invitations.Select(invitation => invitation.league.name + " as " + invitation.job).ToList();
 
                     // We add as a last choice the option to "Go Back"
-                    choiceString.Add(PrefabMessages.SELECTION_GO_BACK);
+                    choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
 
 
                     // We create the Choice
-                    Choice c = new Choice(PrefabMessages.SELECTION_PLAYER, choiceString);
+                    Choice c = new Choice(PrefabMessages.SELECTION_PLAYER, choiceStrings);
                     int index = c.GetChoice();
 
                     // The user chose an Invitation
-                    if (index != choiceString.Count - 1)
+                    if (index != choiceStrings.Count - 1)
                     {
                         // We verify with the server if it is still valid
                         InvitationCoach invitationSelected = invitations[index];

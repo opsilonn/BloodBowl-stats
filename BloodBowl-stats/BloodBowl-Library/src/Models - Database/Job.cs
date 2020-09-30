@@ -22,15 +22,15 @@ namespace BloodBowl_Library
         public class JobData
         {
             public string name { get; }
-            public bool canAddPlayer { get; }
-            public bool canWriteArticles { get; }
+            public bool canManageMember { get; }
+            public bool canWriteArticle { get; }
 
 
             public JobData(string name, bool canAddPlayer, bool canWriteArticles)
             {
                 this.name = name;
-                this.canAddPlayer = canAddPlayer;
-                this.canWriteArticles = canWriteArticles;
+                this.canManageMember = canAddPlayer;
+                this.canWriteArticle = canWriteArticles;
             }
         }
 
@@ -72,13 +72,13 @@ namespace BloodBowl_Library
 
 
         /// <summary>
-        /// If the instance can add Player
+        /// If the instance can manage Member
         /// </summary>
         /// <param name="job">Job we are analysing</param>
-        /// <returns>If the instance can add Player</returns>
-        public static bool canAddPlayer(this Job job)
+        /// <returns>If the instance can manage Member</returns>
+        public static bool canManageMember(this Job job)
         {
-            return job.data().canAddPlayer;
+            return job.data().canManageMember;
         }
 
 
@@ -87,9 +87,9 @@ namespace BloodBowl_Library
         /// </summary>
         /// <param name="job">Job we are analysing</param>
         /// <returns>If the instance can write articles</returns>
-        public static bool canWriteArticles(this Job job)
+        public static bool canWriteArticle(this Job job)
         {
-            return job.data().canWriteArticles;
+            return job.data().canWriteArticle;
         }
 
 
@@ -106,7 +106,7 @@ namespace BloodBowl_Library
             List<Job> jobs = new List<Job>();
 
             // If allowed, we fill the list
-            if(job.canAddPlayer())
+            if(job.canManageMember())
             {
                 jobs = GetAllJobs().Where(j => j >= job).ToList();
             }
