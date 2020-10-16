@@ -1,11 +1,7 @@
 ﻿using BloodBowl_Library;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace Back_Server
 {
@@ -33,7 +29,7 @@ namespace Back_Server
                     newTeam = Team.Deserialize(json);
 
                     // Ensuring we have completed fields
-                    if (newTeam.id != Guid.Empty && newTeam.name != "")
+                    if (newTeam.IsComplete)
                     {
                         // We give the reference to the Team to each player
                         newTeam.players.ForEach(player => player.team = newTeam);
@@ -58,13 +54,13 @@ namespace Back_Server
             /// <returns> Whether the save worked or not</returns>
             public static bool Write(Team team)
             {
-                // If this team has a valid coach
-                // If the coach's path exists
+                // If this Team has a valid Coach
+                // If the Coach's path exists
                 // -> we can write it
-                if (team.coach.IsComplete && Directory.Exists(pathTeam(team)))
+                if (team.coach.IsComplete && Directory.Exists(pathCoachFolder(team.coach)))
                 {
                     // Get the path
-                    string path = pathTeamData(team);
+                    string path = pathTeamJson(team);
 
                     // Convert the instance into a string
                     string json = team.Serialize();
@@ -81,6 +77,31 @@ namespace Back_Server
             }
 
 
+
+            /// <summary>
+            /// Removes a Team instance from the file database
+            /// </summary>
+            /// <param name="team">Team to remove</param>
+            /// <returns>Whether the Removal worked or not</returns>
+            public static bool Remove(Team team)
+            {
+                // Get the path
+                string path = pathTeamJson(team);
+
+                if(File.Exists(path))
+                {
+                    File.Delete(pathTeamJson(team));
+                    return true;
+                }
+                else
+                {
+                    CONSOLE.WriteLine(ConsoleColor.Red, "File for Team " + team.name + " not found");
+                    return false;
+                }
+            }
+
+
+
             /// <summary>
             /// Returns a Team given its name (if it exists)
             /// </summary>
@@ -88,18 +109,11 @@ namespace Back_Server
             /// <returns> the Team of a given name (if it exists) </returns>
             public static Team GetByName(string name)
             {
-                // We iterate through all the profiles
-                foreach (Team team in teams)
-                {
-                    // If we find a similar Team in the Database
-                    if (team.name == name)
-                    {
-                        return team;
-                    }
-                }
+                // We get the Team, if any
+                Team team = teams.FirstOrDefault(t => t.name == name);
 
-                // otherwise, we return null
-                return null;
+                // We return it if found, otherwise we return a default instance
+                return (team != null) ? team : new Team();
             }
 
 
@@ -110,18 +124,11 @@ namespace Back_Server
             /// <returns> the Team of a given ID (if it exists) </returns>
             public static Team GetById(Guid id)
             {
-                // We iterate through all the profiles
-                foreach (Team team in teams)
-                {
-                    // If we find a similar Coach in the Database
-                    if (team.id == id)
-                    {
-                        return team;
-                    }
-                }
+                // We get the Team, if any
+                Team team = teams.FirstOrDefault(t => t.id == id);
 
-                // otherwise, we return null
-                return null;
+                // We return it if found, otherwise we return a default instance
+                return (team != null) ? team : new Team();
             }
         }
     }

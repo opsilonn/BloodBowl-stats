@@ -58,6 +58,7 @@ namespace Back_Server
 
                 receiver.When_Coach_Create += CoachCreate;
                 receiver.When_Team_Create += TeamCreate;
+                receiver.When_Team_Delete += TeamDelete;
                 receiver.When_Player_Create += PlayerCreate;
                 receiver.When_Player_Remove += PlayerRemove;
                 receiver.When_Player_LevelsUp += PlayerLevelsUp;
@@ -159,6 +160,14 @@ namespace Back_Server
 
             // Creating a JSON file
             Database.TEAM.Write(newTeam);
+        }
+        private void TeamDelete(Team teamToDelete)
+        {
+            // Adding the new objects to the database representation
+            Database.teams.Remove(teamToDelete);
+
+            // Creating a JSON file
+            Database.TEAM.Remove(teamToDelete);
         }
         private void PlayerCreate(Player newPlayer)
         {

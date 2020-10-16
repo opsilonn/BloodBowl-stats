@@ -15,6 +15,8 @@
 
         public const string TEAM_CREATION_SUCCESS = "The new Team was successfully created !";
         public const string TEAM_CREATION_FAILURE = "The Team hasn't been created...";
+        public const string TEAM_DELETION_SUCCESS = "The Team has been deleted !";
+        public const string TEAM_DELETION_FAILURE = "The Team couln't be deleted...";
 
         public const string PLAYER_CREATION_SUCCESS = "The new Player was successfully created !";
         public const string PLAYER_CREATION_FAILURE = "The Player hasn't been created...";

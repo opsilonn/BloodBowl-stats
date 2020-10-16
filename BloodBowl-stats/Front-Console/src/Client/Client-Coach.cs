@@ -156,6 +156,48 @@ namespace Front_Console
             }
         }
 
+
+        /// <summary>
+        /// Deletes a Team from the Coach data
+        /// </summary>
+        /// <param name="team">Team to remove</param>
+        private bool DeleteTeam(Team team)
+        {
+            // We initialize a bool
+            bool delete = false;
+
+            // We ask one last time for the user to confirm his choice
+            if (Choice_Prefabs.CHOICE_TEAM_DELETE.GetChoice() == 0)
+            {
+                // We send the Team the user wants to delete (the user data is already stored on the server)
+                Instructions instruction = Instructions.Team_Delete;
+                Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, team));
+
+                // We get the response
+                delete = Net.BOOL.Receive(comm.GetStream());
+
+                // If the server response is positive : delete the Team
+                if (delete)
+                {
+                    // We remove the Team
+                    userData.teams.Remove(team);
+
+                    // Display message accordingly
+                    CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.TEAM_DELETION_SUCCESS);
+                }
+                else
+                {
+                    // Display message accordingly
+                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.TEAM_DELETION_FAILURE);
+                }
+
+                CONSOLE.WaitForInput();
+            }
+
+            // We return whether the protocol worked
+            return delete;
+        }
+
         
         /// <summary>
         /// Creates a new Player

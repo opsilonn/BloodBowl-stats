@@ -54,7 +54,7 @@ namespace Back_Server
                 try
                 {
                     // We get the LEAGUE file
-                    string leaguePath = pathLeagueData(di); // String.Format("{0}\\league_{1}.json", directoryInfo.FullName, directoryInfo.Name);
+                    string leaguePath = pathLeagueJson(di); // String.Format("{0}\\league_{1}.json", directoryInfo.FullName, directoryInfo.Name);
 
                     // We read the json
                     string json = System.IO.File.ReadAllText(leaguePath);
@@ -119,7 +119,7 @@ namespace Back_Server
                 try
                 {
                     // Get the folder's path
-                    string pathFolder = pathLeague(league);
+                    string pathFolder = pathLeagueFolder(league);
 
                     // Determine whether the directory exists : if not, we create it.
                     if (!Directory.Exists(pathFolder))
@@ -128,7 +128,7 @@ namespace Back_Server
                     }
 
                     // Get the JSON file's path
-                    string pathJson = pathLeagueData(league);
+                    string pathJson = pathLeagueJson(league);
 
                     // Convert the instance into a string
                     string json = league.Serialize();
@@ -156,18 +156,11 @@ namespace Back_Server
             /// <returns> the League of a given name (if it exists) </returns>
             public static League GetByName(string name)
             {
-                // We iterate through all the profiles
-                foreach (League league in leagues)
-                {
-                    // If we find a similar Coach in the Database
-                    if (league.name == name)
-                    {
-                        return league;
-                    }
-                }
+                // We get the League, if any
+                League league = leagues.FirstOrDefault(l => l.name == name);
 
-                // otherwise, we return default League
-                return new League();
+                // We return it if found, otherwise we return a default instance
+                return (league != null) ? league : new League();
             }
 
 
@@ -178,18 +171,11 @@ namespace Back_Server
             /// <returns> the League of a given ID (if it exists) </returns>
             public static League GetById(Guid id)
             {
-                // We iterate through all the profiles
-                foreach (League league in leagues)
-                {
-                    // If we find a similar League in the Database
-                    if (league.id == id)
-                    {
-                        return league;
-                    }
-                }
+                // We get the League, if any
+                League league = leagues.FirstOrDefault(l => l.id == id);
 
-                // otherwise, we return default League
-                return new League();
+                // We return it if found, otherwise we return a default instance
+                return (league != null) ? league : new League();
             }
         }
     }

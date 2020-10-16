@@ -204,10 +204,10 @@ namespace Front_Console
                 else
                 {
                     // Sending the name of the Coach
-                    Instructions instruction = Instructions.Player_SearchByName;
+                    Instructions instruction = Instructions.Coach_SearchByNameExceptSelf;
                     Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, name));
 
-                    // We receive the list of potential matches
+                    // We receive the list of potential matches (that do not include the user)
                     List<Coach> listCoaches = Net.LIST_COACH.Receive(comm.GetStream());
 
 
@@ -230,6 +230,7 @@ namespace Front_Console
                         Coach selectedCoach = listCoaches[index];
 
                         // We check if the user didn't invite himself
+                        // Should not be happening, but just to make sure
                         if (selectedCoach.id == userData.id)
                         {
                             CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_INVITATION_COACH_SELF);
@@ -297,13 +298,12 @@ namespace Front_Console
             // We get the Coach data of the user within the League
             JobAttribution user = league.GetMember(userData.id);
 
-
+            // initiate a loop
             while (continueRemoval)
             {
-                // We initialize a list of strings
-                List<string> choiceStrings = new List<string>();
-
-                // We get all the member that the user can remove (job is under the user's, and is not the user)
+                // We get all the members that the user can remove
+                // - member with a lower job
+                // - member that is not the user
                 List<JobAttribution> membersToRemove = league.members.Where(member => user.job < member.job && user.idCoach != member.idCoach).ToList();
 
                 // We check that there is at least 1 member to remove
@@ -316,6 +316,9 @@ namespace Front_Console
                 }
                 else
                 {
+                    // We initialize a list of strings
+                    List<string> choiceStrings = new List<string>();
+
                     // We add a string for each member of the league that can be removed
                     membersToRemove.ForEach(member => choiceStrings.Add(member.coach.name + " - " + member.job.name()));
 
@@ -492,29 +495,68 @@ namespace Front_Console
         {
             // We initialize a bool
             bool leave = false;
+            bool goBackAsCeo = false;
 
             // We ask one last time for the user to confirm his choice
             if (Choice_Prefabs.CHOICE_COACH_LEAVE_LEAGUE.GetChoice() == 0)
             {
-                // We send the League the user wants to leave (the user data is already stored on the server)
-                Instructions instruction = Instructions.League_Coach_Leave;
-                Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, league));
-
-
-                leave = Net.BOOL.Receive(comm.GetStream());
-                // If the server response is positive : remove the user from the League
-                if (leave)
+                // If the user is the CEO of the League AND he is not the last member of the League : he needs to appoint a new CEO
+                if(league.GetMember(userData.id).job == Job.CEO && league.members.Count != 1)
                 {
-                    // Display message accordingly
-                    CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.LEAGUE_LEAVE_SUCCESS);
+                    // We get all the other members of the League
+                    List<JobAttribution> members = league.members.Where(m => m.idCoach != userData.id).ToList();
+
+                    // We create a list containing the job and name of all the other members of the League
+                    List<string> choiceStrings = members.Select(m => m.job + " - " + m.coach.name).ToList();
+
+                    // We add a last choice : Go Back
+                    choiceStrings.Add(PrefabMessages.SELECTION_GO_BACK);
+
+                    // We get the user's choice
+                    int index = new Choice(PrefabMessages.SELECTION_COACH, choiceStrings).GetChoice();
+
+                    // If the user selected a member
+                    if(index != choiceStrings.Count - 1)
+                    {
+                        // We send the League the user wants to leave (the user data is already stored on the server)
+                        // This time, we precise that the user is a CEO and that he declares someone as the new CEO
+                        Instructions instruction = Instructions.League_Coach_LeaveAsCEO;
+                        InvitationCoach ia = new InvitationCoach(league, userData, members[index].coach, Job.CEO);
+                        Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, ia));
+                    }
+                    else
+                    {
+                        goBackAsCeo = true;
+                    }
                 }
+                // Otherwise, we send a default instruction
                 else
                 {
-                    // Display message accordingly
-                    CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_LEAVE_FAILURE);
+                    // We send the League the user wants to leave (the user data is already stored on the server)
+                    Instructions instruction = Instructions.League_Coach_Leave;
+                    Net.COMMUNICATION.Send(comm.GetStream(), new Communication(instruction, league));
                 }
 
-                CONSOLE.WaitForInput();
+                // If the user is the CEO and DID decided to leave
+                if(!goBackAsCeo)
+                {
+                    // We get the server's response
+                    leave = Net.BOOL.Receive(comm.GetStream());
+
+                    // If the server response is positive : remove the user from the League
+                    if (leave)
+                    {
+                        // Display message accordingly
+                        CONSOLE.WriteLine(ConsoleColor.Green, PrefabMessages.LEAGUE_LEAVE_SUCCESS);
+                    }
+                    else
+                    {
+                        // Display message accordingly
+                        CONSOLE.WriteLine(ConsoleColor.Red, PrefabMessages.LEAGUE_LEAVE_FAILURE);
+                    }
+
+                    CONSOLE.WaitForInput();
+                }
             }
 
             // We return whether the protocol worked

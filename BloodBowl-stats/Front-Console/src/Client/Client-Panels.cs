@@ -154,13 +154,12 @@ namespace Front_Console
                         PanelLeague(leagues[index]);
                     }
                     else
-                    {
+                    { 
                         // We end browsing Leagues NOW
                         continuingLeagues = false;
                     }
                 }
             }
-
         }
 
 
@@ -321,6 +320,12 @@ namespace Front_Console
 
                     // Go Back
                     case 3:
+                        // we continue inversely to whether we could delete the Team
+                        continuingTeam = !DeleteTeam(team);
+                        break;
+
+                    // Go Back
+                    case 4:
                         continuingTeam = false;
                         break;
 

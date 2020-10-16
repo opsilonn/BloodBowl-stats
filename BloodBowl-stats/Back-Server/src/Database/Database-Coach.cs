@@ -55,7 +55,7 @@ namespace Back_Server
                 try
                 {
                     // We get the COACH file
-                    string coachPath = pathCoachData(di); // String.Format("{0}\\coach_{1}.json", directory.FullName, directory.Name);
+                    string coachPath = pathCoachJson(di); // String.Format("{0}\\coach_{1}.json", directory.FullName, directory.Name);
 
                     // We read the json
                     string json = System.IO.File.ReadAllText(coachPath);
@@ -115,7 +115,7 @@ namespace Back_Server
                 try
                 {
                     // Get the folder's path
-                    string pathFolder = pathCoach(coach);
+                    string pathFolder = pathCoachFolder(coach);
 
                     // Determine whether the directory exists : if not, we create it.
                     if (!Directory.Exists(pathFolder))
@@ -145,7 +145,7 @@ namespace Back_Server
 
 
                     // Get the JSON file's path
-                    string pathJson = pathCoachData(coach);
+                    string pathJson = pathCoachJson(coach);
 
                     // Convert the instance into a string
                     string json = coachWithPassword.Serialize();
@@ -172,18 +172,11 @@ namespace Back_Server
             /// <returns> the Coach of a given name (if it exists) </returns>
             public static Coach GetByName(string name)
             {
-                // We iterate through all the profiles
-                foreach (Coach coach in coaches)
-                {
-                    // If we find a similar Coach in the Database
-                    if (coach.name == name)
-                    {
-                        return coach;
-                    }
-                }
+                // We get the Coach, if any
+                Coach coach = coaches.FirstOrDefault(c => c.name == name);
 
-                // otherwise, we return default Coach
-                return new Coach();
+                // We return it if found, otherwise we return a default instance
+                return (coach != null) ? coach : new Coach();
             }
 
 
@@ -194,18 +187,11 @@ namespace Back_Server
             /// <returns> the Coach of a given ID (if it exists) </returns>
             public static Coach GetById(Guid id)
             {
-                // We iterate through all the profiles
-                foreach (Coach coach in coaches)
-                {
-                    // If we find a similar Coach in the Database
-                    if (coach.id == id)
-                    {
-                        return coach;
-                    }
-                }
+                // We get the Coach, if any
+                Coach coach = coaches.FirstOrDefault(c => c.id == id);
 
-                // otherwise, we return default Coach
-                return new Coach();
+                // We return it if found, otherwise we return a default instance
+                return (coach != null) ? coach : new Coach();
             }
         }
     }

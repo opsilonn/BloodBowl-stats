@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace BloodBowl_Library
@@ -12,8 +10,10 @@ namespace BloodBowl_Library
     {
         CEO,
         Admin,
+        Commisar,
         Writer,
-        Player
+        Player,
+        BlackListed
     }
 
 
@@ -22,15 +22,19 @@ namespace BloodBowl_Library
         public class JobData
         {
             public string name { get; }
+            public bool canCreateCompetition { get; }
             public bool canManageMember { get; }
+            public bool canVerifyResult { get; }
             public bool canWriteArticle { get; }
 
 
-            public JobData(string name, bool canAddPlayer, bool canWriteArticles)
+            public JobData(string name, bool canCreateCompetition, bool canManageMember, bool canVerifyResult, bool canWriteArticle)
             {
                 this.name = name;
-                this.canManageMember = canAddPlayer;
-                this.canWriteArticle = canWriteArticles;
+                this.canCreateCompetition = canCreateCompetition;
+                this.canManageMember = canManageMember;
+                this.canVerifyResult = canVerifyResult;
+                this.canWriteArticle = canWriteArticle;
             }
         }
 
@@ -46,16 +50,20 @@ namespace BloodBowl_Library
             switch (job)
             {
                 case Job.CEO:
-                    return new JobData("CEO", true, true);
+                    return new JobData("CEO", true, true, true, true);
                 case Job.Admin:
-                    return new JobData("Admin", true, true);
+                    return new JobData("Admin", true, true, true, true);
+                case Job.Commisar:
+                    return new JobData("Commissar", false, true, true, true);
                 case Job.Writer:
-                    return new JobData("Writer", false, true);
+                    return new JobData("Writer", false, false, false, true);
                 case Job.Player:
-                    return new JobData("Player", false, false);
+                    return new JobData("Player", false, false, false, false);
+                case Job.BlackListed:
+                    return new JobData("Black-Listed", false, false, false, false);
 
                 default:
-                    return new JobData("Player", false, false);
+                    return new JobData("Player", false, false, false, false);
             }
         }
 
@@ -108,7 +116,13 @@ namespace BloodBowl_Library
             // If allowed, we fill the list
             if(job.canManageMember())
             {
-                jobs = GetAllJobs().Where(j => j >= job).ToList();
+                // All the jobs below the one given
+                // - we exclude all things above the CEO
+                // - we exclude all things below the black list
+                jobs = GetAllJobs().Where(j =>
+                    Job.CEO < j
+                    && job <= j
+                    && j < Job.BlackListed).ToList();
             }
 
             // Return the list

@@ -66,7 +66,7 @@ namespace BloodBowl_Library
         /// <param name="name">Name of the League</param>
         /// <param name="creator">Creator of the League</param>
         /// <param name="members">Ids and Jobs of the members of the League</param>
-        /// <param name="invitations">Invitations of new members and Teams to the League</param>
+        /// <param name="invitedCoaches">Invitations of new members and Teams to the League</param>
         public League(Guid id, DateTime dateCreation, string name, Coach creator, List<JobAttribution> members, List<InvitationCoach> invitedCoaches)
         {
             this.id = id;
@@ -133,7 +133,6 @@ namespace BloodBowl_Library
         {
             get => (
                 id != Guid.Empty
-                && dateCreation != DateTime.MinValue
                 && name != String.Empty
             );
         }

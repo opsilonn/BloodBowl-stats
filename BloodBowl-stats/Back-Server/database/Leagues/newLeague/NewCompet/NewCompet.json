@@ -1,0 +1,14 @@
+{
+  "id": "32d0c61d-7967-4449-a226-e65e2add61e4",
+  "dateCreation": "0001-01-01T00:00:00",
+  "name": "NewCompet",
+  "idCreator": "9eafaf7f-1b60-4d83-b592-aab63ee4c9ad",
+  "members": [
+    {
+      "idCoach": "9eafaf7f-1b60-4d83-b592-aab63ee4c9ad",
+      "job": 0
+    }
+  ],
+  "invitedCoaches": [],
+  "idLeague": "90a0df16-82a1-4bf3-b9cb-133c3208f3ef"
+}

@@ -16,7 +16,6 @@ namespace Front_Console
            }
        );
 
-
         public static Choice CHOICE_CONNECTED = new Choice
        (
            "Please choose an action :",
@@ -32,7 +31,6 @@ namespace Front_Console
            }
        );
 
-
         public static Choice CHOICE_LEAGUE = new Choice
        (
            "Please choose an action :",
@@ -43,7 +41,6 @@ namespace Front_Console
            }
        );
 
-
         public static Choice CHOICE_TEAM = new Choice
        (
            "Please choose an action :",
@@ -51,7 +48,8 @@ namespace Front_Console
            {
                "See Team's Data",
                "Manage Players",
-               "Buy Player",
+               "Buy new Player",
+               "Delete team",
                "Go Back"
            }
        );
@@ -74,6 +72,16 @@ namespace Front_Console
                "Accept invitation",
                "Dismiss invitation",
                "Go Back"
+           }
+       );
+
+        public static Choice CHOICE_TEAM_DELETE = new Choice
+       (
+           "Are you sure you want to delete this Team ?",
+           new List<string>()
+           {
+               "Yes, delete Team",
+               "No, go Back"
            }
        );
 

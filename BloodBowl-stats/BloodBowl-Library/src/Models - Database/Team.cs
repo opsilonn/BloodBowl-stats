@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace BloodBowl_Library
 {
     [Serializable]
@@ -16,6 +17,7 @@ namespace BloodBowl_Library
         private int _money;
         private List<Player> _players;
         private Coach _coach;
+        private Guid _idCoach;
 
 
         // CONSTRUCTORS
@@ -132,7 +134,16 @@ namespace BloodBowl_Library
         public int money { get => _money; set => _money = value; }
         public List<Player> players { get => _players; set => _players = value; }
         [JsonIgnore]
-        public Coach coach { get => _coach; set => _coach = value; }
+        public Coach coach
+        {
+            get => _coach;
+            set
+            {
+                _coach = value;
+                _idCoach = _coach.id;
+            }
+        }
+        public Guid idCoach { get => _idCoach; set => _idCoach = value; }
 
 
 

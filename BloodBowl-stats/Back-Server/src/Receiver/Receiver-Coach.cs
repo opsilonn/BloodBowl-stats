@@ -69,6 +69,28 @@ namespace Back_Server
             Net.LIST_COACH.Send(comm.GetStream(), listCoaches);
         }
 
+        /// <summary>
+        /// Searches a Coach by name, and returns up to 10 of the best matches (while not including the user)
+        /// </summary>
+        /// <param name="name">name of the Coach we seek</param>
+        public void SearchCoachByNameExceptSelf(string name)
+        {
+            // Writing a Log in the Console
+            CONSOLE.WriteLine(ConsoleColor.Yellow, "Coach's name : " + name);
+
+            // We create a list list that
+            // - does not contain
+            // - orders all the Coach by similitude to the searched name
+            // - takes only the 10 first results
+            List<Coach> listCoaches = Database.coaches.
+                Where(c => c.id != userCoach.id).
+                OrderByDescending(c => name.CalculateSimilarity(c.name)).Take(10).ToList();
+
+
+            // We send the default Coach if no match was found / the correct one if a match was found
+            Net.LIST_COACH.Send(comm.GetStream(), listCoaches);
+        }
+
 
         /// <summary>
         /// Sends to the Client all the InvitationCoach the user has
@@ -109,9 +131,9 @@ namespace Back_Server
 
             // ...Let's say we do some verification here...
 
-            // The user does not have any Team with the same name AND same race
+            // The user does NOT have any Team with the same name AND same race
             // (same name, different race OR same race, different name is accepted)
-            if (userCoach.teams.Any(team =>
+            if (!userCoach.teams.Any(team =>
                 team.name == teamReceived.name
                 && team.race == teamReceived.race))
             {
@@ -131,6 +153,30 @@ namespace Back_Server
 
             // We return the id of the newly created team (error : default empty id; success : correct id)
             Net.GUID.Send(comm.GetStream(), newTeam.id);
+        }
+
+
+        /// <summary>
+        /// Deletes a Team of the user's list
+        /// </summary>
+        /// <param name="teamReceived">Team to delete</param>
+        public void DeleteTeam(Team teamReceived)
+        {
+            // We get the team from the user's data
+            Team teamToDelete = userCoach.teams.FirstOrDefault(t => t.id == teamReceived.id);
+
+            // If we found a Team
+            if(teamToDelete != null)
+            {
+                // We remove it from the user's data
+                userCoach.teams.Remove(teamToDelete);
+
+                // We raise the event : a Team has been deleted
+                When_Team_Delete?.Invoke(teamToDelete);
+            }
+
+            // We return to the user whether the deletion was successful or not
+            Net.BOOL.Send(comm.GetStream(), (teamToDelete != null));
         }
 
 

@@ -274,7 +274,7 @@ namespace Back_Server
             league = Database.LEAGUE.GetById(league.id);
 
             // If the league found is complete
-            if(league.IsComplete)
+            if (league.IsComplete)
             {
                 // We get the JobAttribution of the user
                 JobAttribution ja = league.GetMember(userCoach.id);
@@ -288,6 +288,54 @@ namespace Back_Server
 
             // We return to the user whether it worked or not
             Net.BOOL.Send(comm.GetStream(), league.IsComplete);
+        }
+
+
+        /// <summary>
+        /// We remove the current user as a CEO from the League
+        /// </summary>
+        /// <param name="ic">Structure containing all data about who's leaving what</param>
+        private void LeagueLeaveCoachAsCEO(InvitationCoach ic)
+        {
+            // We initialize a bool
+            bool leave = false;
+
+            // We check that it is indeed the user that is leaving
+            if(userCoach.id == ic.invitor.id)
+            {
+                // We get the League from our Database
+                League league = Database.LEAGUE.GetById(ic.idLeague);
+
+                // If the league found is complete
+                if (league.IsComplete)
+                {
+                    // We get the JobAttribution of the user leaving
+                    JobAttribution jaUser = league.GetMember(userCoach.id);
+
+                    if(jaUser.IsComplete && jaUser.job == Job.CEO)
+                    {
+                        // We get the JobAttribution of the Coach that becomes CEO
+                        JobAttribution jaNewCEO = league.GetMember(ic.invited.id);
+
+                        if (jaNewCEO.IsComplete)
+                        {
+                            // We remove him from the League
+                            league.RemoveMember(jaUser);
+
+                            // We remove him from the League
+                            jaNewCEO.job = Job.CEO;
+
+                            // We raise the event
+                            When_Member_Leaves_League(league);
+
+                            leave = true;
+                        }
+                    }
+                }
+            }
+
+            // We return to the user whether it worked or not
+            Net.BOOL.Send(comm.GetStream(), leave);
         }
     }
 }

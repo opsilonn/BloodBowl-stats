@@ -17,28 +17,29 @@ namespace Back_Server
         public event CommunicationWithTheServer When_Server_LogOff;
 
         // Creating a Delegate about creating some structures, and events using them
-        public delegate void CreatingCoach(CoachWithPassword newCoach);
-        public event CreatingCoach When_Coach_Create;
+        public delegate void CoachDelegate(CoachWithPassword newCoach);
+        public event CoachDelegate When_Coach_Create;
 
-        public delegate void CreatingTeam(Team newTeam);
-        public event CreatingTeam When_Team_Create;
+        public delegate void TeamDelegate(Team newTeam);
+        public event TeamDelegate When_Team_Create;
+        public event TeamDelegate When_Team_Delete;
 
-        public delegate void PlayerEvent(Player player);
-        public event PlayerEvent When_Player_Create;
-        public event PlayerEvent When_Player_Remove;
-        public event PlayerEvent When_Player_LevelsUp;
+        public delegate void PlayerDelegate(Player player);
+        public event PlayerDelegate When_Player_Create;
+        public event PlayerDelegate When_Player_Remove;
+        public event PlayerDelegate When_Player_LevelsUp;
 
-        public delegate void LeagueEvent(League league);
-        public event LeagueEvent When_League_Create;
-        public event LeagueEvent When_Member_Leaves_League;
+        public delegate void LeagueDelegate(League league);
+        public event LeagueDelegate When_League_Create;
+        public event LeagueDelegate When_Member_Leaves_League;
 
-        public delegate void LeagueInvitationCoachEvent(InvitationCoach invitation);
-        public event LeagueInvitationCoachEvent When_League_InvitationCoach_Create;
-        public event LeagueInvitationCoachEvent When_League_InvitationCoach_Accept;
-        public event LeagueInvitationCoachEvent When_League_InvitationCoach_Refuse;
+        public delegate void LeagueInvitationCoachDelegate(InvitationCoach invitation);
+        public event LeagueInvitationCoachDelegate When_League_InvitationCoach_Create;
+        public event LeagueInvitationCoachDelegate When_League_InvitationCoach_Accept;
+        public event LeagueInvitationCoachDelegate When_League_InvitationCoach_Refuse;
 
-        public delegate void LeagueExpulsionCoachEvent(ExpulsionCoach expelled);
-        public event LeagueExpulsionCoachEvent When_League_Expel_Coach;
+        public delegate void LeagueExpulsionCoachDelegate(ExpulsionCoach expelled);
+        public event LeagueExpulsionCoachDelegate When_League_Expel_Coach;
 
         /*
         public delegate void LeagueInvitationTeamEvent(InvitationTeam invitation);
@@ -117,8 +118,12 @@ namespace Back_Server
                         GetInvitationsCoach((Guid)content);
                         break;
 
-                    case Instructions.Player_SearchByName:
+                    case Instructions.Coach_SearchByName:
                         SearchCoachByName((string)content);
+                        break;
+
+                    case Instructions.Coach_SearchByNameExceptSelf:
+                        SearchCoachByNameExceptSelf((string)content);
                         break;
 
 
@@ -126,6 +131,9 @@ namespace Back_Server
                     // TEAM
                     case Instructions.Team_New:
                         NewTeam((Team)content);
+                        break;
+                    case Instructions.Team_Delete:
+                        DeleteTeam((Team)content);
                         break;
 
                     case Instructions.Team_AddPlayer:
@@ -176,6 +184,10 @@ namespace Back_Server
 
                     case Instructions.League_Coach_Leave:
                         LeagueLeaveCoach((League)content);
+                        break;
+
+                    case Instructions.League_Coach_LeaveAsCEO:
+                        LeagueLeaveCoachAsCEO((InvitationCoach)content);
                         break;
 
 

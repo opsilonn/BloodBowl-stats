@@ -11,15 +11,17 @@
         Coach_GetAll,
         Coach_GetById,
         Coach_GetByName,
+        Coach_SearchByName,
+        Coach_SearchByNameExceptSelf,
         Coach_GetInvitations,
 
         Team_GetAllFromCoach,
         Team_GetById,
         Team_New,
+        Team_Delete,
         Team_AddPlayer,
         Team_RemovePlayer,
 
-        Player_SearchByName,
         Player_LevelUp,
 
         League_New,
@@ -31,6 +33,7 @@
         League_InviteCoachRefuse,
         League_RemoveCoach,
         League_Coach_Leave,
+        League_Coach_LeaveAsCEO,
 
         League_InviteTeamCreate,
         League_InviteTeamAccept,
@@ -38,3 +41,6 @@
         League_RemoveTeam
     }
 }
+
+// 12 - UE : une identité culturelle imaginaire ?
+// 6ème séance
